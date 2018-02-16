@@ -1,0 +1,141 @@
+\providecommand{\main}{..}
+\documentclass[\main/Apuntes_PL.tex]{subfiles}
+
+  % !TEX root = ../Apuntes_PL.tex
+
+\begin{document}
+  \begin{tikzpicture}
+    \node[sheet, label = {[align=center]Input\\(Programa en L)} ] (input) at (0,0) {};
+    \node[unit, right = 1.9 of input, align = center] (proc) {Procesador\\de\\ L};
+    \node[clo, right = 1.6 of proc,  label = {[align=center]Output\\(depende del procesador)}] (output) {};
+    \node[err2, below = .8 of proc, align = center,  label =below:Errores] (e) {!};
+
+    \draw[myarrow] (input.east) -- ++(0,0) -> (proc.west);
+    \draw[myarrow] (proc.east) -- ++(0,0) -> (output.west);
+    \draw[myarrow] (proc.south) -- ++(0,0) -> (e.north);
+  \end{tikzpicture}
+
+  \FloatBarrier
+  \vspace{5mm}
+  \par \noindent
+  \textbf{Compilador}: Genera una representación en otro L (Alto nivel -\(>\) Bajo nivel).\newline
+  \textbf{Intérprete}: Ejecuta una representación.
+
+  \vspace{5mm}
+  \par \noindent
+  {\Large\textbf{Java}}
+  \bigskip
+
+  \begin{tikzpicture}
+    \node[sheet, label = .java] (input) at (0,0) {};
+    \node[unit, right = of input, align = center,  label = {[align=center]Traductor/\\Compilador}] (javac) {javac};
+    \node[sheet, label = .java, right = of javac] (input2) {};
+    \node[unit, right = of input2, align = center,  label = {[align=center]Intérprete/\\Emulador}] (java) {java};
+    \node[clo, right = of java,  label = ejecución] (exec) {};
+
+    \node[txt, below = of input2] (data) {Java Virtual Machine (JVM)\\Bytecode};
+
+    \draw[myarrow] (input.east) -- ++(0,0) -> (javac.west);
+    \draw[myarrow] (javac.east) -- ++(0,0) -> (input2.west);
+    \draw[myarrow] (input2.east) -- ++(0,0) -> (java.west);
+    \draw[myarrow] (java.east) -- ++(0,0) -> (exec.west);
+
+    \draw[myarrow2] (data.north) -- ++(0,0) -> (input2.south);
+  \end{tikzpicture}
+
+  \vspace{5mm}
+  \par \noindent
+  {\Large\textbf{Abstracción}}
+  \bigskip
+
+  \begin{tikzpicture}
+    \node[sheet, label = L] (input) at (0,0) {};
+    \node[unit, right = of input, align = center,  label = {[align=center]Traductor/\\Compilador}] (proc) {Procesador\\para\\L};
+    \node[sheet, label = L', right = of proc] (input2) {};
+    \node[unit, right = of input2, align = center,  label = {[align=center]Intérprete/\\Emulador}] (proc2) {Procesador\\para\\L'};
+    \node[clo, right = of proc2,  label = ejecución] (exec) {};
+
+    \node[txt, below = of input2] (data) {L': lenguaje bajo nivel\\(código máquina -\(>\) virtual)};
+
+    \draw[myarrow] (input.east) -- ++(0,0) -> (proc.west);
+    \draw[myarrow] (proc.east) -- ++(0,0) -> (input2.west);
+    \draw[myarrow] (input2.east) -- ++(0,0) -> (proc2.west);
+    \draw[myarrow] (proc2.east) -- ++(0,0) -> (exec.west);
+
+    \draw[myarrow2] (data.north) -- ++(0,0) -> (input2.south);
+  \end{tikzpicture}
+
+  \newpage
+  \section{Traductor}
+    \begin{tikzpicture}
+      \node[sheet, align = left] (input) at (0,0) {5$\varnothing\varnothing\varnothing$ \\ $\varnothing\varnothing\varnothing+$ \\ $\varnothing$7$\varnothing\varnothing$};
+      \node[unit, right = of input, align = center,  label = {[align=center]Scanner/\\Tokenizer}] (anle) {Analizador\\léxico};
+      \node[err,  right = .4 of anle, align = center] (err_anle) {errores\\léxicos};
+      \node[text width=0.5cm, above = of err_anle] (dummy) {};
+      \node[txt, right = .1 of dummy] (err_anle_data) {errores de formato, e.g. en java algo que empiece por '\#'};
+      \node[unit, right = .4 of err_anle, align = center] (ansi) {Analizador\\sintáctico};
+      \node[rectangle, draw = black, below = of anle, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl1) {NUM\nodepart{second}"5"};
+      \node[rectangle, draw = black, right = .2 of cl1, align = center] (cl2) {MAS};
+      \node[rectangle, draw = black, right = .2 of cl2, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl3) {MAS\nodepart{second}"7"};
+      \node[txt, left = .1 of cl1] (cl_data) {Componentes\\léxicos\\(tokens)};
+      \node[text width=0.5cm, below = of cl1] (dummy2) {};
+      \node[txt, left = .1 of dummy2] (cl_class) {Clase léxica};
+      \node[txt, right = .1 of dummy2] (cl_lex) {Lexema};
+      \node[txt, below = .1 of cl_class] (cl_class2) {(Categoría léxica)};
+      \node[text width=0.4cm, below = .1 of cl_class2] (dummy3) {};
+      \node[txt, right = .1 of dummy3] (cl_class3) {Univaludada: no tiene lexema};
+      \node[txt, below = .1 of cl_class3] (cl_class4) {Multivaluadada: tiene lexema};
+      \node[err,  right = .4 of ansi, align = center] (err_ansi) {errores\\sintácticos};
+      \node[txt, right = .1 of err_ansi] (err_ansi_data) {5 + true: tipos \textbf{no} sintáctico\\errores de estructura, e.g. 5 +};
+      \node[rectangle, below =  of err_ansi] (exp) {Exp};
+      \node[rectangle, below = .5 of exp] (mas) {+};
+      \node[rectangle, left = .1 of mas] (num) {Num};
+      \node[rectangle, right = .1 of mas] (num2) {Num};
+      \node[txt, right = of exp] (exp_data) {árbol de: derivación,\\análisis sintáctico,\\sintaxis concreta};
+      \node[unit, below = of mas, align = center] (cons) {Constructor de\\árboles de\\sintaxis\\abstracta};
+      \node[rectangle, below =  of cons] (exp2) {+};
+      \node[rectangle, below = .5 of exp2] (dummy5) {};
+      \node[rectangle, left = .1 of dummy5] (num3) {Num(5)};
+      \node[rectangle, right = .1 of dummy5] (num4) {Num(7)};
+      \node[rectangle, left = .1 of num3] (dummy6) {};
+      \node[unit, left = 2 of dummy6, align = center] (anse) {Múltiples\\recorridos\\ \\Análisis\\semántico};
+      \node[txt, left = .3 of anse] (anse_data) {Puede añadir\\atributos a\\los nodos.\\e.g. los tipos\\(inferencia de tipos)};
+      \node[err,  below = .4 of anse, align = center] (err_anse) {errores\\semánticos};
+      \node[unit, below = 1.5 of dummy5, align = center] (trad) {Múltiples\\recorridos\\ \\Traducción};
+      \node[txt, right = .3 of trad] (anse_trad) {Es raro que llegados\\a este punto se\\generen errores};
+      \node[rectangle, draw = black, below = of trad, label = below:L'] (output) {$I_0$.....$I_k$};
+
+      \draw[myarrow] (input.east) -- ++(0,0) -> (anle.west);
+      \draw[myarrow] (anle.east) -- ++(0,0) -> (err_anle.west);
+      \draw[myarrow2] (err_anle_data.west) -- ++(0,0) -> (err_anle.north);
+      \draw[myarrow] (anle.south) -- ++(0,0) -> (cl1.north);
+      \draw[myarrow] (cl3.east) -- ++(0,0) -| (ansi.south);
+      \draw[myarrow2] (cl1.south) -- ++(-.4,0) -> (cl_class.north);
+      \draw[myarrow2] (cl1.south) -- ++(.6,0) -> (cl_lex.north);
+      \draw[myarrow2] (cl_class2.south) -- ++(0,0) -> (cl_class3.west);
+      \draw[myarrow2] (cl_class2.south) -- ++(0,0) -> (cl_class4.west);
+      \draw[myarrow] (ansi.east) -- ++(0,0) -> (err_ansi.west);
+      \draw[myarrow] (ansi.south) -- ++(0,0) -| (exp.north);
+      \draw[myarrow] (mas.south) -- ++(0,0) -> (cons.north);
+      \draw[myarrow] (cons.south) -- ++(0,0) -> (exp2.north);
+      \draw[myarrow2] (exp.south) -- ++(0,0) -> (mas.north);
+      \draw[myarrow2] (exp.south) -- ++(0,0) -> (num.north);
+      \draw[myarrow2] (exp.south) -- ++(0,0) -> (num2.north);
+      \draw[myarrow2] (exp2.south) -- ++(0,0) -> (num3.north);
+      \draw[myarrow2] (exp2.south) -- ++(0,0) -> (num4.north);
+      \draw[myarrow] (dummy6.west) -- ++(0,0) -> (anse.east);
+      \draw[myarrow] (anse.east) -- ++(0,0) -> (dummy6.west);
+      \draw[myarrow] (anse.south) -- ++(0,0) -> (err_anse.north);
+      \draw[myarrow] (dummy5.south) -- ++(0,0) -> (trad.north);
+      \draw[myarrow] (trad.south) -- ++(0,0) -> (output.north);
+    \end{tikzpicture}
+
+  \section{Intérprete}
+    \begin{tikzpicture}
+      \node[rectangle, draw = black, below = of trad, label = below:L'] (input) {$I_0$.....$I_k$};
+      \node[unit, right = of input, align = center] (proc) {Procesador\\L'};
+      \node[txt, right = .3 of proc] (anse_trad) {En bucle hasta\\que un token\\le ordena parar};
+
+      \draw[myarrow] (input.east) -- ++(0,0) -> (proc.west);
+    \end{tikzpicture}
+\end{document}

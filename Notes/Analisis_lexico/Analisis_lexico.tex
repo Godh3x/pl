@@ -1,0 +1,490 @@
+\providecommand{\main}{..}
+\documentclass[\main/Apuntes_PL.tex]{subfiles}
+
+  % !TEX root = ../Apuntes_PL.tex
+
+\begin{document}
+  \begin{tikzpicture}
+  \node[sheet, label = {[align=center]Input\\(Programa)} ] (input) at (0,0) {};
+  \node[unit, right = of input, align = center] (anle) {Analizador\\léxico};
+  \node[rectangle, draw = black, right = of anle, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl1) {};
+  \node[rectangle, draw = black, right = .2 of cl1, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl2) {};
+  \node[rectangle, draw = black, right = .2 of cl2, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl3) {};
+  \node[txt, right = .2 of cl3] (cl_extra) {...};
+  \node[txt, below = .2 of cl2] (cl_data1) {Secuencia de \textbf{tokens}\\(Componentes léxicos)};
+  \node[txt, above = of cl1] (cl_data1) {Clase léxica (código)};
+  \node[txt, right = .8 of cl_data1] (cl_data2) {Lexema (opcional). Tiene sentido si la clase\\léxica no determina \textbf{unívocamente} la cadena.\\\\\underline{Clase}\\\textbf{multivaluada}
+        $\equiv$ \textbf{si} lexema\\\textbf{univaluada} $\equiv$ \textbf{no} lexema};
+
+
+
+  \draw[myarrow] (input.east) -- ++(0,0) -> (anle.west);
+  \draw[myarrow] (anle.east) -- ++(0,0) -> (cl1.west);
+  \draw[myarrow2] (cl1.north) -- ++(-.2,0) -> (cl_data1.south);
+  \draw[myarrow2] (cl3.north) -- ++(.2,0) -> (cl_data2.west);
+  \end{tikzpicture}
+
+  \section{e.g. prototípico} \label{egp}
+    \begin{tikzpicture}
+      \node[rectangle, label = Input] (input) at (0,0) {(5 + 7) / 8 - 9};
+      \node[unit, right = of input, align = center] (calc) {Calculador};
+      \node[rectangle, label = Output, right = of calc] (output) {-8};
+
+      \node[unit, below = .8 of calc, align = center] (anle) {Analizador\\léxico};
+      \node[rectangle, draw = black, right = of anle, align = center] (cl1) {PAP};
+      \node[rectangle, draw = black, right = .2 of cl1, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl2) {NUM\nodepart{second}"5"};
+      \node[rectangle, draw = black, right = .2 of cl2, align = center] (cl3) {MAS};
+      \node[txt, right = .2 of cl3] (cl_extra) {...};
+
+
+      \draw[myarrow] (input.east) -- ++(0,0) -> (calc.west);
+      \draw[myarrow] (calc.east) -- ++(0,0) -> (output.west);
+
+      \draw[myarrow2] (calc.south) -- ++(0,0) -> (anle.north);
+      \draw[myarrow] (anle.east) -- ++(0,0) -> (cl1.west);
+    \end{tikzpicture}
+
+    \FloatBarrier
+    \bigskip
+    \par \noindent
+    Una expresión aritmética es...
+    \begin{itemize}
+      \item ...un \textbf{número entero}.
+      \item ...una \textbf{expresión} seguida de un \textbf{operador} seguido de otra \textbf{expresión}.
+      \item...\textbf{(} seguido de una \textbf{expresión} seguido de \textbf{)}.
+    \end{itemize}
+
+    \par \noindent
+    Los operadores son: \textbf{+}, \textbf{-}, \textbf{*} y \textbf{/}.
+
+  \section{Método de desarrollo}
+    \subsection{Identificación de las clases léxicas}
+      \par \noindent
+      Normalmente:
+      \begin{itemize}
+        \item Los \textbf{signos} (puntos, operadores...)  conviene que sean clases \textbf{univaluadas}.
+        \item \textbf{Variables} (NUM,LETRA...) son \textbf{multivaluadas}.
+        \item \textbf{Palabras reservadas} (bool, int...) son \textbf{univaluadas}.
+      \end{itemize}
+
+      \newpage
+      \par \noindent
+      \textbf{Clases léxicas de \cref{egp}.}
+      \begin{itemize}
+        \item PAP (paréntesis apertura)
+        \item PCIERRE (paréntesis cierre)
+        \item NUM
+        \item MAS
+        \item MENOS
+        \item POR
+        \item DIV
+      \end{itemize}
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g.}
+      \begin{center}
+        \begin{minipage}{.2 \textwidth}
+          \underline{class} \underline{C} \{\\
+          \hspace*{8mm}\underline{int} \underline{x};\\
+          \hspace*{8mm}....
+        \end{minipage}%
+        \begin{minipage}{.6 \textwidth}
+          \begin{itemize}
+            \item class $\equiv$ univaluada
+            \item C $\equiv$ id
+            \item \{ $\equiv$ univaluada
+            \item int $\equiv$ univaluada
+            \item x $\equiv$ id
+          \end{itemize}
+        \end{minipage}
+      \end{center}
+
+    \subsection{Describir las clases léxicas}
+      \par \noindent
+      Cada clase léxica es un lenguaje formal de los posibles lexemas.\\
+      \textbf{Suposición}: son lenguajes regulares, por tanto:
+      \begin{itemize}
+      \item Se pueden describir mediante $ER_s$ (expresiones regulares).
+      \item Se pueden reconocer utilizando $AFD_s$ (autómatas finitos deterministas).
+      \end{itemize}
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g.} NENT
+      \begin{itemize}
+        \item Descripción informal.
+              \par \noindent
+              Empieza con un signo (+ o -) opcional.\\
+              A continuación aparecen uno o más dígitos.\\
+              e.g. +5, +007, 000, -0, -08, -280.
+        \item Descripción formal.
+              \par \noindent
+              (\textbackslash+ $\mid$ \textbackslash -)?[0-9]+
+      \end{itemize}
+
+      \newpage
+      \par \noindent
+      \textbf{\large Notación}
+      \begin{itemize}
+        \item ER sobre el alfabeto $\Sigma$ (e.g. UNICODE, ASCII...).
+              \begin{itemize}
+                \item Una "letra" de $\Sigma$, e.g. a. Denota \{a\}
+                \item Si $E_0$ y $E_1$ son $ER_s$, también lo son:
+                      \begin{itemize}
+                        \item $(E_0 \mid E_1)$. Denota la unión, $L(E_0) \cup L(E_1).$
+                        \item $(E_0 \bullet E_1)$. Denota la concatenación, $ \{W_0 W_1 \mid W_0 \in  L(E_0), W_1 \in L(E_1)\}$.
+                        \item $(E_0 \ast)$. Denota \{$\epsilon, W_0, W_0 W_1, W_0 W_1 W_2 ...\mid W_0, W_1, W_2, ... \in L(E_0)\}$.
+                      \end{itemize}
+                \item $\epsilon$ denota el lenguaje formado por la cadena vacía.
+              \end{itemize}
+        \item Convenios.
+              \begin{itemize}
+                \item $\ast$ tiene mayor prioridad que $\mid$ y $\bullet$.
+                \item $\bullet$ tiene mayor prioridad que $\mid$.
+                \item $\bullet$ se puede omitir.
+                \item Los ( ) se usan para cambiar prioridades.
+                \item Conjuntos de caracteres, e.g. [0-9,a] es el conjunto formado por los dígitos y la a.
+                      \begin{itemize}
+                        \item $[e_0, ..., e_n]$ donde $e_i$ puede ser...
+                              \begin{itemize}
+                                \item ...una letra.
+                                \item ...a-b, conjunto de caracteres comprendidos entre a y b.
+                              \end{itemize}
+                        \item Conjuntos complementados [$^\wedge e_0, ..., e_n$].
+                              \par \noindent
+                              e.g. [$^\wedge$0-9, a-z] es el conjunto de caracteres que no son dígitos ni letras minúsculas.
+                        \item E+ $\equiv$ EE$\ast$. Aparece una o más veces pero mínimo una.
+                        \item E? $\equiv$ (E$\mid\epsilon$). Aparece o no, es opcional.
+                        \item \textbackslash. La forma de escape.
+                      \end{itemize}
+              \end{itemize}
+      \end{itemize}
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g.} Identificadores
+      \begin{itemize}
+      \item Pueden contener letras, dígitos y \_.
+      \item Empiezan por letra o \_.
+      \item Van seguidos de una secuencia de 0 o más caracteres válidos.
+      \end{itemize}
+      \hspace{5mm}[a-z, A-Z, \_] [a-z, A-Z, \_, 0-9]$\ast$
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g.} NENT, como en el ejemplo anterior pero sin $0_s$ a la izquierda.\\
+      \hspace{5mm} [\textbackslash+, \textbackslash -]?([1-9] [0-9]$\ast \mid$ 0)
+
+      \newpage
+      \par \noindent
+      Para mayor claridad vamos a utilizar $DR_s$ (definiciones regulares) en lugar de $ER_s$.
+      \begin{itemize}
+        \item ($\ast$) $\equiv$ clase léxica, marca cual es la definición principal.
+        \item $[I]$ $\equiv$ ignorables, se utiliza para definir que caracteres no se han de tener en cuenta.
+        \item Las palabras subrayadas corresponden a definiciones auxiliares.
+      \end{itemize}
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g.} Identificadores\\
+      \hspace{5mm}($\ast$) IDEN $\equiv$ \underline{Letra} (\underline{Letra} $\mid$ \underline{Dig})$\ast$ \\
+      \hspace{10mm} Letra $\equiv$ [a-z, A-Z, \_] \\
+      \hspace{10mm} Dig $\equiv$ [0-9]
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g.} Números enteros\\
+      \hspace{5mm}($\ast$) LENT $\equiv$ \underline{Signo}? (0 $\mid$ \underline{DPos} \underline{Dig}$\ast$) \\
+      \hspace{10mm} Signo $\equiv$ [\textbackslash+, \textbackslash-] \\
+      \hspace{10mm} DPos  $\equiv$ [1-9] \\
+      \hspace{10mm} Dig   $\equiv$ [0-9]
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g.} Literales reales
+      \begin{itemize}
+        \item Empiezan por un entero.
+        \item Continúan por...
+              \begin{itemize}
+                \item ...una parte decimal.
+                \item ...una parte exponencial.
+                \item ...una parte decimal seguida de una exponencial.
+              \end{itemize}
+        \item Parte decimal. '.' seguido de una secuencia de uno o más dígitos, sin ceros superfluos a la derecha.
+        \item Parte exponencial. E o e seguida de un entero.
+      \end{itemize}
+      \hspace{10mm}e.g. +5.7E-28\\
+      \bigskip
+      \hspace{5mm}($\ast$) LREAL $\equiv$ \underline{LENT} (\underline{PDEC} $\mid$ \underline{PEXP} $\mid$ \underline{PDEC} \underline{PEXP}) \\
+      \hspace{10mm} PDEC $\equiv$ \textbackslash. (\underline{Dig}$\ast$ \underline{DPos} $\mid$ 0 ) \\
+      \hspace{10mm} PEXP $\equiv$ (E $\mid$ e) \underline{LENT} \\
+      \vspace{2mm}
+      \hspace{10mm} LENT $\equiv$ \underline{Signo}? (0 $\mid$ \underline{DPos} \underline{Dig}$\ast$) \\
+      \hspace{10mm} Signo $\equiv$ [\textbackslash+, \textbackslash-] \\
+      \hspace{10mm} DPos  $\equiv$ [1-9] \\
+      \hspace{10mm} Dig   $\equiv$ [0-9]
+
+      \newpage
+      \par \noindent
+      \textbf{\large Ignorables} \\
+      \hspace{3mm}$[I]$ SEP $\equiv$ $[$' ', \textbackslash t, \textbackslash n, \textbackslash r, \textbackslash b], posibles separadores. \\
+      \hspace{3mm}$[I]$ COM $\equiv$ \# [$^\wedge$ \textbackslash n]$\ast$ \textbackslash n, e.g. \# Esto es un comentario.\textbackslash n
+
+      \bigskip
+      \par \noindent
+      \textbf{e.g}  DR de \cref{egp}\\
+      \hspace{5mm}($\ast$) PAP $\equiv$ \textbackslash( \\
+      \hspace{5mm}($\ast$) PCIERRE $\equiv$ \textbackslash) \\
+      \hspace{5mm}($\ast$) NUM $\equiv$ \underline{Signo}? (0 $\mid$ \underline{DPos} \underline{Dig}$\ast$) \\
+      \hspace{10mm} Signo $\equiv$ [\textbackslash+, \textbackslash-] \\
+      \hspace{10mm} DPos  $\equiv$ [1-9] \\
+      \hspace{10mm} Dig   $\equiv$ [0-9] \\
+      \hspace{5mm}($\ast$) MAS $\equiv$ \textbackslash + \\
+      \hspace{5mm}($\ast$) MENOS $\equiv$ \textbackslash - \\
+      \hspace{5mm}($\ast$) POR $\equiv$ \textbackslash $\ast$ \\
+      \hspace{5mm}($\ast$) DIV $\equiv$ \textbackslash / \\
+      \hspace{5mm}$[I]$ SEP $\equiv$ $[$' ', \textbackslash t, \textbackslash n, \textbackslash r, \textbackslash b]\\
+      \hspace{5mm}$[I]$ COM $\equiv$ \# [$^\wedge$ \textbackslash n]$\ast$ \textbackslash n
+
+  \section{Implementación}
+    \subsection{Generadores de analizadores léxicos}
+      \begin{tikzpicture}
+      \node[sheet, label = Input] (input) at (0,0) {};
+      \node[txt, below = .2 of input] (input_extra) {Especificación del\\analizador léxico\\ basado en $DR_s$};
+      \node[unit, right = of input, align = center] (gen) {Generador};
+      \node[txt, right = of input_extra] (gen_extra) {ER};
+      \node[txt, right = 2 of gen_extra] (gen_extra2) {AFN};
+      \node[txt, right = 2 of gen_extra2] (gen_extra3) {AFD};
+      \node[txt, right = 2 of gen_extra3] (gen_extra4) {$AFD_{minimo}$};
+      \node[clo, label = Output, right = of gen] (output) {};
+      \node[txt, right = .2 of output] (output_extra) {Analizador léxico escrito en\\lenguaje de alto nivel, e.g. Java.};
+
+      \draw[myarrow] (input.east) -- ++(0,0) -> (gen.west);
+      \draw[myarrow] (gen.east) -- ++(0,0) -> (output.west);
+      \draw[myarrow2] (gen.south) -- ++(-.4,0) -> (gen_extra.west);
+
+      \draw[myarrow, align = center] (gen_extra.east) -- ++(0,0) -> (gen_extra2.west)  node[midway, below] {construcción\\de Thompson};
+      \draw[myarrow, align = center] (gen_extra2.east) -- ++(0,0) -> (gen_extra3.west)  node[midway, below] {construcción\\de subconjuntos};
+      \draw[myarrow] (gen_extra3.east) -- ++(0,0) -> (gen_extra4.west) node[midway, below] {minimización};
+      \end{tikzpicture}
+
+    \subsection{Implementación manual}
+      \par \noindent
+      Se implementa utilizando $AFD_s$ donde las transiciones a estados de error no se dibujan,
+      son implicitas.
+
+      \bigskip
+      \par \noindent
+      El AFD no reconoce la entrada completamente sino que utiliza una \textbf{arquitectura pull}, solicita
+      los token uno a uno y los va procesando.
+
+      \vspace{5mm}
+      \begin{tikzpicture}
+        \node[txt] (cl_extra) at (0,0) {...};
+        \node[rectangle, draw = black, right = .2 of cl_extra, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl1) {};
+        \node[rectangle, draw = black, right = .2 of cl1, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl2) {};
+        \node[rectangle, draw = black, right = .2 of cl2, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl3) {};
+
+        \node[unit, right = of cl3, align = center] (anle) {Analizador\\léxico};
+
+
+        \node[rectangle, draw = black, right = of anle, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl4) {};
+        \node[rectangle, draw = black, right = .2 of cl4, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl5) {};
+        \node[rectangle, draw = black, right = .2 of cl5, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl6) {};
+        \node[txt, right = .2 of cl6] (cl_extra) {...};
+
+        \draw[myarrow] (cl3.east) -- ++(0,0) -> (anle.west);
+        \draw[myarrow] (anle.east) -- ++(0,0) -> (cl4.west);
+      \end{tikzpicture}
+
+      \bigskip
+      \par \noindent
+      Siempre hay que tener una clase léxica que represente el EOF.
+
+      \newpage
+      \par \noindent
+      \textbf{e.g.} AFD de \cref{egp}
+
+      \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
+        \node[state] (q_0)   {Inicio};
+        \node[state,accepting](q_7) [left=of q_0] {\scriptsize REC0};
+        \node[state,accepting](q_3) [above=of q_7] {\scriptsize RECMAS};
+        \node[state,accepting](q_4) [below=2.5of q_7] {\scriptsize RECMENOS};
+        \node[state,accepting](q_8) [left=3of q_7] {\scriptsize RECNUM};
+        \node[state](q_10) [right=4of q_3] {\scriptsize RECEOF};
+        \node[state](q_9) [below=4of q_0] {\scriptsize RECCOM};
+        \node[state, accepting] (q_1) [right=4of q_4] {\scriptsize RECPAP};
+        \node[state, accepting] (q_2) [right=of q_1] {\scriptsize RECPC};
+        \node[state,accepting](q_6) [above right=of q_2] {\scriptsize RECDIV};
+        \node[state,accepting](q_5) [below right=of q_10] {\scriptsize RECPOR};
+
+        \draw[<-] (q_0) -- node[below] {start} ++(0,-1cm);
+        \path[->]
+          (q_0) edge [loop above] node[rotate=-20]         {\scriptsize$[$' ',\textbackslash t,\textbackslash n,\textbackslash r,\textbackslash b]} (q_0)
+                edge              node[above]              {\scriptsize +} (q_3)
+                edge              node[near end, above]    {\scriptsize -} (q_4)
+                edge              node[above]              {\scriptsize 0} (q_7)
+                edge  [bend left] node[near end, above]    {\scriptsize [1-9]} (q_8)
+                edge              node[below, rotate = 45] {\scriptsize EOF} (q_10)
+                edge [bend right] node[near end]           {\scriptsize \#} (q_9)
+                edge              node[near end]           {\scriptsize (} (q_1)
+                edge              node[near end]           {\scriptsize )} (q_2)
+                edge              node[near end]           {\scriptsize /} (q_6)
+                edge              node[near end]           {\scriptsize $\ast$} (q_5)
+          (q_4) edge              node[near start]         {\scriptsize 0} (q_7)
+                edge              node                     {\scriptsize [1-9]} (q_8)
+          (q_3) edge              node                     {\scriptsize 0} (q_7)
+                edge              node                     {\scriptsize [1-9]} (q_8)
+          (q_9) edge [bend right] node[near start]         {\scriptsize \textbackslash n} (q_0)
+                edge [loop right] node[right]              {[$^\wedge$ \textbackslash n]} (q_9);
+      \end{tikzpicture}
+
+      \FloatBarrier
+      \hspace{5mm}
+      \par \noindent
+      \textbf{Inicialización:} Conseguir el primer caracter en sigCar.
+
+      \begin{center}
+        \begin{minipage}{.35 \textwidth}
+          \par \noindent
+          \textbf{SigToken}\\
+          \hspace*{5mm}Estado $\leftarrow$ EstadoInicial\\
+          \hspace*{5mm}lexema $\leftarrow$ ""\\
+          \hspace*{5mm}\textbf{loop} \{\\
+          \hspace*{10mm}\textbf{switch}(Estado) \{\\
+          \hspace*{15mm}\textbf{case} $S_0$\\
+          \hspace*{15mm}...\\
+          \hspace*{15mm}\textbf{case} $S_n$\\
+          \hspace*{10mm}\}\\
+          \hspace*{5mm}\}
+        \end{minipage}%
+        \begin{minipage}{.65 \textwidth}
+          \bigskip
+          \par \noindent
+          \textbf{case $S_i$}\\
+          \hspace*{5mm}\textbf{si} sigCar $\in$  $T_0$\\
+          \hspace*{10mm}Estado $\leftarrow$ SigEstado\\
+          \hspace*{10mm}lexema $\leftarrow$ lexema + sigCar\\
+          \hspace*{15mm}(lexema solo cambia en estados no ignorables)\\
+          \hspace*{10mm}Actualizar sigCar\\
+          \hspace*{5mm}\textbf{si no si} sigCar $\in$  $T_1$\\
+          \hspace*{10mm}Estado $\leftarrow$ SigEstado\\
+          \hspace*{10mm}lexema $\leftarrow$ lexema + sigCar\\
+          \hspace*{10mm}Actualizar sigCar\\
+          \hspace*{5mm}...\\
+          \hspace*{5mm}\textbf{si no}\\
+          \hspace*{10mm}//Si es un estado final\\
+          \hspace*{10mm}\textbf{return} token\\
+          \hspace*{10mm}//Si no es un estado final\\
+          \hspace*{10mm}\textbf{error}
+        \end{minipage}
+      \end{center}
+
+      \bigskip
+      \par \noindent
+      Dos variables extra, fila y columna, para poder dar información extra en el mensaje de error.
+
+      \newpage
+      \par \noindent
+      \textbf{Codificación parcial (pseudocódigo)}\\
+      \vspace{5mm}
+      \hspace{5mm}Estado $\leftarrow$ Inicio\\
+      \hspace{5mm}lexema $\leftarrow$ ""\\
+      \hspace{5mm}\textbf{loop} \{\\
+      \hspace{10mm}\textbf{switch} (Estado) \{\\
+      \hspace{10mm}Inicio: \textbf{if} sigCar = ( \textbf{then} transita(RECPAP)\\
+      \hspace{22mm}\textbf{else if} ...\\
+      \hspace{22mm}...\\
+      \hspace{22mm}\textbf{else if} sigCar = \# textbf{then} transitaIgnorando(RECCOM)\\
+      \hspace{22mm}\textbf{else if} sigCar $\in$ [1-9] \textbf{then} transita(RECNUM)\\
+      \hspace{22mm}\textbf{else} error()\\
+      \vspace{2mm}
+      \hspace{10mm}RECNUM: \textbf{if} sigCar $\in$ [1-9] \textbf{then} transita(RECNUM)\\
+      \hspace{30mm}\textbf{else return} token(NUM, lexema)\\
+      \vspace{2mm}
+      \hspace{10mm}...\\
+      \vspace{2mm}
+      \hspace{10mm}RECCOM: \textbf{if} sigCar $\neq$ \textbackslash n \textbf{then} transitaIgnorando(RECCOM)\\
+      \hspace{30mm}\textbf{else} transitaIgnorando(Inicio)\\
+      \hspace{10mm}\}\\
+      \hspace{5mm}\}\\
+      \vspace{10mm}
+      \hspace{5mm}transita(S) \{\\
+      \hspace{10mm}Estado $\leftarrow$ S\\
+      \hspace{10mm}lexema $\leftarrow$ lexema + sigCar\\
+      \hspace{10mm}Actualiza sigCar\\
+      \hspace{5mm}\}\\
+      \vspace{10mm}
+      \hspace{5mm}transitaIgnorando(S) \{\\
+      \hspace{10mm}Estado $\leftarrow$ S\\
+      \hspace{10mm}Actualiza sigCar\\
+      \hspace{5mm}\}
+
+      \newpage
+      \par \noindent
+      \textbf{e.g.}
+      \begin{center}
+        \begin{minipage}{.2 \textwidth}
+          EVALUA\\
+          5 + x\\
+          DONDE\\
+          x = 27
+        \end{minipage}%
+        \begin{minipage}{.5 \textwidth}
+          \par \noindent
+          \textbf{Especificación léxica}\\
+          \vspace{2mm}
+          \hspace{5mm}...\\
+          \hspace{5mm}($\ast$) ID $\equiv$ \underline{Letra} (\underline{Letra} $\mid$ \underline{Dig})$\ast$\\
+          \hspace{11mm}Letra $\equiv$ $[$a-z,A-Z,\_]\\
+          \hspace{11mm}Dig $\equiv$ $[$0-9]\\
+          \hspace{5mm}($\ast$) EVALUA $\equiv$ [E,e][V,v][A,a][L,l][U,u][A,a]\\
+          \hspace{5mm}($\ast$) DONDE $\equiv$ [D,d][O,o][N,n][D,d][E,e]\\
+        \end{minipage}
+      \end{center}
+
+      \bigskip
+      \par \noindent
+      En el return que reconoce los id se comprueba si el lexema es una palabra reservada, de serlo se devuelve la palabra reservada en lugar del id.\\
+      \vspace{5mm}
+      \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
+        \node[state,initial] (q_0)   {Inicio};
+        \node[state,accepting](q_1) [right=3of q_0] {\scriptsize ID};
+
+        \path[->]
+          (q_0) edge              node        {Letra$\mid$Dig} (q_1)
+          (q_1) edge [loop right] node[right] {Letra$\mid$Dig} (q_1);
+      \end{tikzpicture}
+
+      \bigskip
+      \par \noindent
+      Hay un ejemplo de codificación en el campus, tiene una errata en el diagrama de transiciones.
+
+    \subsection{Implementación mediante herramientas}
+      \par \noindent
+      La herramienta que vamos a utilizar es \textbf{JLex}, hay un ejemplo en el CV.
+
+      \bigskip
+      \par \noindent
+      Formato de JLex:
+      \FloatBarrier
+      \vspace{3mm}
+      \begin{tikzpicture}
+        \node[unit, align = center, minimum width = 5.1cm] (cfg) {Configuracion\\Puede incluir código en Java};
+        \node[unit, below=.2of cfg, align = center, minimum width = 5.1cm] (drs) {Definiciones regulares};
+        \node[unit, below=.2of drs, align = center, minimum width = 5.1cm] (act) {Patrones - acciones};
+      \end{tikzpicture}
+
+      \bigskip
+      \par \noindent
+      Para que una DR pueda referirse a otras tienen que haberse definido antes, lo que en las $DR_s$ subrayamos tiene que ir entre \{\}, hacen sustituciones literales (no ponen paréntesis).
+
+      \bigskip
+      \par \noindent
+      Las palabras reservadas se ponen sin mas, el orden de reconocimiento equivale al de aparición en el fichero, en la parte de los return.
+
+      \bigskip
+      \par \noindent
+      \textbf{Compilar:} java -cp jlex.jar JLex.Main input($DR_s$)
+\end{document}
