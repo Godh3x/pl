@@ -9,6 +9,26 @@
     La descripción de las clases léxicas identificadas se hará de manera informal, en lenguaje natural.
 
     \begin{itemize}
+      \item \textbf{PROG}
+            \par \noindent
+            El programa esta formado por una sección de declaraciones seguida del simbolo \&\&, tras este símbolo aparece
+            la sección de instrucciones.
+      \item \textbf{SDEC}
+            \par \noindent
+            Sección de declaraciones, la conforman una o más declaraciones separadas por ;.
+      \item \textbf{SINS}
+            \par \noindent
+            Sección de instrucciones formada por una o más instrucciones separadas por ;.
+      \item \textbf{DEC}
+            \par \noindent
+            Comienza por una palabra reservada que representa un tipo y la sigue un identificador.
+      \item \textbf{INS}
+            \par \noindent
+            Comienza por un identificador de variable seguido del simbolo =, tras este aparecerá una expresión.
+      \item \textbf{EXP}
+            \par \noindent
+            Una expresión básica consiste en un numero, true o false. También puede entenderse una expresión como 
+            una expresión seguida de un operador aritmético o lógico seguido de otra expresión.
       \item \textbf{NUM}
             \par \noindent
             Empiezan con un signo (+ o -) opcional, a continuación aparecen uno o más dígitos cualesquiera.
@@ -31,16 +51,43 @@
             Palabra reservada que contiene las siguientes letras minúsculas: f, a, l, s, e. En ese orden.
       \item \textbf{PLUS}
             \par \noindent
-            Representa el signo \textbackslash +.
+            Representa ua suma, \textbackslash +.
       \item \textbf{MINUS}
             \par \noindent
-            Representa el signo \textbackslash -.
+            Representa una resta, \textbackslash -.
       \item \textbf{MUL}
             \par \noindent
-            Representa el signo \textbackslash $\ast$.
+            Representa la multiplicación, \textbackslash $\ast$.
       \item \textbf{DIV}
             \par \noindent
-            Representa el signo /.
+            Representa la división, /.
+      \item \textbf{IS}
+            \par \noindent
+            Representación de la asignación, =.
+      \item \textbf{EQ}
+            \par \noindent
+            Representa una comparación, ==.
+      \item \textbf{GT}
+            \par \noindent
+            Representa el mayor que, $>$.
+      \item \textbf{GEQ}
+            \par \noindent
+            Representa el mayor o igual que, $>$=.
+      \item \textbf{LT}
+            \par \noindent
+            Representa el menor que, $<$.
+      \item \textbf{LEQ}
+            \par \noindent
+            Representa el menor o igual que, $<$=.
+      \item \textbf{NEQ}
+            \par \noindent
+            Representa una desigualdad, !=.
+      \item \textbf{POP}
+            \par \noindent
+            Representa un paréntesis de apertura, $($.
+      \item \textbf{PCL}
+            \par \noindent
+            Representa un paréntesis de cierre, $)$.
     \end{itemize}
 
 \section{Especificación formal} %TODO
