@@ -46,7 +46,7 @@
 
     \FloatBarrier
     \bigskip
-    \par \noindent
+    \par
     Una expresión aritmética es...
     \begin{itemize}
       \item ...un \textbf{número entero}.
@@ -54,12 +54,12 @@
       \item...\textbf{(} seguido de una \textbf{expresión} seguido de \textbf{)}.
     \end{itemize}
 
-    \par \noindent
+    \par
     Los operadores son: \textbf{+}, \textbf{-}, \textbf{*} y \textbf{/}.
 
   \section{Método de desarrollo}
     \subsection{Identificación de las clases léxicas}
-      \par \noindent
+      \par
       Normalmente:
       \begin{itemize}
         \item Los \textbf{signos} (puntos, operadores...)  conviene que sean clases \textbf{univaluadas}.
@@ -68,7 +68,7 @@
       \end{itemize}
 
       \newpage
-      \par \noindent
+      \par
       \textbf{Clases léxicas de \cref{egp}.}
       \begin{itemize}
         \item PAP (paréntesis apertura)
@@ -81,7 +81,7 @@
       \end{itemize}
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.}
       \begin{center}
         \begin{minipage}{.2 \textwidth}
@@ -101,7 +101,7 @@
       \end{center}
 
     \subsection{Describir las clases léxicas}
-      \par \noindent
+      \par
       Cada clase léxica es un lenguaje formal de los posibles lexemas.\\
       \textbf{Suposición}: son lenguajes regulares, por tanto:
       \begin{itemize}
@@ -110,21 +110,21 @@
       \end{itemize}
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} NENT
       \begin{itemize}
         \item Descripción informal.
-              \par \noindent
+              \par
               Empieza con un signo (+ o -) opcional.\\
               A continuación aparecen uno o más dígitos.\\
               e.g. +5, +007, 000, -0, -08, -280.
         \item Descripción formal.
-              \par \noindent
+              \par
               (\textbackslash+ $\mid$ \textbackslash -)?[0-9]+
       \end{itemize}
 
       \newpage
-      \par \noindent
+      \par
       \textbf{\large Notación}
       \begin{itemize}
         \item ER sobre el alfabeto $\Sigma$ (e.g. UNICODE, ASCII...).
@@ -152,7 +152,7 @@
                                 \item ...a-b, conjunto de caracteres comprendidos entre a y b.
                               \end{itemize}
                         \item Conjuntos complementados [$^\wedge e_0, ..., e_n$].
-                              \par \noindent
+                              \par
                               e.g. [$^\wedge$0-9, a-z] es el conjunto de caracteres que no son dígitos ni letras minúsculas.
                         \item E+ $\equiv$ EE$\ast$. Aparece una o más veces pero mínimo una.
                         \item E? $\equiv$ (E$\mid\epsilon$). Aparece o no, es opcional.
@@ -162,7 +162,7 @@
       \end{itemize}
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} Identificadores
       \begin{itemize}
       \item Pueden contener letras, dígitos y \_.
@@ -172,12 +172,12 @@
       \hspace{5mm}[a-z, A-Z, \_] [a-z, A-Z, \_, 0-9]$\ast$
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} NENT, como en el ejemplo anterior pero sin $0_s$ a la izquierda.\\
       \hspace{5mm} [\textbackslash+, \textbackslash -]?([1-9] [0-9]$\ast \mid$ 0)
 
       \newpage
-      \par \noindent
+      \par
       Para mayor claridad vamos a utilizar $DR_s$ (definiciones regulares) en lugar de $ER_s$.
       \begin{itemize}
         \item ($\ast$) $\equiv$ clase léxica, marca cual es la definición principal.
@@ -186,14 +186,14 @@
       \end{itemize}
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} Identificadores\\
       \hspace{5mm}($\ast$) IDEN $\equiv$ \underline{Letra} (\underline{Letra} $\mid$ \underline{Dig})$\ast$ \\
       \hspace{10mm} Letra $\equiv$ [a-z, A-Z, \_] \\
       \hspace{10mm} Dig $\equiv$ [0-9]
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} Números enteros\\
       \hspace{5mm}($\ast$) LENT $\equiv$ \underline{Signo}? (0 $\mid$ \underline{DPos} \underline{Dig}$\ast$) \\
       \hspace{10mm} Signo $\equiv$ [\textbackslash+, \textbackslash-] \\
@@ -201,7 +201,7 @@
       \hspace{10mm} Dig   $\equiv$ [0-9]
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} Literales reales
       \begin{itemize}
         \item Empiezan por un entero.
@@ -226,13 +226,13 @@
       \hspace{10mm} Dig   $\equiv$ [0-9]
 
       \newpage
-      \par \noindent
+      \par
       \textbf{\large Ignorables} \\
       \hspace{3mm}$[I]$ SEP $\equiv$ $[$' ', \textbackslash t, \textbackslash n, \textbackslash r, \textbackslash b], posibles separadores. \\
       \hspace{3mm}$[I]$ COM $\equiv$ \# [$^\wedge$ \textbackslash n]$\ast$ \textbackslash n, e.g. \# Esto es un comentario.\textbackslash n
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g}  DR de \cref{egp}\\
       \hspace{5mm}($\ast$) PAP $\equiv$ \textbackslash( \\
       \hspace{5mm}($\ast$) PCIERRE $\equiv$ \textbackslash) \\
@@ -270,12 +270,12 @@
       \end{tikzpicture}
 
     \subsection{Implementación manual}
-      \par \noindent
+      \par
       Se implementa utilizando $AFD_s$ donde las transiciones a estados de error no se dibujan,
       son implicitas.
 
       \bigskip
-      \par \noindent
+      \par
       El AFD no reconoce la entrada completamente sino que utiliza una \textbf{arquitectura pull}, solicita
       los token uno a uno y los va procesando.
 
@@ -299,11 +299,11 @@
       \end{tikzpicture}
 
       \bigskip
-      \par \noindent
+      \par
       Siempre hay que tener una clase léxica que represente el EOF.
 
       \newpage
-      \par \noindent
+      \par
       \textbf{e.g.} AFD de \cref{egp}
 
       \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
@@ -342,12 +342,12 @@
 
       \FloatBarrier
       \hspace{5mm}
-      \par \noindent
+      \par
       \textbf{Inicialización:} Conseguir el primer caracter en sigCar.
 
       \begin{center}
         \begin{minipage}{.35 \textwidth}
-          \par \noindent
+          \par
           \textbf{SigToken}\\
           \hspace*{5mm}Estado $\leftarrow$ EstadoInicial\\
           \hspace*{5mm}lexema $\leftarrow$ ""\\
@@ -361,7 +361,7 @@
         \end{minipage}%
         \begin{minipage}{.65 \textwidth}
           \bigskip
-          \par \noindent
+          \par
           \textbf{case $S_i$}\\
           \hspace*{5mm}\textbf{si} sigCar $\in$  $T_0$\\
           \hspace*{10mm}Estado $\leftarrow$ SigEstado\\
@@ -382,11 +382,11 @@
       \end{center}
 
       \bigskip
-      \par \noindent
+      \par
       Dos variables extra, fila y columna, para poder dar información extra en el mensaje de error.
 
       \newpage
-      \par \noindent
+      \par
       \textbf{Codificación parcial (pseudocódigo)}\\
       \vspace{5mm}
       \hspace{5mm}Estado $\leftarrow$ Inicio\\
@@ -422,7 +422,7 @@
       \hspace{5mm}\}
 
       \newpage
-      \par \noindent
+      \par
       \textbf{e.g.}
       \begin{center}
         \begin{minipage}{.2 \textwidth}
@@ -432,7 +432,7 @@
           x = 27
         \end{minipage}%
         \begin{minipage}{.5 \textwidth}
-          \par \noindent
+          \par
           \textbf{Especificación léxica}\\
           \vspace{2mm}
           \hspace{5mm}...\\
@@ -445,7 +445,7 @@
       \end{center}
 
       \bigskip
-      \par \noindent
+      \par
       En el return que reconoce los id se comprueba si el lexema es una palabra reservada, de serlo se devuelve la palabra reservada en lugar del id.\\
       \vspace{5mm}
       \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
@@ -458,15 +458,15 @@
       \end{tikzpicture}
 
       \bigskip
-      \par \noindent
+      \par
       Hay un ejemplo de codificación en el campus, tiene una errata en el diagrama de transiciones.
 
     \subsection{Implementación mediante herramientas}
-      \par \noindent
+      \par
       La herramienta que vamos a utilizar es \textbf{JLex}, hay un ejemplo en el CV.
 
       \bigskip
-      \par \noindent
+      \par
       Formato de JLex:
       \FloatBarrier
       \vspace{3mm}
@@ -477,14 +477,14 @@
       \end{tikzpicture}
 
       \bigskip
-      \par \noindent
+      \par
       Para que una DR pueda referirse a otras tienen que haberse definido antes, lo que en las $DR_s$ subrayamos tiene que ir entre \{\}, hacen sustituciones literales (no ponen paréntesis).
 
       \bigskip
-      \par \noindent
+      \par
       Las palabras reservadas se ponen sin mas, el orden de reconocimiento equivale al de aparición en el fichero, en la parte de los return.
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{Compilar:} java -cp jlex.jar JLex.Main input($DR_s$)
 \end{document}

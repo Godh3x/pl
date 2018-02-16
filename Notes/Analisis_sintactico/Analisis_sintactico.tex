@@ -38,7 +38,7 @@
   \end{tikzpicture}
 
   \bigskip
-  \par \noindent
+  \par
   Hipótesis: Las cadenas de clases léxicas generadas por el analizador léxico forman un lenguaje incontextual.
 
   \section{Recordatorio}
@@ -52,7 +52,7 @@
       \end{itemize}
 
       \bigskip
-      \par \noindent
+      \par
       Sea G $\equiv$ (N,T,P,S) $\rightarrow$ G denota un lenguaje L(G)
       \begin{itemize}
         \item Relación de derivación $\Rightarrow_G$ (0 $\Rightarrow$ si G se sobreentiende) $\Rightarrow$ $\subseteq$ (NUT)$\ast$ x (NUT)$\ast$\\
@@ -60,11 +60,11 @@
         \item Se considera $\Rightarrow_\ast$ aplicar cero o más veces $\Rightarrow$.
       \end{itemize}
 
-      \par \noindent
+      \par
       L(G) = \{w $\in$ T$\ast$ $\mid$ S $\Rightarrow_\ast$ w\}
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} Número binario\\
       \hspace{5mm}N = \{N,B\}\\
       \hspace{5mm}T = \{0,1\}\\
@@ -82,7 +82,7 @@
       \end{itemize}
 
       \bigskip
-      \par \noindent
+      \par
       La derivación se denomina \textit{mas a la izquierda} si siempre se reescribe el no terminal que está mas a la izquierda, equivalente para \textit{mas a la derecha}.\\
       \vspace{3mm}
       \hspace{5mm}\textbf{Derivación}\\
@@ -95,11 +95,11 @@
       \hspace{10mm}{\color{red}N} $\Rightarrow$ N{\color{red}B} $\Rightarrow$ {\color{red}N}0 $\Rightarrow$ N{\color{red}B}0 $\Rightarrow$ {\color{red}N}10 $\Rightarrow$ {\color{red}B}10 $\Rightarrow$ 010
 
     \subsection{Árbol de análisis sintáctico}
-      \par \noindent
+      \par
       La idea es obtener una representación única para cada sentencia.
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{Árboles}
       \begin{itemize}
         \item La raíz está etiquetada con el símbolo inicial.
@@ -116,7 +116,7 @@
           -- node[left]{w $\in L(G) \Leftrightarrow$} cycle;
       \end{tikzpicture}
 
-      \par \noindent
+      \par
       \textbf{e.g.}\\
       \begin{center}
         \begin{minipage}{.2\textwidth}
@@ -156,11 +156,11 @@
 
   \section{Especificación sintáctica}
     \subsection{Determinar las clases sintácticas}
-      \par \noindent
+      \par
       ¿Cómo? A partir de la especificación informal.
 
       \bigskip
-      \par \noindent
+      \par
       De arriba a abajo:
       \begin{itemize}
         \item Identificar las clases complejas.
@@ -168,11 +168,11 @@
       \end{itemize}
 
       \bigskip
-      \par \noindent
+      \par
       Descomposición $\rightarrow$ Las clases resultantes deben estar al mismo nivel, el más alto posible.
 
       \bigskip
-      \par \noindent
+      \par
       \textbf{e.g.} L que describe libros
       \begin{center}
         \begin{minipage}{.4 \textwidth}
