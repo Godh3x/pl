@@ -1,7 +1,7 @@
 \providecommand{\main}{..}
 \documentclass[\main/Apuntes_PL.tex]{subfiles}
 
-  % !TEX root = ../Apuntes_PL.tex
+% !TEX root = ../Apuntes_PL.tex
 
 \begin{document}
   \begin{tikzpicture}
@@ -105,8 +105,8 @@
       Cada clase léxica es un lenguaje formal de los posibles lexemas.\\
       \textbf{Suposición}: son lenguajes regulares, por tanto:
       \begin{itemize}
-      \item Se pueden describir mediante $ER_s$ (expresiones regulares).
-      \item Se pueden reconocer utilizando $AFD_s$ (autómatas finitos deterministas).
+        \item Se pueden describir mediante $ER_s$ (expresiones regulares).
+        \item Se pueden reconocer utilizando $AFD_s$ (autómatas finitos deterministas).
       \end{itemize}
 
       \bigskip
@@ -114,13 +114,13 @@
       \textbf{e.g.} NENT
       \begin{itemize}
         \item Descripción informal.
-              \par
-              Empieza con un signo (+ o -) opcional.\\
-              A continuación aparecen uno o más dígitos.\\
-              e.g. +5, +007, 000, -0, -08, -280.
+          \par
+          Empieza con un signo (+ o -) opcional.\\
+          A continuación aparecen uno o más dígitos.\\
+          e.g. +5, +007, 000, -0, -08, -280.
         \item Descripción formal.
-              \par
-              (\textbackslash+ $\mid$ \textbackslash -)?[0-9]+
+          \par
+          (\textbackslash+ $\mid$ \textbackslash -)?[0-9]+
       \end{itemize}
 
       \newpage
@@ -131,11 +131,11 @@
               \begin{itemize}
                 \item Una "letra" de $\Sigma$, e.g. a. Denota \{a\}
                 \item Si $E_0$ y $E_1$ son $ER_s$, también lo son:
-                      \begin{itemize}
-                        \item $(E_0 \mid E_1)$. Denota la unión, $L(E_0) \cup L(E_1).$
-                        \item $(E_0 \bullet E_1)$. Denota la concatenación, $ \{W_0 W_1 \mid W_0 \in  L(E_0), W_1 \in L(E_1)\}$.
-                        \item $(E_0 \ast)$. Denota \{$\epsilon, W_0, W_0 W_1, W_0 W_1 W_2 ...\mid W_0, W_1, W_2, ... \in L(E_0)\}$.
-                      \end{itemize}
+                  \begin{itemize}
+                    \item $(E_0 \mid E_1)$. Denota la unión, $L(E_0) \cup L(E_1).$
+                    \item $(E_0 \bullet E_1)$. Denota la concatenación, $ \{W_0 W_1 \mid W_0 \in  L(E_0), W_1 \in L(E_1)\}$.
+                    \item $(E_0 \ast)$. Denota \{$\epsilon, W_0, W_0 W_1, W_0 W_1 W_2 ...\mid W_0, W_1, W_2, ... \in L(E_0)\}$.
+                  \end{itemize}
                 \item $\epsilon$ denota el lenguaje formado por la cadena vacía.
               \end{itemize}
         \item Convenios.
@@ -145,19 +145,19 @@
                 \item $\bullet$ se puede omitir.
                 \item Los ( ) se usan para cambiar prioridades.
                 \item Conjuntos de caracteres, e.g. [0-9,a] es el conjunto formado por los dígitos y la a.
+                  \begin{itemize}
+                    \item $[e_0, ..., e_n]$ donde $e_i$ puede ser...
                       \begin{itemize}
-                        \item $[e_0, ..., e_n]$ donde $e_i$ puede ser...
-                              \begin{itemize}
-                                \item ...una letra.
-                                \item ...a-b, conjunto de caracteres comprendidos entre a y b.
-                              \end{itemize}
-                        \item Conjuntos complementados [$^\wedge e_0, ..., e_n$].
-                              \par
-                              e.g. [$^\wedge$0-9, a-z] es el conjunto de caracteres que no son dígitos ni letras minúsculas.
-                        \item E+ $\equiv$ EE$\ast$. Aparece una o más veces pero mínimo una.
-                        \item E? $\equiv$ (E$\mid\epsilon$). Aparece o no, es opcional.
-                        \item \textbackslash. La forma de escape.
+                        \item ...una letra.
+                        \item ...a-b, conjunto de caracteres comprendidos entre a y b.
                       \end{itemize}
+                    \item Conjuntos complementados [$^\wedge e_0, ..., e_n$].
+                        \par
+                        e.g. [$^\wedge$0-9, a-z] es el conjunto de caracteres que no son dígitos ni letras minúsculas.
+                    \item E+ $\equiv$ EE$\ast$. Aparece una o más veces pero mínimo una.
+                    \item E? $\equiv$ (E$\mid\epsilon$). Aparece o no, es opcional.
+                    \item \textbackslash. La forma de escape.
+                  \end{itemize}
               \end{itemize}
       \end{itemize}
 
@@ -206,11 +206,11 @@
       \begin{itemize}
         \item Empiezan por un entero.
         \item Continúan por...
-              \begin{itemize}
-                \item ...una parte decimal.
-                \item ...una parte exponencial.
-                \item ...una parte decimal seguida de una exponencial.
-              \end{itemize}
+          \begin{itemize}
+            \item ...una parte decimal.
+            \item ...una parte exponencial.
+            \item ...una parte decimal seguida de una exponencial.
+          \end{itemize}
         \item Parte decimal. '.' seguido de una secuencia de uno o más dígitos, sin ceros superfluos a la derecha.
         \item Parte exponencial. E o e seguida de un entero.
       \end{itemize}
