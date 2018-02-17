@@ -4,7 +4,7 @@
 % !TEX root = ../MemoriaPL.tex
 
 \begin{document}
-  \section{Clases léxicas}
+  \section{Clases léxicas} \label{lexicon}
     \par
     La descripción de las clases léxicas identificadas se hará de manera informal, en lenguaje natural.
 
@@ -29,7 +29,7 @@
         \par
         Una expresión básica consiste en un numero, true o false. También puede entenderse una expresión como
         una expresión seguida de un operador aritmético o lógico seguido de otra expresión.
-      \item \textbf{NUM}
+      \item \textbf{LREAL}
         \par
         Empiezan con un signo (+ o -) opcional, a continuación aparecen uno o más dígitos cualesquiera.
         Seguida de esta parte puede aparecer una decimal que consta de un punto seguido de uno o más dígitos cualesquiera.
@@ -99,8 +99,82 @@
         Representa un paréntesis de cierre, $)$.
     \end{itemize}
 
-  \section{Especificación formal} %TODO
+  \section{Especificación formal}
+    \par
+    Vamos a utilizar $DR_s$ para dar una descrición formal del lenguaje que conforman las clases léxicas del \cref{lexicon}.
 
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) PROG $\equiv$ \underline{SDEC} \&\& \underline{SINS} \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) SDEC $\equiv$ (\underline{DEC};)$\ast$ \underline{DEC} \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) SINS $\equiv$ (\underline{INS};)$\ast$ \underline{INS} \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) DEC $\equiv$ (\underline{NUM} $\mid$ \underline{BOOL}) \underline{ID} \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) INS $\equiv$ \underline{ID} \underline{IS} \underline{EXP} \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) EXP $\equiv$ \underline{LREAL} $\mid$ \underline{TRUE} $\mid$ \underline{FALSE} $\mid$ (\underline{EXP} \underline{OP} \underline{EXP}) \\
+    \vspace{2mm}
+    \hspace{10mm} OP $\equiv$ \underline{OPLOG} $\mid$ \underline{OPARIT} $\mid$ \underline{OPREL} \\
+    \vspace{2mm}
+    \hspace{10mm} OPLOG $\equiv$ \underline{AND} $\mid$ \underline{OR} $\mid$ \underline{NOT} \\
+    \vspace{2mm}
+    \hspace{10mm} OPARIT $\equiv$ \underline{PLUS} $\mid$ \underline{MINUS} $\mid$ \underline{MUL} $\mid$ \underline{DIV} \\
+    \vspace{2mm}
+    \hspace{10mm} OPREL $\equiv$ \underline{EQ}$\mid$ \underline{GT} $\mid$ \underline{GEQ} $\mid$ \underline{LT} $\mid$ \underline{LEQ} $\mid$ \underline{NEQ} \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) LREAL $\equiv$ \underline{LENT} \underline{PDEC}? \underline{PEXP}? \\
+      \hspace{10mm} PDEC $\equiv$ \textbackslash. \underline{Dig}$\ast$ \underline{Dig} \\
+      \hspace{10mm} PEXP $\equiv$ (E $\mid$ e) \underline{LENT} \\
+      \vspace{2mm}
+      \hspace{10mm} LENT $\equiv$ \underline{Signo}? \underline{Dig}$\ast$ \underline{Dig} \\
+      \hspace{10mm} Signo $\equiv$ [\textbackslash+, \textbackslash-] \\
+      \hspace{10mm} Dig   $\equiv$ [0-9] \\
+      \vspace{2mm}
+    \hspace{5mm}($\ast$) ID $\equiv$ \underline{Letra} (\underline{Letra} $\mid$ \underline{Dig} $\mid$ \_)$\ast$ \\
+      \hspace{10mm} Letra $\equiv$ [a-z, A-Z] \\
+      \hspace{10mm} Dig $\equiv$ [0-9] \\
+    \vspace{2mm}
+      \hspace{5mm}($\ast$) BOOL $\equiv$ b o o l \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) NUM $\equiv$ n u m \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) TRUE $\equiv$ t r u e \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) FALSE $\equiv$ f a l s e \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) PLUS $\equiv$ \textbackslash + \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) MINUS $\equiv$ \textbackslash - \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) MUL $\equiv$ \textbackslash $\ast$ \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) DIV $\equiv$ / \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) IS $\equiv$ = \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) EQ $\equiv$ == \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) GT $\equiv$ $>$ \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) GEQ $\equiv$ $>$= \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) LT $\equiv$ $<$ \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) LEQ $\equiv$ $<$= \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) NEQ $\equiv$ != \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) AND $\equiv$ a n d \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) OR $\equiv$ o r \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) NOT $\equiv$ n o t \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) POP $\equiv$ \textbackslash $($ \\
+    \vspace{2mm}
+    \hspace{5mm}($\ast$) PCL $\equiv$ \textbackslash $)$
 
   \section{Diagrama de transiciones} %TODO
 
