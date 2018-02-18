@@ -170,6 +170,7 @@
     \node[state, accepting] (q_21) [below=2.5of q_16] {\scriptsize R\_GEQ};
     \node[state, accepting] (q_22) [below=2.5of q_18] {\scriptsize R\_LEQ};
     \node[state, accepting] (q_23) [below=2.5of q_19] {\scriptsize R\_NEQ};
+    \node[state, accepting] (q_24) [below=5of dummy] {\scriptsize R\_EOF};
 
     \draw[<-] (q_0) -- node[fill=white, right] {start} ++(1cm,0cm);
     \path[->]
@@ -187,7 +188,8 @@
                 edge  node [fill=white, anchor=center, pos=0.5] {$>$} (q_16)
                 edge  node [fill=white, anchor=center, pos=0.5] {$<$} (q_18)
                 edge  node [fill=white, anchor=center, pos=0.5] {!} (q_19)
-                (q_1) edge              node[fill=white, anchor=center, pos=0.5]     {\textbackslash .} (q_4)
+                edge node [fill=white, anchor=center, pos=0.5, very near end] {EOF} (q_24)
+          (q_1) edge              node[fill=white, anchor=center, pos=0.5]     {\textbackslash .} (q_4)
                 edge [loop above] node [left, near start] {Dig} (q_1)
           (q_2) edge              node [fill=white, anchor=center, pos=0.5]            {Dig} (q_1)
           (q_3) edge              node [fill=white, anchor=center, pos=0.5]            {Dig} (q_1)
@@ -205,64 +207,4 @@
           (q_18) edge node [fill=white, anchor=center, pos=0.5] {=} (q_22)
           (q_19) edge node [fill=white, anchor=center, pos=0.5] {=} (q_23);
   \end{tikzpicture}
-
-  \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]2.5
-    \node[state]            (q_0)                {Init};
-    \node[state, accepting] (q_1) [above=2.2of q_0]  {\scriptsize R\_LINT};
-    \node[state, accepting] (q_2) [left=3of q_1] {\scriptsize R\_PLUS};
-    \node[state, accepting] (q_3) [right=3of q_1] {\scriptsize R\_MINUS};
-    \node[state] (q_4) [above=of q_3] {\scriptsize R\_DOT};
-    \node[state, accepting] (q_5) [above=of q_2] {\scriptsize R\_LDEC};
-    \node[state] (q_6) [above=of q_4] {\scriptsize R\_EXP};
-    \node[state] (q_7) [left=3of q_6] {\scriptsize R\_SIGN};
-    \node[state, accepting] (q_8) [above=of q_5] {\scriptsize R\_LEXP};
-    \node[state] (q_9) [right=3of q_0] {\scriptsize R\_\&};
-    \node[state, accepting] (q_10) [right=2.5of q_9] {\scriptsize R\_SPROG};
-    \node[state, accepting] (q_11) [below=of q_10] {\scriptsize R\_ID};
-    \node[state, accepting] (q_12) [left=6of q_0] {\scriptsize R\_POP};
-    \node[state, accepting] (q_13) [below=of q_12] {\scriptsize R\_PCL};
-    \node[state, accepting] (q_14) [below right=of q_13] {\scriptsize R\_MUL};
-    \node[state, accepting] (q_15) [right=9.3of q_14] {\scriptsize R\_DIV};
-    \node[] (dummy) [below=4of q_0] {};
-    \node[state, accepting] (q_16) [left=.9of dummy] {\scriptsize R\_GT};
-    \node[state, accepting] (q_17) [left=of q_16] {\scriptsize R\_IS};
-    \node[state, accepting] (q_18) [right=.9of dummy] {\scriptsize R\_LT};
-    \node[state] (q_19) [right=of q_18] {\scriptsize R\_NOT};
-    \node[state, accepting] (q_20) [below=of dummy] {\scriptsize R\_EQ};
-
-    \draw[<-] (q_0) -- node[fill=white, right] {start} ++(1cm,0cm);
-    \path[->]
-          (q_0) edge [loop left] node {$[$' ',\textbackslash t,\textbackslash n,\textbackslash r,\textbackslash b]} (q_0)
-                edge              node [fill=white, anchor=center, pos=0.5]          {Dig} (q_1)
-                edge              node [fill=white, anchor=center, pos=0.5]     {+} (q_2)
-                edge              node [fill=white, anchor=center, pos=0.5]           {-} (q_3)
-                edge [bend left]        node [fill=white, anchor=center, pos=0.5]           {\&} (q_9)
-                edge [bend left=5] node [fill=white, anchor=center, pos=0.5] {Letter} (q_11)
-                edge [bend right=25] node [fill=white, anchor=center, pos=0.5] {\textbackslash$($} (q_12)
-                edge node [fill=white, anchor=center, pos=0.5] {\textbackslash$)$} (q_13)
-                edge [bend left = 5] node [fill=white, anchor=center, pos=0.5] {\textbackslash$\ast$} (q_14)
-                edge [bend right = 5] node [fill=white, anchor=center, pos=0.5] {/} (q_15)
-                edge  node [fill=white, anchor=center, pos=0.5] {=} (q_16)
-                edge  node [fill=white, anchor=center, pos=0.5] {$>$} (q_17)
-                edge  node [fill=white, anchor=center, pos=0.5] {$<$} (q_18)
-                edge  node [fill=white, anchor=center, pos=0.5] {!} (q_19)
-                (q_1) edge              node[fill=white, anchor=center, pos=0.5]     {\textbackslash .} (q_4)
-                edge [loop above] node [left, near start] {Dig} (q_1)
-          (q_2) edge              node [fill=white, anchor=center, pos=0.5]            {Dig} (q_1)
-          (q_3) edge              node [fill=white, anchor=center, pos=0.5]            {Dig} (q_1)
-          (q_4) edge node [fill=white, anchor=center, pos=0.5] {Dig} (q_5)
-          (q_5) edge [loop left] node [below, near start] {Dig} (q_5)
-                edge [bend right=10] node [fill=white, anchor=center, pos=0.5] {e $\mid$ E} (q_6)
-          (q_6) edge  node [fill=white, anchor=center, pos=0.5] {\scriptsize $[$\textbackslash+, \textbackslash -$]$} (q_7)
-                edge [bend right] node [fill=white, anchor=center, pos=0.5] {Dig} (q_8)
-          (q_7) edge  node [fill=white, anchor=center, pos=0.5] {Dig} (q_8)
-          (q_8) edge [loop left] node [below, near start] {Dig} (q_8)
-          (q_9) edge  node [fill=white, anchor=center, pos=0.5] {\&} (q_10)
-          (q_11) edge [loop right] node {Letter $\mid$ Dig $\mid$ \_} (q_11)
-          (q_16) edge node [fill=white, anchor=center, pos=0.5] {=} (q_20)
-          (q_17) edge node [fill=white, anchor=center, pos=0.5] {=} (q_20)
-          (q_18) edge node [fill=white, anchor=center, pos=0.5] {=} (q_20)
-          (q_19) edge node [fill=white, anchor=center, pos=0.5] {=} (q_20);
-  \end{tikzpicture}
-
 \end{document}
