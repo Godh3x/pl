@@ -26,7 +26,7 @@ public class MultiLexicalItem extends LexicalItem {
 
   @Override
   public String getLexeme() {
-    return this.lexema;
+    return this.lexeme;
   }
 
   @Override
