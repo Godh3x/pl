@@ -1,4 +1,4 @@
-package alex;
+package lexer_jlex;
 
 %%
 %line
@@ -13,7 +13,7 @@ package alex;
     return yytext();
   }
 
-  public int getFila() {
+  public int getRow() {
     return yyline+1;
   }
 %}
@@ -26,29 +26,40 @@ package alex;
   itemfact = new LexicalItemFactory(this);
 %init}
 
-letra  = ([A-Z]|[a-z])
-digitoPositivo = [1-9]
-digito = ({digitoPositivo}|0)
-parteEntera = {digitoPositivo}{digito}*
-parteDecimal = {digito}* {digitoPositivo}
-separador = [ \t\r\b\n]
-comentario = #[^\n]* 
-evalua = evalua
-donde = donde
-identificador = {letra}({letra}|{digito})*
-numeroEntero = [\+,\-]?{parteEntera}
-numeroReal = [\+,\-]?{parteEntera}\.{parteDecimal}
-operadorSuma = \+
-operadorResta = \-
-operadorMultiplicacion = \*
-operadorDivision = /
-parentesisApertura = \(
-parentesisCierre = \)
-igual = \=
-coma  = \,
+SPROG = \& \&
+Dig = [0-9]
+Sign = [\+, \-]
+LENT = {Sign}? {Dig}* {Dig}
+PDEC = \. {Dig}* {Dig}
+PEXP = (E|e) {LENT}
+LREAL = {LENT} {PDEC}? {PEXP}?
+Letter = ([a-z] | [A-Z])
+ID = {Letter} ({Letter} | {Dig} | \_)*
+BOOL = bool
+NUM = num
+TRUE = true
+FALSE = false
+PLUS = \+
+MINUS = \-
+MUL = \*
+DIV = /
+IS = \=
+EQ = {IS} \=
+GT = \>
+GEQ = {GT} \=
+LT = \<
+LEQ = {LT} \=
+NEQ = \! \=
+AND = and
+OR = or
+NOT = not
+POP = \(
+PCL = \)
+SEP = [ \t\r\b\n]
+
 %%
-{separador}               {}
-{comentario}              {}
+{SEP}               {}
+//TODO
 {evalua}                  {return ops.unidadEvalua();}
 {donde}                   {return ops.unidadDonde();}
 {identificador}           {return ops.unidadId();}
