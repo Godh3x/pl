@@ -84,7 +84,7 @@ public class TinyLexer {
             } else if (this.isPOp()) {
               this.transit(this.State.R_POP);
             } else if (this.isPCl()) {
-              this.transit(this.State.R_PCl);
+              this.transit(this.State.R_PCL);
             } else if (this.isEOF()) {
               this.transit(this.State.R_EOF);
             } else {
