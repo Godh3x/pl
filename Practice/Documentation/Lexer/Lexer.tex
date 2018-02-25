@@ -141,7 +141,7 @@
     \vspace{2mm}
     \hspace{5mm}($\ast$) PCL $\equiv$ \textbackslash $)$ \\
     \vspace{2mm}
-    \hspace{5mm}$[I]$ SEP $\equiv$ $[$' ', \textbackslash t, \textbackslash n, \textbackslash r, \textbackslash b] \\
+    \hspace{5mm}$[I]$ SEP $\equiv$ $[$' ', \textbackslash t, \textbackslash n, \textbackslash r, \textbackslash b, ;] \\
 
   \section{Diagrama de transiciones} %TODO
   \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
@@ -174,7 +174,7 @@
 
     \draw[<-] (q_0) -- node[fill=white, right] {start} ++(1cm,0cm);
     \path[->]
-          (q_0) edge [loop left] node {$[$' ',\textbackslash t,\textbackslash n,\textbackslash r,\textbackslash b]} (q_0)
+          (q_0) edge [loop left] node {$[$' ',\textbackslash t,\textbackslash n,\textbackslash r,\textbackslash b,;]} (q_0)
                 edge              node [fill=white, anchor=center, pos=0.5]          {Dig} (q_1)
                 edge              node [fill=white, anchor=center, pos=0.5]     {+} (q_2)
                 edge              node [fill=white, anchor=center, pos=0.5]           {-} (q_3)
@@ -190,6 +190,7 @@
                 edge  node [fill=white, anchor=center, pos=0.5] {!} (q_19)
                 edge node [fill=white, anchor=center, pos=0.5, very near end] {EOF} (q_24)
           (q_1) edge              node[fill=white, anchor=center, pos=0.5]     {\textbackslash .} (q_4)
+                edge [bend left=5] node[fill=white, anchor=center, pos=0.5, near end]     {e $\mid$ E} (q_6)
                 edge [loop above] node [left, near start] {Dig} (q_1)
           (q_2) edge              node [fill=white, anchor=center, pos=0.5]            {Dig} (q_1)
           (q_3) edge              node [fill=white, anchor=center, pos=0.5]            {Dig} (q_1)

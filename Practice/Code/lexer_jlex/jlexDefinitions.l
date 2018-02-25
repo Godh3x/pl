@@ -70,7 +70,7 @@ SEP = [ \t\r\b\n]
 {operadorMultiplicacion}  {return ops.unidadMul();}
 {operadorDivision}        {return ops.unidadDiv();}
 {parentesisApertura}      {return ops.unidadPAp();}
-{parentesisCierre}        {return ops.unidadPCierre();} 
-{igual}                   {return ops.unidadIgual();} 
+{parentesisCierre}        {return ops.unidadPCierre();}
+{igual}                   {return ops.unidadIgual();}
 {coma}                    {return ops.unidadComa();}
-[^]                       {ops.error();}  
+[^]                       {ops.error();}

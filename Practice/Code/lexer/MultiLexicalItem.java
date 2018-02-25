@@ -19,8 +19,8 @@ public class MultiLexicalItem extends LexicalItem {
    * @param class Class the item represents
    * @param lexeme Actual item value
    */
-  public UnidadLexicaMultivaluada(int row, int col, Lexicon class, String lexeme) {
-    super(row, col, class);
+  public MultiLexicalItem(int row, int col, Lexicon type, String lexeme) {
+    super(row, col, type);
     this.lexeme = lexeme;
   }
 
@@ -31,7 +31,7 @@ public class MultiLexicalItem extends LexicalItem {
 
   @Override
   public String toString() {
-    return "[class: " + this.getClass() + ", row: " + this.getRow() + ", col: " + this.getCol() +
+    return "[class: " + this.getType() + ", row: " + this.getRow() + ", col: " + this.getCol() +
         ", lexeme: " + this.getLexeme() + "]";
   }
 }

@@ -8,7 +8,7 @@ package lexer;
  * @author Javier Carrión García
  */
 public abstract class LexicalItem {
-  private Lexicon class; // Actual class of the lexical item
+  private Lexicon type; // Actual class of the lexical item
   private int row; // Row the item appears in
   private int col; // Column the item appears in
 
@@ -18,21 +18,21 @@ public abstract class LexicalItem {
    *
    * @param row Row the item appears in
    * @param col Column the item appears in
-   * @param class Class the item represents
+   * @param type Class the item represents
    */
-  public UnidadLexica(int row, int col, Lexicon class) {
+  public LexicalItem(int row, int col, Lexicon type) {
     this.row = row;
     this.col = col;
-    this.class = class;
+    this.type = type;
   }
 
   /**
-   * Returns the actual lexicon class of the invoking item.
+   * Returns the actual lexicon type of the invoking item.
    *
    * @return
    */
-  public Lexicon getClass() {
-    return this.class;
+  public Lexicon getType() {
+    return this.type;
   }
 
   /**

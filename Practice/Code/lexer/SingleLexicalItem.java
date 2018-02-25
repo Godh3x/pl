@@ -8,8 +8,8 @@ package lexer;
  * @author Javier Carrión García
  */
 public class SingleLexicalItem extends LexicalItem {
-  public UnidadLexicaUnivaluada(int row, int col, ClaseLexica class) {
-    super(row,col,class);
+  public SingleLexicalItem(int row, int col, Lexicon type) {
+    super(row,col,type);
   }
 
   /**
@@ -24,7 +24,7 @@ public class SingleLexicalItem extends LexicalItem {
 
   @Override
   public String toString() {
-    return "[class: " + this.getClass() + ", row: " + this.getRow() + ", col: " +
+    return "[class: " + this.getType() + ", row: " + this.getRow() + ", col: " +
         this.getCol() + "]";
   }
 }
