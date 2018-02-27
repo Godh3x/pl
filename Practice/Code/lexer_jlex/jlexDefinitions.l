@@ -9,7 +9,7 @@ package lexer_jlex;
 %{
   private LexicalItemFactory itemfact;
 
-  public String getLexema() {
+  public String getLexeme() {
     return yytext();
   }
 
@@ -19,7 +19,7 @@ package lexer_jlex;
 %}
 
 %eofval{
-  return itemfact.getItem('EOF');
+  return itemfact.getItem("EOF");
 %eofval}
 
 %init{
@@ -33,8 +33,8 @@ LENT = {Sign}? {Dig}* {Dig}
 PDEC = \. {Dig}* {Dig}
 PEXP = (E|e) {LENT}
 LREAL = {LENT} {PDEC}? {PEXP}?
-Letter = ([a-z] | [A-Z])
-ID = {Letter} ({Letter} | {Dig} | \_)*
+Letter = ([A-Z]|[a-z])
+ID = {Letter}({Letter}|{Dig}|\_)*
 BOOL = bool
 NUM = num
 TRUE = true
@@ -56,21 +56,29 @@ NOT = not
 POP = \(
 PCL = \)
 SEP = [ \t\r\b\n]
-
 %%
-{SEP}               {}
-//TODO
-{evalua}                  {return ops.unidadEvalua();}
-{donde}                   {return ops.unidadDonde();}
-{identificador}           {return ops.unidadId();}
-{numeroEntero}            {return ops.unidadEnt();}
-{numeroReal}              {return ops.unidadReal();}
-{operadorSuma}            {return ops.unidadSuma();}
-{operadorResta}           {return ops.unidadResta();}
-{operadorMultiplicacion}  {return ops.unidadMul();}
-{operadorDivision}        {return ops.unidadDiv();}
-{parentesisApertura}      {return ops.unidadPAp();}
-{parentesisCierre}        {return ops.unidadPCierre();}
-{igual}                   {return ops.unidadIgual();}
-{coma}                    {return ops.unidadComa();}
-[^]                       {ops.error();}
+{SEP}   {}
+{SPROG} {return itemfact.getItem("SPROG");}
+{LREAL} {return itemfact.getItem("LREAL");}
+{BOOL}  {return itemfact.getItem("BOOL");}
+{NUM}   {return itemfact.getItem("NUM");}
+{TRUE}  {return itemfact.getItem("TRUE");}
+{FALSE} {return itemfact.getItem("FALSE");}
+{AND}   {return itemfact.getItem("AND");}
+{OR}    {return itemfact.getItem("OR");}
+{NOT}   {return itemfact.getItem("NOT");}
+{ID}   {return itemfact.getItem("ID");}
+{PLUS}  {return itemfact.getItem("PLUS");}
+{MINUS} {return itemfact.getItem("MINUS");}
+{MUL}   {return itemfact.getItem("MUL");}
+{DIV}   {return itemfact.getItem("DIV");}
+{IS}    {return itemfact.getItem("IS");}
+{EQ}    {return itemfact.getItem("EQ");}
+{GT}    {return itemfact.getItem("GT");}
+{GEQ}   {return itemfact.getItem("GEQ");}
+{LT}    {return itemfact.getItem("LT");}
+{LEQ}   {return itemfact.getItem("LEQ");}
+{NEQ}   {return itemfact.getItem("NEQ");}
+{PCL}   {return itemfact.getItem("PCL");}
+{POP}   {return itemfact.getItem("POP");}
+[^]     {itemfact.error();}

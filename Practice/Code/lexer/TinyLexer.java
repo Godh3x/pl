@@ -639,15 +639,14 @@ public class TinyLexer {
   }
 
   private void error() {
-    System.err.println("("+this.currentRow+','+this.currentCol+"):Unexpected character");
-    System.err.println(this.lexeme);
+    System.err.println("***("+this.currentRow+','+this.currentCol+") Unexpected character: " + this.lexeme);
     System.exit(1);
   }
 
   /**
    * Instantiates the input to read from some file, creates the lexer and loops until EOF token.
    */
-  public static void main(String arg[]) throws IOException {
+  public static void main(String[] arg) throws IOException {
     Reader input = new InputStreamReader(new FileInputStream("input.txt"));
     TinyLexer lexer = new TinyLexer(input);
     LexicalItem token;
