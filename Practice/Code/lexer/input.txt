@@ -1,0 +1,7 @@
+bool pesado;
+num x
+&&
+x = 5e5;
+pesado = (x == 5);
+*;
+/

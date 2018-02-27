@@ -1,7 +1,7 @@
 \providecommand{\main}{..}
-\documentclass[\main/Apuntes_PL.tex]{subfiles}
+\documentclass[\main/ApuntesPL.tex]{subfiles}
 
-  % !TEX root = ../Apuntes_PL.tex
+% !TEX root = ../ApuntesPL.tex
 
 \begin{document}
   \begin{tikzpicture}
@@ -185,8 +185,8 @@
         \begin{minipage}{.5 \textwidth}
           \begin{tikzpicture}
             \node[rectangle] (lib) {Libro};
-            \node[rectangle, below left =.5 of lib] (cab) {Cabecera};
-            \node[rectangle, below right =.5 of lib] (cuer) {Cuerpo};
+            \node[rectangle, below left =.8 of lib] (cab) {Cabecera};
+            \node[rectangle, below right =.8 of lib] (cuer) {Cuerpo};
             \node[rectangle, below left =.5 of cab] (tit) {Titulo};
             \node[rectangle, below right =.5 of cab] (auts) {Autores};
             \node[rectangle, below =.5 of cuer] (cap) {Capitulo};
@@ -203,6 +203,544 @@
               (auts.south) edge (aut)
               (cap.south) edge (tcap)
                           edge (ccap);
+          \end{tikzpicture}
+          \captionof{figure}{Árbol informal.}
+        \end{minipage}
+        \begin{minipage}{.4 \textwidth}
+          \hspace*{5mm}Clases léxicas\\
+          \hspace*{10mm}Autores\\
+          \hspace*{10mm}Capitulo\\
+          \hspace*{10mm}CAP\\
+          \hspace*{10mm}CCIE\\
+          \hspace*{10mm}Texto
+        \end{minipage}%
+        \begin{minipage}{.5 \textwidth}
+          \vspace{10mm}
+          \begin{tikzpicture}
+            \node[rectangle, draw=black] (lib) {Libro};
+            \node[rectangle, draw=black, below left =.8 of lib] (cab) {Cabecera};
+            \node[rectangle, draw=black, below right =.8 of lib] (cuer) {Cuerpo};
+            \node[rectangle, draw=black, below left =.6 and .5 of cab] (tit) {Title};
+            \node[rectangle, draw=black, below right =.6 and .5 of cab] (auts) {Authors};
+            \node[rectangle, draw=black, below =.5 of cuer] (cap) {Chapter};
+            \node[rectangle, draw=black, below=.5 of cap] (tcap) {CTitle};
+            \node[rectangle, draw=black, right=.5 of tcap] (ccap) {CContent};
+            \node[rectangle, draw=black, below left=1.2 and 0 of tcap] (blo) {Bloque};
+            \node[rectangle, draw=black, below =.5of blo] (tex) {Texto};
+
+            \path[thick, ->]
+              (lib.south) edge (cab)
+                          edge (cuer)
+              (cab.south) edge (tit)
+                          edge (auts)
+              (cuer.south) edge (cap)
+              (tit.south) edge (blo)
+              (auts.south) edge node[right, very near start] {+} (blo)
+              (cap.south) edge (tcap)
+                          edge (ccap)
+              (tcap.south) edge (blo)
+              (ccap.south) edge (blo)
+              (blo.south) edge node[right] {$\ast$} (tex);
+          \end{tikzpicture}
+          \captionof{figure}{Árbol formal.}
+        \end{minipage}
+      \end{center}
+
+    \subsection{Patrones para secuencias}
+      \begin{itemize}
+        \item Secuencia de 1 o más $I_s$, separados por $\Box$.\\
+            \hspace{3mm}\textbf{e.g.} I $\mid$ I $\Box$ I $\mid$ I $\Box$ I $\Box$ I...\\
+            \vspace{2mm}
+            \hspace{3mm}LI $\rightarrow$ I\\
+            \hspace{3mm}LI $\rightarrow$ LI $\Box$ I\\
+            \vspace{2mm}
+            \hspace{3mm}\textbf{e.g.}\\
+            \hspace{3mm}NUM $\rightarrow$ B\\
+            \hspace{3mm}NUM $\rightarrow$ NUM , B
+        \item Secuencia de 0 o más $I_s$, separados por $\Box$.\\
+            \hspace{3mm}S $\rightarrow$ $\varepsilon$\\
+            \hspace{3mm}S $\rightarrow$ LI\\
+            \hspace{3mm}LI $\rightarrow$ I\\
+            \hspace{3mm}LI $\rightarrow$ LI $\Box$ I\\
+            \vspace{2mm}
+            \hspace{3mm}\textbf{e.g.} Declaraciones\\
+            \hspace{3mm}Decs $\rightarrow$ $\varepsilon$\\
+            \hspace{3mm}Decs $\rightarrow$ LDEC\\
+            \hspace{3mm}LDEC $\rightarrow$ Dec\\
+            \hspace{3mm}LDEC $\rightarrow$ LDEC ; Dec
+      \end{itemize}
+
+      \par
+      Como caso particular de los patrones anteriores tenemos aquellos en que $\Box$ es
+      $\varepsilon$, no están separados por nada.
+      \begin{itemize}
+        \item Secuencia de 1 o más $I_s$.\\
+            \hspace{3mm}LI $\rightarrow$ I\\
+            \hspace{3mm}LI $\rightarrow$ LI I
+        \item Secuencia de 0 o más $I_s$.\\
+            \hspace{3mm}S $\rightarrow$ $\varepsilon$\\
+            \hspace{3mm}S $\rightarrow$ LI\\
+            \hspace{3mm}LI $\rightarrow$ I\\
+            \hspace{3mm}LI $\rightarrow$ LI I
+      \end{itemize}
+
+      \par
+      También es posible usar un terminador en lugar de un separador para cada item.\\
+      \hspace{3mm}\textbf{e.g.} \underline{I $\Box$} \underline{I $\Box$} \underline{I $\Box$}...
+        donde I $\Box$ es un item.\\
+      \begin{itemize}
+        \item Secuencia de 1 o más $I_s$ terminados en $\Box$.\\
+            \hspace{3mm}LI $\rightarrow$ BI\\
+            \hspace{3mm}LI $\rightarrow$ LI BI\\
+            \hspace{3mm}BI $\rightarrow$ I $\Box$\\
+        \item Secuencia de 0 o más $I_s$ terminados en $\Box$.\\
+            \hspace{3mm}S $\rightarrow$ $\varepsilon$\\
+            \hspace{3mm}S $\rightarrow$ LI\\
+            \hspace{3mm}LI $\rightarrow$ BI\\
+            \hspace{3mm}LI $\rightarrow$ LI BI\\
+            \hspace{3mm}BI $\rightarrow$ I $\Box$\\
+      \end{itemize}
+
+      \par
+      \textbf{e.g.} Libro\\
+      \begin{center}
+        \begin{minipage}{.5\textwidth}
+          \hspace*{5mm}Libro $\rightarrow$ Cabecera Cuerpo\\
+          \hspace*{5mm}Cabecera $\rightarrow$ Title Authors\\
+          \hspace*{5mm}Title $\rightarrow$ \underline{Titulo} Bloque\\
+          \hspace*{5mm}Authors $\rightarrow$ \underline{Autores} LBloques\\
+          \hspace*{5mm}LBloques $\rightarrow$ Bloque\\
+          \hspace*{5mm}LBloques $\rightarrow$ LBloques Bloque\\
+          \hspace*{5mm}Cuerpo $\rightarrow$ LChapter\\
+          \hspace*{5mm}LChapter $\rightarrow$ Chapter\\
+          \hspace*{5mm}LChapter $\rightarrow$ LChapter Chapter\\
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \hspace*{5mm}Chapter $\rightarrow$ CTitle CContent\\
+          \hspace*{5mm}CTitle $\rightarrow$ \underline{Capitulo} Bloque\\
+          \hspace*{5mm}CContent $\rightarrow$ Bloque\\
+          \hspace*{5mm}Bloque $\rightarrow$ $[$CTexto$]$\\
+          \hspace*{5mm}CTexto $\rightarrow$ $\varepsilon$\\
+          \hspace*{5mm}CTexto $\rightarrow$ LTexto\\
+          \hspace*{5mm}LTexto $\rightarrow$ Texto\\
+          \hspace*{5mm}LTexto $\rightarrow$ LTexto Texto\\
+        \end{minipage}
+      \end{center}
+
+    \subsection{Patrones para operadores}
+      \par
+      La prioridad indica el orden en que los operadores se evaluan, si dos tienen la misma
+      prioridad se consulta la asociatividad, a izquierdas o a derechas.\\
+      \hspace{3mm}\textbf{e.g.}\\
+      \begin{center}
+        \begin{minipage}{.3\textwidth}
+          \hspace{10mm}\underline{\underline{\underline{5 + 6} $-$ \underline{7 $\ast$ 8}} + 9}
+        \end{minipage}%
+        \begin{minipage}{.7\textwidth}
+          $\ast$ es el más prioritario.\\
+          + y - son igual de prioritarios pero asocian a izquierdas.
+        \end{minipage}
+      \end{center}
+
+      \par
+      Cada operador tiene un nivel de prioridad, pueden existir multiples operadores con un mismo
+      nivel.
+      \begin{itemize}
+        \item Operadores binarios infijos.\\
+          \hspace{3mm}Pueden asociar a izquierdas\\
+          \hspace{5mm}\textbf{e.g.} \underline{\underline{5 + 6} + 7}\\
+          \vspace{2mm}
+          \hspace{3mm}O a derechas.\\
+          \hspace{5mm}\textbf{e.g.} \underline{5 + \underline{6 + 7}}\\
+          \vspace{2mm}
+          \hspace{3mm}O no asociar, no está permitido encadenar operadores.\\
+          \hspace{5mm}\textbf{e.g.} {\color{red}5 + 6 + 7}
+        \item Operadores unarios prefijos.\\
+          \hspace{3mm}\textbf{e.g.} -5\\
+          \vspace{2mm}
+          Pueden ser...
+          \begin{itemize}
+            \item ...\textbf{asociativos}, pueden encadenarse varios.
+            \item ...\textbf{no asociativos}, no pueden encadenarse.
+          \end{itemize}
+          Asocian siempre a derechas.
+        \item Operadores unarios postfijos.\\
+          \hspace{3mm}\textbf{e.g.} 5+, x++\\
+          \vspace{2mm}
+            Pueden ser...
+            \begin{itemize}
+              \item ...\textbf{asociativos}, pueden encadenarse varios.
+              \item ...\textbf{no asociativos}, no pueden encadenarse.
+            \end{itemize}
+            Asocian siempre a izquierdas.
+      \end{itemize}
+
+      \par
+      \textbf{e.g.} Lenguaje\\
+      \begin{center}
+        \begin{minipage}{.35\textwidth}
+          \begin{itemize}
+            \item Numeros y variables.
+            \item +, $-$, $\ast$, /, $-$ unario.
+          \end{itemize}
+        \end{minipage}%
+        \begin{minipage}{.65\textwidth}
+          \begin{tabular}{||c c c c c||}
+            \hline
+            Operador & Aridad & Tipo & Prioridad & Asociatividad \\ [0.5ex]
+            \hline\hline
+            +,$-$ & 2 &  & 0 & izquierda \\
+            \hline
+            *,/ & 2 &  & 1 & izquierda \\
+            \hline
+            $-$ & 1 & prefijo & 2 & si \\ [1ex]
+            \hline
+          \end{tabular}
+        \end{minipage}
+        \begin{minipage}{.5\textwidth}
+          \vspace{5mm}
+          \underline{\underline{\underline{5 + 6} $-$ \underline{\underline{$-$7} $\ast$ 8}} + 9}
+        \end{minipage}
+      \end{center}
+
+      \par
+      Si existen varios operadores con la misma prioridad pero que asocian distinto porque existen
+      multiples interpretaciones.
+      \begin{center}
+        \begin{minipage}{.65\textwidth}
+          \begin{tabular}{||c c c c c||}
+            \hline
+            Operador & Aridad & Tipo & Prioridad & Asociatividad \\ [0.5ex]
+            \hline\hline
+            + & 2 &  & 0 & izquierda \\
+            \hline
+            $-$ & 2 &  & 0 & derecha \\
+            \hline
+            *,/ & 2 &  & 1 & izquierda \\
+            \hline
+            $-$ & 1 & prefijo & 2 & si \\ [1ex]
+            \hline
+          \end{tabular}
+        \end{minipage}%
+        \begin{minipage}{.35\textwidth}
+          \hspace*{10mm}\underline{5 + \underline{6 + 7}}\\\\
+          \hspace*{10mm}\underline{\underline{5 + 6} + 7}
+        \end{minipage}
+      \end{center}
+
+      \begin{center}
+        \begin{minipage}{.5\textwidth}
+          \hspace*{3mm}Exp $\rightarrow$ Variable\\
+          \hspace*{3mm}Exp $\rightarrow$ Numero\\
+          \hspace*{3mm}Exp $\rightarrow$ OpUn Exp\\
+          \hspace*{3mm}Exp $\rightarrow$ Exp OpBin Exp\\
+          \hspace*{3mm}OpUn $\rightarrow$ $-$\\
+          \hspace*{3mm}OpBin $\rightarrow$ +\\
+          \hspace*{3mm}OpBin $\rightarrow$ $-$\\
+          \hspace*{3mm}OpBin $\rightarrow$ $\ast$\\
+          \hspace*{3mm}OpBin $\rightarrow$ /
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \par
+          \textit{Num + Num + Num}\\
+          \begin{tikzpicture}
+            \node[rectangle] (e1) {Exp};
+            \node[rectangle, below left =.5 of e1] (e2) {Exp};
+            \node[rectangle, below =.4 of e1] (ob1) {OpBin};
+            \node[rectangle, below right =.5 of e1] (e3) {Exp};
+            \node[rectangle, below left =.5 and 1.5 of e2] (e4) {Exp};
+            \node[rectangle, below left=.5 and .2 of e2] (ob2) {OpBin};
+            \node[rectangle, below left =.5 and -.7 of e2] (e5) {Exp};
+
+            \node[rectangle, below = .5 of e3] (v1) {Num};
+            \node[rectangle, below = .5 of e4] (v2) {Num};
+            \node[rectangle, below = .5 of e5] (v3) {Num};
+            \node[rectangle, below = .5 of ob1] (o1) {+};
+            \node[rectangle, below = .5 of ob2] (o2) {+};
+
+            \path[thick]
+              (e1.south) edge (e2)
+                          edge (ob1)
+                          edge (e3)
+              (e2.south) edge (e4)
+                          edge (ob2)
+                          edge (e5)
+              (e3.south) edge (v1)
+              (e4.south) edge (v2)
+              (e5.south) edge (v3)
+              (ob1.south) edge (o1)
+              (ob2.south) edge (o2);
+          \end{tikzpicture}
+        \end{minipage}
+        \begin{minipage}{.5\textwidth}
+          \raggedright
+          \par
+          Como hemos encontrado dos posibles árboles de derivación la gramática es ambigua y no vale.
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \begin{tikzpicture}
+            \node[rectangle] (e1) {Exp};
+            \node[rectangle, below left =.5 of e1] (e2) {Exp};
+            \node[rectangle, below =.4 of e1] (ob1) {OpBin};
+            \node[rectangle, below right =.5 of e1] (e3) {Exp};
+            \node[rectangle, below right =.5 and 1.5 of e3] (e4) {Exp};
+            \node[rectangle, below right=.5 and .2 of e3] (ob2) {OpBin};
+            \node[rectangle, below right =.5 and -.7 of e3] (e5) {Exp};
+
+            \node[rectangle, below = .5 of e2] (v1) {Num};
+            \node[rectangle, below = .5 of e4] (v2) {Num};
+            \node[rectangle, below = .5 of e5] (v3) {Num};
+            \node[rectangle, below = .5 of ob1] (o1) {+};
+            \node[rectangle, below = .5 of ob2] (o2) {+};
+
+            \path[thick]
+              (e1.south) edge (e2)
+                          edge (ob1)
+                          edge (e3)
+              (e3.south) edge (e4)
+                          edge (ob2)
+                          edge (e5)
+              (e2.south) edge (v1)
+              (e4.south) edge (v2)
+              (e5.south) edge (v3)
+              (ob1.south) edge (o1)
+              (ob2.south) edge (o2);
+          \end{tikzpicture}
+        \end{minipage}
+      \end{center}
+
+      \par
+      Cada nivel de prioridad tendrá su propio terminal.\\
+      Si crece a izquierdas reduzco el nivel de prioridad de la derecha, si es a derechas baja el
+      de la izquierda y si no asocia ambos aumentan.
+
+      \begin{center}
+        \begin{minipage}{.5\textwidth}
+          \hspace*{3mm}Exp0 $\rightarrow$ Exp0 OpBin0 Exp1\\
+          \hspace*{3mm}Exp0 $\rightarrow$ Exp1\\
+          \hspace*{3mm}Exp1 $\rightarrow$ Exp1 OpBin1 Exp2\\
+          \hspace*{3mm}Exp1 $\rightarrow$ Exp2\\
+          \hspace*{3mm}Exp2 $\rightarrow$ Exp2 OpBin2 Exp3\\
+          \hspace*{3mm}Exp2 $\rightarrow$ Exp3\\
+          \hspace*{3mm}Exp3 $\rightarrow$ (Exp0)\\
+          \hspace*{3mm}Exp3 $\rightarrow$ Num\\
+          \hspace*{3mm}Exp3 $\rightarrow$ Var\\
+          \hspace*{3mm}OpBin0 $\rightarrow$ +\\
+          \hspace*{3mm}OpBin0 $\rightarrow$ $-$\\
+          \hspace*{3mm}OpBin1 $\rightarrow$ $\ast$\\
+          \hspace*{3mm}OpBin1 $\rightarrow$ /\\
+          \hspace*{3mm}OpUn2 $\rightarrow$ $-$
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \par
+          \textit{Num + Num + Num}\\
+          \begin{tikzpicture}
+            \node[rectangle] (e1) {Exp0};
+            \node[rectangle, below left =.5 of e1] (e2) {Exp0};
+            \node[rectangle, below =.4 of e1] (ob1) {OpBin0};
+            \node[rectangle, below right =.5 of e1] (e3) {Exp1};
+            \node[rectangle, below left =.5 and 1.7 of e2] (e4) {Exp0};
+            \node[rectangle, below left=.5 and .1 of e2] (ob2) {OpBin0};
+            \node[rectangle, below left =.5 and -1 of e2] (e5) {Exp1};
+
+            \node[rectangle, below = .5 of e3] (e31) {Exp1};
+            \node[rectangle, below = .5 of e31] (e32) {Exp2};
+            \node[rectangle, below = .5 of e32] (e33) {Exp3};
+            \node[rectangle, below = .5 of e33] (v1) {Num};
+
+            \node[rectangle, below = .5 of e4] (e41) {Exp1};
+            \node[rectangle, below = .5 of e41] (e42) {Exp2};
+            \node[rectangle, below = .5 of e42] (e43) {Exp3};
+            \node[rectangle, below = .5 of e43] (v2) {Num};
+
+            \node[rectangle, below = .5 of e5] (e51) {Exp1};
+            \node[rectangle, below = .5 of e51] (e52) {Exp2};
+            \node[rectangle, below = .5 of e52] (e53) {Exp3};
+            \node[rectangle, below = .5 of e53] (v3) {Num};
+
+            \node[rectangle, below = .5 of ob1] (o1) {+};
+            \node[rectangle, below = .5 of ob2] (o2) {+};
+
+            \path[thick]
+              (e1.south) edge (e2)
+                          edge (ob1)
+                          edge (e3)
+              (e2.south) edge (e4)
+                          edge (ob2)
+                          edge (e5)
+              (e3.south) edge (e31)
+              (e31.south) edge (e32)
+              (e32.south) edge (e33)
+              (e33.south) edge (v1)
+              (e4.south) edge (e41)
+              (e41.south) edge (e42)
+              (e42.south) edge (e43)
+              (e43.south) edge (v2)
+              (e5.south) edge (e51)
+              (e51.south) edge (e52)
+              (e52.south) edge (e53)
+              (e53.south) edge (v3)
+              (ob1.south) edge (o1)
+              (ob2.south) edge (o2);
+          \end{tikzpicture}
+        \end{minipage}
+        \begin{minipage}{.5\textwidth}
+          \vspace{5mm}
+          \par
+          \textit{Num + (Num + Num)}\\
+          \begin{tikzpicture}
+            \node[rectangle] (e1) {Exp0};
+            \node[rectangle, below left =.5 of e1] (e2) {Exp0};
+            \node[rectangle, below =.4 of e1] (ob1) {OpBin0};
+            \node[rectangle, below right =.5 of e1] (e3) {Exp1};
+            \node[rectangle, below =.5 of e3] (e32) {Exp2};
+            \node[rectangle, below =.5 of e32] (e33) {Exp3};
+            \node[rectangle, below right =.5 and -1 of e33] (PAP) {(};
+            \node[rectangle, below right=.5 and .1 of e33] (e30) {Exp0};
+            \node[rectangle, below right =.5 and 1.7 of e33] (PCI) {)};
+            \node[rectangle, below left =.5 of e30] (e4) {Exp1};
+            \node[rectangle, below =.4 of e30] (ob2) {OpBin0};
+            \node[rectangle, below right =.5 of e30] (e5) {Exp0};
+
+            \node[rectangle, below = .5 of e2] (e21) {Exp1};
+            \node[rectangle, below = .5 of e21] (e22) {Exp2};
+            \node[rectangle, below = .5 of e22] (e23) {Exp3};
+            \node[rectangle, below = .5 of e23] (v1) {Num};
+
+            \node[rectangle, below = .5 of e4] (e41) {Exp1};
+            \node[rectangle, below = .5 of e41] (e42) {Exp2};
+            \node[rectangle, below = .5 of e42] (e43) {Exp3};
+            \node[rectangle, below = .5 of e43] (v2) {Num};
+
+            \node[rectangle, below = .5 of e5] (e51) {Exp1};
+            \node[rectangle, below = .5 of e51] (e52) {Exp2};
+            \node[rectangle, below = .5 of e52] (e53) {Exp3};
+            \node[rectangle, below = .5 of e53] (v3) {Num};
+
+            \node[rectangle, below = .5 of ob1] (o1) {+};
+            \node[rectangle, below = .5 of ob2] (o2) {+};
+
+            \path[thick]
+              (e1.south) edge (e2)
+                          edge (ob1)
+                          edge (e3)
+              (e3.south) edge (e32)
+              (e32.south) edge (e33)
+              (e33.south) edge (e30)
+                          edge (PAP)
+                          edge (PCI)
+              (e30.south) edge (e4)
+                          edge (ob2)
+                          edge (e5)
+              (e2.south) edge (e21)
+              (e21.south) edge (e22)
+              (e22.south) edge (e23)
+              (e23.south) edge (v1)
+              (e4.south) edge (e41)
+              (e41.south) edge (e42)
+              (e42.south) edge (e43)
+              (e43.south) edge (v2)
+              (e5.south) edge (e51)
+              (e51.south) edge (e52)
+              (e52.south) edge (e53)
+              (e53.south) edge (v3)
+              (ob1.south) edge (o1)
+              (ob2.south) edge (o2);
+          \end{tikzpicture}
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \par
+          El árbol de la izquierda sería equivalente al siguiente.\\
+          \begin{tikzpicture}
+            \node[rectangle] (o1) {+};
+            \node[rectangle, below left =.5 of o1] (n1) {Num};
+            \node[rectangle, below right=.5 of o1] (o2) {+};
+            \node[rectangle, below left =.5 of o2] (n2) {Num};
+            \node[rectangle, below right =.5 of o2] (n3) {Num};
+
+            \path[thick]
+              (o1.south) edge (n1)
+                          edge (o2)
+              (o2.south) edge (n2)
+                          edge (n3);
+          \end{tikzpicture}
+        \end{minipage}
+
+        \begin{minipage}{\textwidth}
+          \par
+          \textit{Num $-$ Num $\ast$ $-$Num + Num}\\
+          \centering
+          \vspace{2mm}
+          \begin{tikzpicture}
+            \node[rectangle] (e1) {Exp0};
+
+            \node[rectangle, below =.5 of e1] (ob1) {OpBin0};
+            \node[rectangle, left = 3 of ob1] (e2) {Exp0};
+            \node[rectangle, right = 3 of ob1] (e3) {Exp1};
+
+            \node[rectangle, below =.5 of e2] (ob2) {OpBin0};
+            \node[rectangle, left = of ob2] (e4) {Exp0};
+            \node[rectangle, right = of ob2] (e5) {Exp1};
+
+            \node[rectangle, below =.5 of e4] (e41) {Exp1};
+            \node[rectangle, below =.5 of e41] (e42) {Exp2};
+            \node[rectangle, below =.5 of e42] (e43) {Exp3};
+            \node[rectangle, below =.5 of e43] (ve43) {Num};
+
+            \node[rectangle, below =.5 of ob2] (vob2) {+};
+
+            \node[rectangle, below =.5 of e5] (e6) {Exp1};
+            \node[rectangle, right = of e6] (ob3) {OpBin1};
+            \node[rectangle, right = of ob3] (e7) {Exp2};
+
+            \node[rectangle, below =.5 of e6] (e62) {Exp2};
+            \node[rectangle, below =.5 of e62] (e63) {Exp3};
+            \node[rectangle, below =.5 of e63] (ve63) {Num};
+
+            \node[rectangle, below left=.5 and -.2 of ob3] (vob3) {$\ast$};
+
+            \node[rectangle, below =.5 of e7] (e8) {Exp2};
+            \node[rectangle, left =.3 of e8] (oun1) {OpUn2};
+
+            \node[rectangle, below =.5 of oun1] (voun1) {$-$};
+
+            \node[rectangle, below =.5 of e8] (e83) {Exp3};
+            \node[rectangle, below =.5 of e83] (ve83) {Num};
+
+            \node[rectangle, below =.5 of ob1] (vob1) {+};
+
+            \node[rectangle, below =.5 of e3] (e32) {Exp2};
+            \node[rectangle, below =.5 of e32] (e33) {Exp3};
+            \node[rectangle, below =.5 of e33] (ve33) {Num};
+
+            \path[thick]
+              (e1.south) edge (e2)
+                          edge (ob1)
+                          edge (e3)
+              (e2.south) edge (e4)
+                          edge (ob2)
+                          edge (e5)
+              (e4.south) edge (e41)
+              (e41.south) edge (e42)
+              (e42.south) edge (e43)
+              (e43.south) edge (ve43)
+              (ob2.south) edge (vob2)
+              (e5.south) edge (e6)
+                          edge (ob3)
+                          edge (e7)
+              (e6.south) edge (e62)
+              (e62.south) edge (e63)
+              (e63.south) edge (ve63)
+              (ob3.south) edge (vob3)
+              (e7.south) edge (oun1)
+                          edge (e8)
+              (oun1.south) edge (voun1)
+              (e8.south) edge (e83)
+              (e83.south) edge (ve83)
+              (ob1.south) edge (vob1)
+              (e3.south) edge (e32)
+              (e32.south) edge (e33)
+              (e33.south) edge (ve33);
           \end{tikzpicture}
         \end{minipage}
       \end{center}

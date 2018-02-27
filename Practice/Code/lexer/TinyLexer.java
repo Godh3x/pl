@@ -23,8 +23,8 @@ public class TinyLexer {
 
   // Possible states the lexer can be in
   private static enum State {
-    INIT, R_LINT, R_DOT, R_LDEC, R_EXP, R_SIGN, R_LEXP, R_POP, R_PCL, R_&, R_SPROG, R_ID,
-    R_PLUS, R_MINUS, R_MUL, R_DIV, R_IS, R_GT, R_LT, R_NOT, R_EQ, R_GEQ, R_LEQ, R_NEQ
+    INIT, R_LINT, R_DOT, R_LDEC, R_EXP, R_SIGN, R_LEXP, R_POP, R_PCL, R_AMP, R_SPROG, R_ID,
+    R_PLUS, R_MINUS, R_MUL, R_DIV, R_IS, R_GT, R_LT, R_NOT, R_EQ, R_GEQ, R_LEQ, R_NEQ, R_EOF
   }
 
   private State state; // Lexer current state
@@ -51,7 +51,7 @@ public class TinyLexer {
    * @throws IOException if can't read from the given input
    */
   public LexicalItem nextToken() throws IOException {
-    this.state = this.State.INIT;
+    this.state = State.INIT;
     this.initRow = this.currentRow;
     this.initCol = this.currentCol;
     this.lexeme.delete(0, this.lexeme.length());
@@ -59,112 +59,116 @@ public class TinyLexer {
     while(true) {
         switch(this.state) {
           case INIT:
-            if (this.isLetter()) {}
-              this.transit(this.State.R_ID);
+            if (this.isLetter()) {
+              this.transit(State.R_ID);
             } else if (this.isDigit()) {
-              this.transit(this.State.R_LINT);
+              this.transit(State.R_LINT);
             } else if (this.isAmpersand()) {
-              this.transit(this.State.R_&);
+              this.transit(State.R_AMP);
             } else if (this.isPlus()) {
-              this.transit(this.State.R_PLUS);
+              this.transit(State.R_PLUS);
             } else if (this.isMinus()) {
-              this.transit(this.State.R_MINUS);
+              this.transit(State.R_MINUS);
             } else if (this.isMul()) {
-              this.transit(this.State.R_MUL);
+              this.transit(State.R_MUL);
             } else if (this.isDiv()) {
-              this.transit(this.State.R_DIV);
+              this.transit(State.R_DIV);
             } else if (this.isEq()) {
-              this.transit(this.State.R_IS);
+              this.transit(State.R_IS);
             } else if (this.isGT()) {
-              this.transit(this.State.R_GT);
+              this.transit(State.R_GT);
             } else if (this.isLT()) {
-              this.transit(this.State.R_LT);
+              this.transit(State.R_LT);
             } else if (this.isNot()) {
-              this.transit(this.State.R_NOT);
+              this.transit(State.R_NOT);
             } else if (this.isPOp()) {
-              this.transit(this.State.R_POP);
+              this.transit(State.R_POP);
             } else if (this.isPCl()) {
-              this.transit(this.State.R_PCL);
+              this.transit(State.R_PCL);
+            } else if (this.isSep()) {
+              this.transitIgnoring(State.INIT);
             } else if (this.isEOF()) {
-              this.transit(this.State.R_EOF);
+              this.transit(State.R_EOF);
             } else {
               this.error();
             }
             break;
           case R_ID:
             if (this.isLetterOrDigit()) {
-              this.transit(this.State.R_ID);
+              this.transit(State.R_ID);
             } else {
               return this.itemId();
             }
             break;
           case R_LINT:
             if (this.isDigit()) {
-              this.transit(this.State.R_LINT);
+              this.transit(State.R_LINT);
             } else if (this.isDot()) {
-              this.transit(this.State.R_DOT);
+              this.transit(State.R_DOT);
+            } else if (this.isExp()) {
+              this.transit(State.R_EXP);
             } else {
               return this.itemNumber();
             }
             break;
           case R_DOT:
             if (this.isDigit()) {
-              this.transit(this.State.R_LDEC);
+              this.transit(State.R_LDEC);
             } else {
               this.error();
             }
             break;
           case R_LDEC:
             if (this.isDigit()) {
-              this.transit(this.State.R_LDEC);
+              this.transit(State.R_LDEC);
             } else if (this.isExp()) {
-              this.transit(this.State.R_EXP);
+              this.transit(State.R_EXP);
             } else {
               return this.itemNumber();
             }
             break;
           case R_EXP:
             if (this.isDigit()) {
-              this.transit(this.State.R_LEXP);
-            } else if (this.isSign) {
-              this.transit(this.State.R_SIGN);
+              this.transit(State.R_LEXP);
+            } else if (this.isSign()) {
+              this.transit(State.R_SIGN);
             } else {
               this.error();
             }
             break;
           case R_SIGN:
             if (this.isDigit()) {
-              this.transit(this.State.R_LEXP);
+              this.transit(State.R_LEXP);
             } else {
-              error();
+              this.error();
             }
             break;
           case R_LEXP:
             if (this.isDigit()) {
-              this.transit(this.State.R_LEXP);
+              this.transit(State.R_LEXP);
             } else {
               return this.itemNumber();
             }
             break;
-          case R_&:
+          case R_AMP:
             if (this.isAmpersand()) {
-              this.transit(this.State.R_SPROG);
+              this.transit(State.R_SPROG);
             } else {
-              this.error()
+              this.error();
             }
             break;
           case R_SPROG:
             return this.itemSPROG();
           case R_PLUS:
             if (this.isDigit()) {
-              this.transit(this.State.R_LINT);
+              this.transit(State.R_LINT);
             } else {
               return this.itemPlus();
             }
             break;
           case R_MINUS:
             if (this.isDigit()) {
-              this.transit(this.State.R_LINT);
+              this.transit(State.R_LINT);
             } else {
               return this.itemMinus();
             }
@@ -175,7 +179,7 @@ public class TinyLexer {
             return this.itemDiv();
           case R_IS:
             if (this.isEq()) {
-              this.transit(this.State.R_EQ);
+              this.transit(State.R_EQ);
             } else {
               return this.itemIS();
             }
@@ -184,7 +188,7 @@ public class TinyLexer {
             return this.itemEQ();
           case R_GT:
             if (this.isEq()) {
-              this.transit(this.State.R_GEQ);
+              this.transit(State.R_GEQ);
             } else {
               return this.itemGT();
             }
@@ -193,7 +197,7 @@ public class TinyLexer {
             return this.itemGEQ();
           case R_LT:
             if (this.isEq()) {
-              this.transit(this.State.R_LEQ);
+              this.transit(State.R_LEQ);
             } else {
               return this.itemLT();
             }
@@ -202,7 +206,7 @@ public class TinyLexer {
             return this.itemLEQ();
           case R_NOT:
             if (this.isEq()) {
-              this.transit(this.State.R_NEQ);
+              this.transit(State.R_NEQ);
             } else {
               this.error();
             }
@@ -236,7 +240,7 @@ public class TinyLexer {
    *
    * @throws IOException if can't read from the given input
    */
-  private void transitIgnoring(Estado nextState) throws IOException {
+  private void transitIgnoring(State nextState) throws IOException {
     this.nextChar();
     this.initRow = this.currentRow; // why here but not in transit()?
     this.initCol = this.currentCol;
@@ -272,7 +276,7 @@ public class TinyLexer {
     for (int i=1; i < this.lineBreak.length(); i++) {
       this.nextChar = this.input.read();
       if (this.nextChar != this.lineBreak.charAt(i)) {
-        error();
+        this.error();
       }
     }
     this.nextChar = '\n';
@@ -284,7 +288,7 @@ public class TinyLexer {
    * @return true if nextChar is a '&'
    */
   private boolean isAmpersand() {
-    return this.nextChar >= '&';
+    return this.nextChar == '&';
   }
 
   /**
@@ -360,7 +364,7 @@ public class TinyLexer {
    * @return true if nextChar is opening parenthesis symbol
    */
   private boolean isPOp() {
-    return this.nectChar == '(';
+    return this.nextChar == '(';
   }
 
   /**
@@ -440,7 +444,7 @@ public class TinyLexer {
    * @return true if nextChar is separator symbol
    */
   private boolean isSep() {
-    return this.nextChar == ' ' || this.nextChar == '\t' || this.nextChar == '\n';
+    return this.nextChar == ' ' || this.nextChar == '\t' || this.nextChar == '\n' || this.nextChar == ';';
   }
 
   /**
@@ -478,7 +482,7 @@ public class TinyLexer {
    * @return LREAL token
    */
   private LexicalItem itemNumber() {
-    return new MultiLexicalItem(this.initRow, this.initCol, Lexicon.LREAL, lex.toString());
+    return new MultiLexicalItem(this.initRow, this.initCol, Lexicon.LREAL, this.lexeme.toString());
   }
 
   /**
@@ -523,7 +527,7 @@ public class TinyLexer {
    * @return Minus token
    */
   private LexicalItem itemMinus() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.MINUS);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.MINUS);
   }
 
   /**
@@ -532,7 +536,7 @@ public class TinyLexer {
    * @return Multiplication token
    */
   private LexicalItem itemMul() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.MUL);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.MUL);
   }
 
   /**
@@ -541,7 +545,7 @@ public class TinyLexer {
    * @return Division token
    */
   private LexicalItem itemDiv() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.DIV);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.DIV);
   }
 
   /**
@@ -550,7 +554,7 @@ public class TinyLexer {
    * @return Asignment token
    */
   private LexicalItem itemIS() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.IS);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.IS);
   }
 
   /**
@@ -559,7 +563,7 @@ public class TinyLexer {
    * @return Comparison token
    */
   private LexicalItem itemEQ() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.EQ);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.EQ);
   }
 
   /**
@@ -568,7 +572,7 @@ public class TinyLexer {
    * @return Greater than token
    */
   private LexicalItem itemGT() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.GT);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.GT);
   }
 
   /**
@@ -577,7 +581,7 @@ public class TinyLexer {
    * @return Greater or equal to token
    */
   private LexicalItem itemGEQ() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.GEQ);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.GEQ);
   }
 
   /**
@@ -586,7 +590,7 @@ public class TinyLexer {
    * @return Lower than token
    */
   private LexicalItem itemLT() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.LT);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.LT);
   }
 
   /**
@@ -595,7 +599,7 @@ public class TinyLexer {
    * @return Lower or equal to token
    */
   private LexicalItem itemLEQ() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.LEQ);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.LEQ);
   }
 
   /**
@@ -604,7 +608,7 @@ public class TinyLexer {
    * @return Not equal to token
    */
   private LexicalItem itemNEQ() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.NEQ);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.NEQ);
   }
 
   /**
@@ -613,7 +617,7 @@ public class TinyLexer {
    * @return Opening parenthesis token
    */
   private LexicalItem itemPOp() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.POP);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.POP);
   }
 
   /**
@@ -622,7 +626,7 @@ public class TinyLexer {
    * @return Closing parenthesis token
    */
   private LexicalItem itemPCl() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.PCL);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.PCL);
   }
 
   /**
@@ -631,18 +635,18 @@ public class TinyLexer {
    * @return EOF token
    */
   private LexicalItem itemEOF() {
-    return new UnidadLexicaUnivaluada(this.initRow, this.initCol, Lexicon.EOF);
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.EOF);
   }
 
   private void error() {
-    System.err.println("("+filaActual+','+columnaActual+"):Caracter inexperado");
+    System.err.println("***("+this.currentRow+','+this.currentCol+") Unexpected character: " + this.lexeme);
     System.exit(1);
   }
 
   /**
    * Instantiates the input to read from some file, creates the lexer and loops until EOF token.
    */
-  public static void main(String arg[]) throws IOException {
+  public static void main(String[] arg) throws IOException {
     Reader input = new InputStreamReader(new FileInputStream("input.txt"));
     TinyLexer lexer = new TinyLexer(input);
     LexicalItem token;
@@ -651,6 +655,6 @@ public class TinyLexer {
       token = lexer.nextToken();
       System.out.println(token);
     }
-    while (token.getClass() != Lexicon.EOF);
+    while (token.getType() != Lexicon.EOF);
   }
 }

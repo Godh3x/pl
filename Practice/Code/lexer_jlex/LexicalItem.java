@@ -1,7 +1,7 @@
-package lexer;
+package lexer_jlex;
 
 /**
- * Abstract representation of a single lexical item, every lexical item stores the row and column
+ * Abstract representation of a single lexical item, every lexical item stores the row
  * where it appears.
  *
  * @author David Antuña Rodríguez
@@ -10,19 +10,16 @@ package lexer;
 public abstract class LexicalItem {
   private Lexicon type; // Actual class of the lexical item
   private int row; // Row the item appears in
-  private int col; // Column the item appears in
 
   /**
    * Constructor
-   * Class, row and col must be specified for every new item.
+   * Class and row must be specified for every new item.
    *
    * @param row Row the item appears in
-   * @param col Column the item appears in
    * @param type Class the item represents
    */
-  public LexicalItem(int row, int col, Lexicon type) {
+  public LexicalItem(int row, Lexicon type) {
     this.row = row;
-    this.col = col;
     this.type = type;
   }
 
@@ -42,15 +39,6 @@ public abstract class LexicalItem {
    */
   public int getRow() {
     return this.row;
-  }
-
-  /**
-   * Returns the column of code where the invoking item is.
-   *
-   * @return column of code where the invoking item is
-   */
-  public int getCol() {
-    return this.col;
   }
 
   /**

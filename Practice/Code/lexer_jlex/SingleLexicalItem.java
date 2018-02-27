@@ -1,4 +1,4 @@
-package lexer;
+package lexer_jlex;
 
 /**
  * Represents a univaluated lexical item, this means the item is defined univocally by it's class
@@ -8,8 +8,8 @@ package lexer;
  * @author Javier Carrión García
  */
 public class SingleLexicalItem extends LexicalItem {
-  public SingleLexicalItem(int row, int col, Lexicon type) {
-    super(row,col,type);
+  public SingleLexicalItem(int row, Lexicon type) {
+    super(row,type);
   }
 
   /**
@@ -24,7 +24,6 @@ public class SingleLexicalItem extends LexicalItem {
 
   @Override
   public String toString() {
-    return "[class: " + this.getType() + ", row: " + this.getRow() + ", col: " +
-        this.getCol() + "]";
+    return "[class: " + this.getType() + ", row: " + this.getRow() + "]";
   }
 }
