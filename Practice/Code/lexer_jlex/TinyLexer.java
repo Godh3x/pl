@@ -212,7 +212,7 @@ class TinyLexer {
 		return res;
 	}
 	private int yy_acpt[] = {
-		/* 0 */ YY_NO_ANCHOR,
+		/* 0 */ YY_NOT_ACCEPT,
 		/* 1 */ YY_NO_ANCHOR,
 		/* 2 */ YY_NO_ANCHOR,
 		/* 3 */ YY_NO_ANCHOR,
@@ -240,35 +240,49 @@ class TinyLexer {
 		/* 25 */ YY_NO_ANCHOR,
 		/* 26 */ YY_NO_ANCHOR,
 		/* 27 */ YY_NO_ANCHOR,
-		/* 28 */ YY_NO_ANCHOR,
+		/* 28 */ YY_NOT_ACCEPT,
 		/* 29 */ YY_NO_ANCHOR,
 		/* 30 */ YY_NO_ANCHOR,
 		/* 31 */ YY_NO_ANCHOR,
-		/* 32 */ YY_NO_ANCHOR,
+		/* 32 */ YY_NOT_ACCEPT,
 		/* 33 */ YY_NO_ANCHOR,
 		/* 34 */ YY_NO_ANCHOR,
 		/* 35 */ YY_NO_ANCHOR,
 		/* 36 */ YY_NO_ANCHOR,
 		/* 37 */ YY_NO_ANCHOR,
-		/* 38 */ YY_NO_ANCHOR
+		/* 38 */ YY_NO_ANCHOR,
+		/* 39 */ YY_NO_ANCHOR,
+		/* 40 */ YY_NO_ANCHOR,
+		/* 41 */ YY_NO_ANCHOR,
+		/* 42 */ YY_NO_ANCHOR,
+		/* 43 */ YY_NOT_ACCEPT,
+		/* 44 */ YY_NO_ANCHOR,
+		/* 45 */ YY_NO_ANCHOR,
+		/* 46 */ YY_NO_ANCHOR,
+		/* 47 */ YY_NO_ANCHOR,
+		/* 48 */ YY_NO_ANCHOR,
+		/* 49 */ YY_NO_ANCHOR,
+		/* 50 */ YY_NO_ANCHOR,
+		/* 51 */ YY_NO_ANCHOR
 	};
 	private int yy_cmap[] = unpackFromString(1,65538,
-"28:8,1:3,28:2,1,28:18,1,25,28:4,2,28,27,26,20,3:3,28,21,19:10,28:2,24,22,23" +
-",28:2,17:26,28:4,19,28,14,4,18,16,12,13,18:5,6,9,7,5,18:2,11,15,10,8,18:5,2" +
-"8:65413,0:2")[0];
+"33:8,1:3,33:2,1,33:18,1,29,33:4,2,33,31,30,24,22,3,23,5,25,4:10,33,32,28,26" +
+",27,33:2,20:4,6,20:21,33:4,21,33,17,8,20,19,7,16,20:5,10,13,11,9,20:2,15,18" +
+",14,12,20:5,33:65413,0:2")[0];
 
-	private int yy_rmap[] = unpackFromString(1,39,
-"0,1:3,2,1:9,3:7,1,4,5,6,7,8,9,10,11,12,13,3,14,15,16,3,17,18")[0];
+	private int yy_rmap[] = unpackFromString(1,52,
+"0,1:2,2,3,4,5:2,1:2,6,7,8,1:4,4,1:4,4:6,9,5,10,11,12,1,13,14,15,16,17,18,19" +
+",20,21,13,22,23,24,25,26,27,28,29")[0];
 
-	private int yy_nxt[][] = unpackFromString(19,29,
-"1,2,3,21,4,22,36,29,36:2,37,36:2,38,30,36:4,5,6,7,8,9,10,11,12,13,5,-1:33,3" +
-"6,31,36:11,32,36,32,-1:13,36:13,32,36,32,-1:13,36:7,14,36:5,32,36,32,-1:13," +
-"36:6,15,36:6,32,36,32,-1:13,36:5,16,36:7,32,36,32,-1:13,36:12,17,32,36,32,-" +
-"1:13,36:2,18,36:10,32,36,32,-1:13,36:8,19,36:4,32,36,32,-1:13,36:8,20,36:4," +
-"32,36,32,-1:13,36,23,36:2,24,36:8,32,36,32,-1:13,36:3,25,36:9,32,36,32,-1:1" +
-"3,36,26,36:11,32,36,32,-1:13,36:4,27,36:8,32,36,32,-1:13,36:2,35,36:10,32,3" +
-"6,32,-1:13,36:11,28,36,32,36,32,-1:13,36:7,33,36:5,32,36,32,-1:13,36:10,34," +
-"36:2,32,36,32,-1:9");
+	private int yy_nxt[][] = unpackFromString(30,34,
+"1,2,3,29,4,33,5:2,48,31,5,42,5:2,49,5,51,44,5:3,33,6,7,8,9,10,11,12,36,13,1" +
+"4,15,33,-1:36,16,-1:35,4,28,32:2,-1:30,5,-1,5:16,-1:16,4,-1:55,18,-1:33,19," +
+"-1:33,20,-1:11,30,-1:33,30,-1,32:2,-1:30,5,-1,5:9,17,5:6,-1:15,43,34,-1:17," +
+"43:2,-1:14,34,-1:33,5,-1,5:8,22,5:7,-1:38,21,-1:11,5,-1,5:7,23,5:8,-1:16,5," +
+"-1,5:13,24,5:2,-1:16,5,-1,5:4,25,5:11,-1:16,5,-1,5,26,5:14,-1:16,5,-1,5,27," +
+"5:14,-1:16,5,-1,5:3,35,5:2,37,5:9,-1:16,5,-1,5:5,38,5:10,-1:16,5,-1,5:3,39," +
+"5:12,-1:16,5,-1,5:6,40,5:9,-1:16,5,-1,5:12,41,5:3,-1:16,5,-1,5:3,45,5:12,-1" +
+":16,5,-1,5:9,46,5:6,-1:16,5,-1,5:4,47,5:11,-1:16,5,-1,5:11,50,5:4,-1:12");
 
 	public LexicalItem yylex ()
 		throws java.io.IOException {
@@ -315,161 +329,197 @@ class TinyLexer {
 					}
 					yy_to_mark();
 					switch (yy_last_accept_state) {
-					case 0:
-						{return itemfact.getItem("LREAL");}
-					case -2:
-						break;
 					case 1:
 						
-					case -3:
+					case -2:
 						break;
 					case 2:
 						{}
-					case -4:
+					case -3:
 						break;
 					case 3:
-						{return itemfact.getItem("SPROG");}
-					case -5:
+						{itemfact.error();}
+					case -4:
 						break;
 					case 4:
+						{return itemfact.getItem("LREAL");}
+					case -5:
+						break;
+					case 5:
 						{return itemfact.getItem("ID");}
 					case -6:
 						break;
-					case 5:
-						{itemfact.error();}
+					case 6:
+						{return itemfact.getItem("PLUS");}
 					case -7:
 						break;
-					case 6:
-						{return itemfact.getItem("MUL");}
+					case 7:
+						{return itemfact.getItem("MINUS");}
 					case -8:
 						break;
-					case 7:
-						{return itemfact.getItem("DIV");}
+					case 8:
+						{return itemfact.getItem("MUL");}
 					case -9:
 						break;
-					case 8:
-						{return itemfact.getItem("IS");}
+					case 9:
+						{return itemfact.getItem("DIV");}
 					case -10:
 						break;
-					case 9:
-						{return itemfact.getItem("GT");}
+					case 10:
+						{return itemfact.getItem("IS");}
 					case -11:
 						break;
-					case 10:
-						{return itemfact.getItem("LT");}
+					case 11:
+						{return itemfact.getItem("GT");}
 					case -12:
 						break;
-					case 11:
-						{return itemfact.getItem("NEQ");}
+					case 12:
+						{return itemfact.getItem("LT");}
 					case -13:
 						break;
-					case 12:
+					case 13:
 						{return itemfact.getItem("PCL");}
 					case -14:
 						break;
-					case 13:
+					case 14:
 						{return itemfact.getItem("POP");}
 					case -15:
 						break;
-					case 14:
-						{return itemfact.getItem("OR");}
+					case 15:
+						{return itemfact.getItem("EOL");}
 					case -16:
 						break;
-					case 15:
-						{return itemfact.getItem("NOT");}
+					case 16:
+						{return itemfact.getItem("SPROG");}
 					case -17:
 						break;
-					case 16:
-						{return itemfact.getItem("NUM");}
+					case 17:
+						{return itemfact.getItem("OR");}
 					case -18:
 						break;
-					case 17:
-						{return itemfact.getItem("AND");}
+					case 18:
+						{return itemfact.getItem("EQ");}
 					case -19:
 						break;
-					case 18:
-						{return itemfact.getItem("BOOL");}
+					case 19:
+						{return itemfact.getItem("GEQ");}
 					case -20:
 						break;
-					case 19:
-						{return itemfact.getItem("TRUE");}
+					case 20:
+						{return itemfact.getItem("LEQ");}
 					case -21:
 						break;
-					case 20:
-						{return itemfact.getItem("FALSE");}
+					case 21:
+						{return itemfact.getItem("NEQ");}
 					case -22:
 						break;
-					case 21:
-						{return itemfact.getItem("LREAL");}
+					case 22:
+						{return itemfact.getItem("NOT");}
 					case -23:
 						break;
-					case 22:
-						{return itemfact.getItem("ID");}
+					case 23:
+						{return itemfact.getItem("NUM");}
 					case -24:
 						break;
-					case 23:
-						{return itemfact.getItem("ID");}
+					case 24:
+						{return itemfact.getItem("AND");}
 					case -25:
 						break;
-					case 24:
-						{return itemfact.getItem("ID");}
+					case 25:
+						{return itemfact.getItem("BOOL");}
 					case -26:
 						break;
-					case 25:
-						{return itemfact.getItem("ID");}
+					case 26:
+						{return itemfact.getItem("TRUE");}
 					case -27:
 						break;
-					case 26:
-						{return itemfact.getItem("ID");}
+					case 27:
+						{return itemfact.getItem("FALSE");}
 					case -28:
 						break;
-					case 27:
-						{return itemfact.getItem("ID");}
+					case 29:
+						{itemfact.error();}
 					case -29:
 						break;
-					case 28:
-						{return itemfact.getItem("ID");}
-					case -30:
-						break;
-					case 29:
-						{return itemfact.getItem("ID");}
-					case -31:
-						break;
 					case 30:
-						{return itemfact.getItem("ID");}
-					case -32:
+						{return itemfact.getItem("LREAL");}
+					case -30:
 						break;
 					case 31:
 						{return itemfact.getItem("ID");}
-					case -33:
-						break;
-					case 32:
-						{return itemfact.getItem("ID");}
-					case -34:
+					case -31:
 						break;
 					case 33:
-						{return itemfact.getItem("ID");}
-					case -35:
+						{itemfact.error();}
+					case -32:
 						break;
 					case 34:
-						{return itemfact.getItem("ID");}
-					case -36:
+						{return itemfact.getItem("LREAL");}
+					case -33:
 						break;
 					case 35:
 						{return itemfact.getItem("ID");}
-					case -37:
+					case -34:
 						break;
 					case 36:
-						{return itemfact.getItem("ID");}
-					case -38:
+						{itemfact.error();}
+					case -35:
 						break;
 					case 37:
 						{return itemfact.getItem("ID");}
-					case -39:
+					case -36:
 						break;
 					case 38:
 						{return itemfact.getItem("ID");}
+					case -37:
+						break;
+					case 39:
+						{return itemfact.getItem("ID");}
+					case -38:
+						break;
+					case 40:
+						{return itemfact.getItem("ID");}
+					case -39:
+						break;
+					case 41:
+						{return itemfact.getItem("ID");}
 					case -40:
+						break;
+					case 42:
+						{return itemfact.getItem("ID");}
+					case -41:
+						break;
+					case 44:
+						{return itemfact.getItem("ID");}
+					case -42:
+						break;
+					case 45:
+						{return itemfact.getItem("ID");}
+					case -43:
+						break;
+					case 46:
+						{return itemfact.getItem("ID");}
+					case -44:
+						break;
+					case 47:
+						{return itemfact.getItem("ID");}
+					case -45:
+						break;
+					case 48:
+						{return itemfact.getItem("ID");}
+					case -46:
+						break;
+					case 49:
+						{return itemfact.getItem("ID");}
+					case -47:
+						break;
+					case 50:
+						{return itemfact.getItem("ID");}
+					case -48:
+						break;
+					case 51:
+						{return itemfact.getItem("ID");}
+					case -49:
 						break;
 					default:
 						yy_error(YY_E_INTERNAL,false);

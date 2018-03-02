@@ -57,6 +57,8 @@ public class LexicalItemFactory {
           return new SingleLexicalItem(this.lexer.getRow(), Lexicon.POP);
       case "SPROG":
           return new SingleLexicalItem(this.lexer.getRow(), Lexicon.SPROG);
+      case "EOL":
+          return new SingleLexicalItem(this.lexer.getRow(), Lexicon.EOL);
       case "EOF":
           return new SingleLexicalItem(this.lexer.getRow(), Lexicon.EOF);
       default:

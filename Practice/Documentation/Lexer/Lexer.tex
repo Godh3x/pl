@@ -80,6 +80,9 @@
       \item \textbf{PCL}
         \par
         Representa un paréntesis de cierre, $)$.
+      \item \textbf{EOL}
+        \par
+        Representa el punto y coma como separador especial, ;.
     \end{itemize}
 
   \section{Especificación formal}
@@ -141,7 +144,9 @@
     \vspace{2mm}
     \hspace{5mm}($\ast$) PCL $\equiv$ \textbackslash $)$ \\
     \vspace{2mm}
-    \hspace{5mm}$[I]$ SEP $\equiv$ $[$' ', \textbackslash t, \textbackslash n, \textbackslash r, \textbackslash b, ;] \\
+    \hspace{5mm}($\ast$) EOL $\equiv$ ;\\
+    \vspace{2mm}
+    \hspace{5mm}$[I]$ SEP $\equiv$ $[$' ', \textbackslash t, \textbackslash n, \textbackslash r, \textbackslash b] \\
 
   \section{Diagrama de transiciones} %TODO
   \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
@@ -171,6 +176,7 @@
     \node[state, accepting] (q_22) [below=2.5of q_18] {\scriptsize R\_LEQ};
     \node[state, accepting] (q_23) [below=2.5of q_19] {\scriptsize R\_NEQ};
     \node[state, accepting] (q_24) [below=5of dummy] {\scriptsize R\_EOF};
+    \node[state, accepting] (q_25) [left=of q_24] {\scriptsize R\_EOL};
 
     \draw[<-] (q_0) -- node[fill=white, right] {start} ++(1cm,0cm);
     \path[->]
@@ -189,6 +195,7 @@
                 edge  node [fill=white, anchor=center, pos=0.5] {$<$} (q_18)
                 edge  node [fill=white, anchor=center, pos=0.5] {!} (q_19)
                 edge node [fill=white, anchor=center, pos=0.5, very near end] {EOF} (q_24)
+                edge [bend right = 15] node [fill=white, anchor=center, pos=0.5, very near end] {;} (q_25)
           (q_1) edge              node[fill=white, anchor=center, pos=0.5]     {\textbackslash .} (q_4)
                 edge [bend left=5] node[fill=white, anchor=center, pos=0.5, near end]     {e $\mid$ E} (q_6)
                 edge [loop above] node [left, near start] {Dig} (q_1)

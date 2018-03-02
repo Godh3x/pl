@@ -24,7 +24,7 @@ public class TinyLexer {
   // Possible states the lexer can be in
   private static enum State {
     INIT, R_LINT, R_DOT, R_LDEC, R_EXP, R_SIGN, R_LEXP, R_POP, R_PCL, R_AMP, R_SPROG, R_ID,
-    R_PLUS, R_MINUS, R_MUL, R_DIV, R_IS, R_GT, R_LT, R_NOT, R_EQ, R_GEQ, R_LEQ, R_NEQ, R_EOF
+    R_PLUS, R_MINUS, R_MUL, R_DIV, R_IS, R_GT, R_LT, R_NOT, R_EQ, R_GEQ, R_LEQ, R_NEQ, R_EOL, R_EOF
   }
 
   private State state; // Lexer current state
@@ -87,6 +87,8 @@ public class TinyLexer {
               this.transit(State.R_PCL);
             } else if (this.isSep()) {
               this.transitIgnoring(State.INIT);
+            } else if (this.isEOL()) {
+              this.transit(State.R_EOL);
             } else if (this.isEOF()) {
               this.transit(State.R_EOF);
             } else {
@@ -217,6 +219,8 @@ public class TinyLexer {
             return this.itemPOp();
           case R_PCL:
             return this.itemPCl();
+          case R_EOL:
+            return this.itemEOL();
           case R_EOF:
             return this.itemEOF();
         }
@@ -444,7 +448,7 @@ public class TinyLexer {
    * @return true if nextChar is separator symbol
    */
   private boolean isSep() {
-    return this.nextChar == ' ' || this.nextChar == '\t' || this.nextChar == '\n' || this.nextChar == ';';
+    return this.nextChar == ' ' || this.nextChar == '\t' || this.nextChar == '\n';
   }
 
   /**
@@ -454,8 +458,17 @@ public class TinyLexer {
    *
    * @return true if nextChar is linebreak symbol
    */
-  private boolean isLinebreak() {
+  /*private boolean isLinebreak() {
     return this.nextChar == '\r' || this.nextChar == '\b' || this.nextChar == '\n';
+  }*/
+
+  /**
+   * Checks if nextChar is end-of-line symbol, ;.
+   *
+   * @return true if nextChar is EOL symbol
+   */
+  private boolean isEOL() {
+    return this.nextChar == ';';
   }
 
   /**
@@ -627,6 +640,15 @@ public class TinyLexer {
    */
   private LexicalItem itemPCl() {
     return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.PCL);
+  }
+
+  /**
+   * Returns a lexical item representing the 'end-of-file'.
+   *
+   * @return EOF token
+   */
+  private LexicalItem itemEOL() {
+    return new SingleLexicalItem(this.initRow, this.initCol, Lexicon.EOL);
   }
 
   /**

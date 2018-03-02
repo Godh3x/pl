@@ -26,13 +26,15 @@ package lexer_jlex;
   itemfact = new LexicalItemFactory(this);
 %init}
 
-SPROG = \& \&
+SPROG = \&\&
 Dig = [0-9]
-Sign = [\+, \-]
-LENT = {Sign}? {Dig}* {Dig}
-PDEC = \. {Dig}* {Dig}
-PEXP = (E|e) {LENT}
-LREAL = {LENT} {PDEC}? {PEXP}?
+Sign = [\+,\-]
+LENT = {Sign}?{Dig}*{Dig}
+PDEC = \.{Dig}*{Dig}
+PEXP = (E|e){LENT}
+LDEC = {LENT}{PDEC}
+LEXP = {LENT}{PEXP}|{LENT}{PDEC}{PEXP}
+LREAL = {LENT}|{LDEC}|{LEXP}
 Letter = ([A-Z]|[a-z])
 ID = {Letter}({Letter}|{Dig}|\_)*
 BOOL = bool
@@ -44,17 +46,18 @@ MINUS = \-
 MUL = \*
 DIV = /
 IS = \=
-EQ = {IS} \=
+EQ = {IS}\=
 GT = \>
-GEQ = {GT} \=
+GEQ = {GT}\=
 LT = \<
-LEQ = {LT} \=
-NEQ = \! \=
+LEQ = {LT}\=
+NEQ = \!\=
 AND = and
 OR = or
 NOT = not
 POP = \(
 PCL = \)
+EOL = \;
 SEP = [ \t\r\b\n]
 %%
 {SEP}   {}
@@ -81,4 +84,5 @@ SEP = [ \t\r\b\n]
 {NEQ}   {return itemfact.getItem("NEQ");}
 {PCL}   {return itemfact.getItem("PCL");}
 {POP}   {return itemfact.getItem("POP");}
+{EOL}   {return itemfact.getItem("EOL");}
 [^]     {itemfact.error();}
