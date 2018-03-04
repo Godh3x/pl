@@ -746,6 +746,788 @@
       \end{center}
 
       \par
-      \textbf{e.g.} Lenguaje\\
-      
+      \textbf{e.g.} Lenguaje
+
+      \bigskip
+      \par
+      Expresiones básicas: números e identificadores, se pueden usar ().
+
+      \begin{center}
+        \begin{minipage}{.65\textwidth}
+          \begin{tabular}{||c c c c c||}
+            \hline
+            Operador & Prioridad & Aridad & Tipo & Asociatividad \\ [0.5ex]
+            \hline\hline
+            ==, != & 0 & 2 &  & no \\
+            \hline
+            + & 1 & 2 &  & izq. \\
+            \hline
+            $\ast$ & 1 & 1 & prefijo & no \\
+            \hline
+            = & 2 & 2 &  & der. \\
+            \hline
+            ++ & 2 & 1 & postfijo & si \\
+            \hline
+            $\sim$ & 3 & 1 & prefijo & si \\
+            \hline
+            $<<$ & 3 & 1 & postfijo & no \\ [1ex]
+            \hline
+          \end{tabular}
+        \end{minipage}%
+        \begin{minipage}{.35\textwidth}
+          \hspace*{10mm}Exp0 $\rightarrow$ Exp1 Op0 Exp1\\
+          \hspace*{10mm}Exp0 $\rightarrow$ Exp1\\
+          \hspace*{10mm}Exp1 $\rightarrow$ Exp1 + Exp2\\
+          \hspace*{10mm}Exp1 $\rightarrow$ $\ast$ Exp2\\
+          \hspace*{10mm}Exp1 $\rightarrow$ Exp2\\
+          \hspace*{10mm}Exp2 $\rightarrow$ Exp3 = Exp2\\
+          \hspace*{10mm}Exp2 $\rightarrow$ Exp2 ++\\
+          \hspace*{10mm}Exp2 $\rightarrow$ Exp3\\
+          \hspace*{10mm}Exp3 $\rightarrow$ $\sim$ Exp3\\
+          \hspace*{10mm}Exp3 $\rightarrow$ Exp4 $<<$\\
+          \hspace*{10mm}Exp3 $\rightarrow$ Exp4\\
+          \hspace*{10mm}Exp4 $\rightarrow$ Num\\
+          \hspace*{10mm}Exp4 $\rightarrow$ Id\\
+          \hspace*{10mm}Exp4 $\rightarrow$ ( Exp0 )\\
+          \hspace*{10mm}Op0 $\rightarrow$ ==\\
+          \hspace*{10mm}Op0 $\rightarrow$ !=\\
+        \end{minipage}
+
+        \par
+        Num == Num == Num, está prohibido.\\
+        \centering
+        \vspace{2mm}
+        \begin{tikzpicture}
+          \node[rectangle] (e1) {Exp0};
+
+          \node[rectangle, below =.5 of e1] (op1) {Op0};
+          \node[rectangle, left =.5 of op1] (e2) {Exp1};
+          \node[rectangle, right =.5 of op1] (e3) {Exp1};
+          \node[rectangle, below =.5 of op1] (vop1) {==};
+
+          \path[thick]
+            (e1.south) edge (e2)
+                        edge (op1)
+                        edge (e3)
+            (op1.south) edge (vop1);
+        \end{tikzpicture}
+
+        \begin{minipage}{.5\textwidth}
+          \centering
+          \par
+          \underline{5 = \underline{6 ++}}\\
+          \vspace{2mm}
+          \begin{tikzpicture}
+            \node[rectangle] (e0) {Exp0};
+            \node[rectangle, below=.2 of e0] (e01) {Exp1};
+            \node[rectangle, below=.2 of e01] (e02) {Exp2};
+
+            \node[rectangle, below=.2 of e02] (opp) {++};
+            \node[rectangle, left=.2 of opp] (e1) {Exp2};
+
+            \node[rectangle, below=.2 of e1] (ope) {=};
+            \node[rectangle, left=.2 of ope] (e2) {Exp3};
+            \node[rectangle, right=.2 of ope] (e3) {Exp2};
+
+            \node[rectangle, below=.2 of e2] (e24) {Exp4};
+            \node[rectangle, below=.2 of e24] (ve2) {Num};
+
+            \node[rectangle, below=.2 of e3] (e33) {Exp3};
+            \node[rectangle, below=.2 of e33] (e34) {Exp4};
+            \node[rectangle, below=.2 of e34] (ve3) {Num};
+
+            \path[thick]
+              (e0.south)  edge  (e01)
+              (e01.south) edge  (e02)
+              (e02.south) edge  (e1)
+                          edge  (opp)
+              (e1.south)  edge  (ope)
+                          edge  (e2)
+                          edge  (e3)
+              (e2.south)  edge  (e24)
+              (e24.south) edge  (ve2)
+              (e3.south)  edge  (e33)
+              (e33.south) edge  (e34)
+              (e34.south) edge  (ve3);
+          \end{tikzpicture}
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \centering
+          \par
+          \underline{\underline{5 = 6} ++}\\
+          \vspace{2mm}
+          \begin{tikzpicture}
+            \node[rectangle] (e0) {Exp0};
+            \node[rectangle, below=.2 of e0] (e01) {Exp1};
+            \node[rectangle, below=.2 of e01] (e02) {Exp2};
+
+            \node[rectangle, below=.2 of e02] (ope) {=};
+            \node[rectangle, left=.2 of ope] (e2) {Exp3};
+            \node[rectangle, right=.2 of ope] (e3) {Exp2};
+
+            \node[rectangle, below=.2 of e2] (e24) {Exp4};
+            \node[rectangle, below=.2 of e24] (ve2) {Num};
+
+            \node[rectangle, below=.2 of e3] (e1) {Exp2};
+            \node[rectangle, right=.2 of e1] (opp) {++};
+
+            \node[rectangle, below=.2 of e1] (e13) {Exp3};
+            \node[rectangle, below=.2 of e13] (e14) {Exp4};
+            \node[rectangle, below=.2 of e14] (ve1) {Num};
+
+            \path[thick]
+              (e0.south)  edge  (e01)
+              (e01.south) edge  (e02)
+              (e02.south) edge  (ope)
+                          edge  (e2)
+                          edge  (e3)
+              (e2.south)  edge  (e24)
+              (e24.south) edge  (ve2)
+              (e3.south)  edge  (e1)
+                          edge  (opp)
+              (e13.south) edge  (e14)
+              (e14.south) edge  (ve1);
+          \end{tikzpicture}
+        \end{minipage}
+
+        \vspace{10mm}
+        \begin{minipage}{.5\textwidth}
+          \par
+          Supongamos que el operador ++ no asocia.\\
+          Ahora, Exp2 $\rightarrow$ Exp3 ++
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \centering
+          \par
+          5 = 6 ++\\
+          \vspace{2mm}
+          \begin{tikzpicture}
+            \node[rectangle] (e0) {Exp0};
+            \node[rectangle, below=.2 of e0] (e01) {Exp1};
+            \node[rectangle, below=.2 of e01] (e02) {Exp2};
+
+            \node[rectangle, below=.2 of e02] (ope) {=};
+            \node[rectangle, left=.2 of ope] (e2) {Exp3};
+            \node[rectangle, right=.2 of ope] (e3) {Exp2};
+
+            \node[rectangle, below=.2 of e3] (e1) {Exp3};
+            \node[rectangle, right=.2 of e1] (opp) {++};
+
+            \path[thick]
+              (e0.south)  edge  (e01)
+              (e01.south) edge  (e02)
+              (e02.south) edge  (ope)
+                          edge  (e2)
+                          edge  (e3)
+              (e3.south)  edge  (e1)
+                          edge  (opp);
+          \end{tikzpicture}
+        \end{minipage}
+
+        \vspace{10mm}
+        \begin{minipage}{.5\textwidth}
+          \par
+          Supongamos que el operador ++ es prefijo y asocia.\\
+          Ahora, Exp2 $\rightarrow$ ++ Exp2
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \centering
+          \par
+          5 = 6 ++\\
+          \vspace{2mm}
+          \begin{tikzpicture}
+            \node[rectangle] (e0) {Exp0};
+            \node[rectangle, below=.2 of e0] (e01) {Exp1};
+            \node[rectangle, below=.2 of e01] (e02) {Exp2};
+
+            \node[rectangle, below=.2 of e02] (opp) {++};
+            \node[rectangle, right=.2 of opp] (e1) {Exp2};
+
+            \node[rectangle, below=.2 of e1] (ope) {=};
+            \node[rectangle, left=.2 of ope] (e2) {Exp3};
+            \node[rectangle, right=.2 of ope] (e3) {Exp2};
+
+            \node[rectangle, below=.2 of e2] (e24) {Exp4};
+            \node[rectangle, below=.2 of e24] (ve2) {Num};
+
+            \node[rectangle, below=.2 of e3] (e33) {Exp3};
+            \node[rectangle, below=.2 of e33] (e34) {Exp4};
+            \node[rectangle, below=.2 of e34] (ve3) {Num};
+
+            \path[thick]
+              (e0.south)  edge  (e01)
+              (e01.south) edge  (e02)
+              (e02.south) edge  (e1)
+                          edge  (opp)
+              (e1.south)  edge  (ope)
+                          edge  (e2)
+                          edge  (e3)
+              (e2.south)  edge  (e24)
+              (e24.south) edge  (ve2)
+              (e3.south)  edge  (e33)
+              (e33.south) edge  (e34)
+              (e34.south) edge  (ve3);
+          \end{tikzpicture}
+        \end{minipage}
+      \end{center}
+
+      \begin{itemize}
+        \item Los operadores prefijos que asocian son incompatibles con los operadores que
+          asocian a izquierdas.
+        \item Los operadores postfijos que asocian son incompatibles con los operadores que
+          asocian a derechas.
+      \end{itemize}
+
+      \par
+      \textbf{e.g.} Dada g obtenemos su tabla de operadores.\\
+      \begin{minipage}{.4\textwidth}
+        \hspace*{10mm}Exp0 $\rightarrow$ Exp0 $\rightarrow$ Exp1\\
+        \hspace*{10mm}Exp0 $\rightarrow$ Exp1 $\sim$ Exp1\\
+        \hspace*{10mm}Exp0 $\rightarrow$ \# Exp1\\
+        \hspace*{10mm}Exp0 $\rightarrow$ Exp1\\
+        \hspace*{10mm}Exp1 $\rightarrow$ Exp1 @ Exp2\\
+        \hspace*{10mm}Exp1 $\rightarrow$ Exp2 $\wedge$ Exp2\\
+        \hspace*{10mm}Exp1 $\rightarrow$ Exp2\\
+        \hspace*{10mm}Exp2 $\rightarrow$ Exp2 $\ast$\\
+        \hspace*{10mm}Exp2 $\rightarrow$ Exp3\\
+        \hspace*{10mm}Exp3 $\rightarrow$ Num\\
+        \hspace*{10mm}Exp3 $\rightarrow$ ( Exp0 )\\
+      \end{minipage}%
+      \begin{minipage}{.6\textwidth}
+        \begin{tabular}{||c c c c c||}
+          \hline
+          Operador & Prioridad & Aridad & Tipo & Asociatividad \\ [0.5ex]
+          \hline\hline
+          $\rightarrow$ & 0 & 2 &  & izq. \\
+          \hline
+          $\sim$ & 0 & 2 &  & no \\
+          \hline
+          \# & 0 & 1 & prefijo & no \\
+          \hline
+          @ & 1 & 2 &  & izq. \\
+          \hline
+          $\wedge$ & 1 & 2 &  & no \\
+          \hline
+          $\ast$ & 2 & 1 & postfijo & si \\ [1ex]
+          \hline
+        \end{tabular}
+      \end{minipage}
+
+      \bigskip
+      \par
+      Supongamos que en un mismo nivel de prioridad existen:
+      \begin{itemize}
+        \item +, binario que asocia a izquierdas.
+        \item $-$, unario prefijo que no asocia.
+        \item $\ast$, unario postfijo que asocia.
+      \end{itemize}
+      Hay problemas con estos operadores por conflictos de crecimiento, si un operador crece a
+      izquierdas y el otro a derechas los árboles que generan son incompatibles.
+      \begin{center}
+        \begin{tabular}{||c c c c c||}
+          \hline
+          No & A izquierdas & A derechas & Si & Estado \\ [0.5ex]
+          \hline\hline
+          +, $-$, $\ast$ &  &  &  & Ok \\
+          \hline
+          +, $-$ &  &  & $\ast$ & Ok \\
+          \hline
+          +, $\ast$ &  &  & $-$ & Ok \\
+          \hline
+          $-$, $\ast$ & + &  &  & Ok \\
+          \hline
+          $-$, $\ast$ &  & + &  &  Ok \\
+          \hline
+          $-$ & + &  & $\ast$ & Ok \\
+          \hline
+          $\ast$ &  & + & $-$ & Ok \\
+          \hline
+          & + &  & $\ast$, $-$ & X \\
+          \hline
+          $-$ &  & + & $\ast$ & X \\
+          \hline
+          $\ast$ & + &  & $-$ & X \\
+          \hline
+          &  & + & $\ast$, $-$ & X \\ [1ex]
+          \hline
+        \end{tabular}
+      \end{center}
+
+      \bigskip
+      \par
+      \textbf{e.g.} Lenguaje, especificación completa.\\
+      \vspace{2mm}
+      Un \underline{programa} es una secuencia de una o más instrucciones separadas por ;.\\
+      Se dispone de los siguientes tipos de instrucciones:
+      \begin{itemize}
+        \item Asignación.
+          \par
+          Una variable seguida de $\leftarrow$ seguida de una expresión.
+        \item Si.
+          \par
+          \textbf{IF} expresión Instruncciones \textbf{FI}
+        \item Si-Sino.
+          \par
+          \textbf{IF} expresión\\
+          \hspace{5mm}$I_0$\\
+          \textbf{ELSE}\\
+          \hspace{5mm}$I_1$\\
+          \textbf{FI}
+        \item Bucle.
+          \par
+          \textbf{WHILE} expresion \textbf{DO}\\
+          \hspace{5mm}I\\
+          \textbf{OD}
+        \item Bloque.
+          \par
+          \{ Secuencia de $I_s$ separadas por ; \}
+      \end{itemize}
+
+      \par
+      Las expresiones básicas las componen números (literales) y variables.
+
+      \par
+      Se dispone de los siguientes operadores:
+      \begin{itemize}
+        \item Comparación. $<$, $>$, ==, !=, $<$=, $>$=
+          \par
+          Binarios, menor nivel de prioridad y no asocian.
+        \item Aritméticos. +, $-$, $\ast$, /
+          \par
+          Binarios, más prioridad que los de comparación y asocian a izquierdas.
+        \item Lógicos. and, or
+          \par
+          Binarios, más prioridad que los aritméticos y asocian a derechas.
+        \item Unarios. !, -
+          \par
+          Prefijos, más prioritarios que los lógicos y asocian.
+      \end{itemize}
+
+      \par
+      Se pueden utilizar paréntesis, (...).\\
+      \vspace{2mm}
+      Un posible programa sería:\\
+      \hspace{5mm}x $\leftarrow$ 25\\
+      \hspace{5mm}\textbf{WHILE} x $<$= 50 \textbf{DO}\\
+      \hspace{10mm}x $\leftarrow$ x + 1\\
+      \hspace{5mm}\textbf{OD}
+
+      \begin{center}
+        \begin{tikzpicture}
+          \node[rectangle, draw=black] (p) {Programa};
+          \node[rectangle, draw=black, below=.5 of p] (i) {Instrucciones};
+
+          \node[rectangle, draw=black, below=of i] (isn) {ISiNo};
+          \node[rectangle, draw=black, left=of isn] (is) {ISi};
+          \node[rectangle, draw=black, left=of is] (ia) {IAsig};
+          \node[rectangle, draw=black, right=of isn] (ibu) {IBuc};
+          \node[rectangle, draw=black, right=of ibu] (ibl) {IBlo};
+
+          \node[rectangle, draw=black, below=.5 of isn] (e) {Exp};
+
+          \path[thick, ->]
+            (p.south) edge  node[right, very near start]  {$\ast$} (i)
+            (i.south) edge  (isn)
+                      edge  (is)
+                      edge  (ia)
+                      edge  (ibu)
+                      edge  (ibl)
+            (isn.south) edge  (e)
+            (is.south)  edge  (e)
+            (ia.south)  edge  (e)
+            (ibu.south) edge  (e)
+            (is.west) edge  (i.west)
+            (isn.west)  edge  node[left, very near start] {2} (i.west)
+            (ibu.north) edge  (i.east)
+            (ibl.north) edge  node[right, very near start] {$\ast$}  (i.east);
+        \end{tikzpicture}
+      \end{center}
+
+      \begin{center}
+        \begin{minipage}{.4\textwidth}
+          Programa $\rightarrow$ LI \\
+          LI $\rightarrow$ I \\
+          LI $\rightarrow$ LI ; I \\
+          I $\rightarrow$ IAsig \\
+          I $\rightarrow$ ISi \\
+          I $\rightarrow$ ISino \\
+          I $\rightarrow$ IBuc \\
+          I $\rightarrow$ IBlo \\
+          IAsig $\rightarrow$ \underline{Var} \underline{$\leftarrow$} Exp0 \\
+          ISi $\rightarrow$ \underline{IF} Exp0 I \underline{FI} \\
+          ISino $\rightarrow$ \underline{IF} Exp0 I \underline{ELSE} I \underline{FI} \\
+          IBuc $\rightarrow$ \underline{WHILE} Exp0 \underline{DO} I \underline{OD} \\
+          IBlo $\rightarrow$ \underline{\{} S \underline{\}} \\
+          S $\rightarrow$ $\varepsilon$ \\
+          S $\rightarrow$ LI \\
+        \end{minipage}%
+        \begin{minipage}{.6\textwidth}
+          \begin{tabular}{||c c c c c||}
+            \hline
+            Operador & Prioridad & Aridad & Tipo & Asociatividad \\ [0.5ex]
+            \hline\hline
+            \shortstack{$<$, $>$, ==,\\!=, $<$=, $>$=} & 0 & 2 &  & no \\
+            \hline
+            +, $-$, $\ast$, / & 1 & 2 &  & izq. \\
+            \hline
+            and, or & 2 & 2 &  & der. \\
+            \hline
+            !, - & 3 & 1 & prefijo & si \\ [1ex]
+            \hline
+          \end{tabular}
+          \vspace{2mm}
+          \par
+          \hspace*{5mm}Exp0 $\rightarrow$ Exp1 Op0 Exp1 \\
+          \hspace*{5mm}Exp0 $\rightarrow$ Exp1 \\
+          \hspace*{5mm}Exp1 $\rightarrow$ Exp1 Op1 Exp2 \\
+          \hspace*{5mm}Exp1 $\rightarrow$ Exp2 \\
+          \hspace*{5mm}Exp2 $\rightarrow$ Exp3 Op2 Exp2 \\
+          \hspace*{5mm}Exp2 $\rightarrow$ Exp3 \\
+          \hspace*{5mm}Exp3 $\rightarrow$ Op3 Exp3 \\
+          \hspace*{5mm}Exp3 $\rightarrow$ Exp4 \\
+          \hspace*{5mm}Exp4 $\rightarrow$ ( Exp0 ) \\
+          \hspace*{5mm}Exp4 $\rightarrow$ Num \\
+          \hspace*{5mm}Exp4 $\rightarrow$ Var \\
+          OpX se corresponde con los operadores del nivel X.
+        \end{minipage}
+      \end{center}
+
+  \newpage
+  \section{Implementación}
+    \par
+    Vamos a ver analizadores descencentes (top-down parsers), concretamente implementaremos
+    analizadores sintácticos predictivos recursivos descendentes.
+
+    \bigskip
+    \par
+    Los árboles expanden de izquierda a derecha equivalente a una derivación más a
+    la izquierda, los algoritmos que veremos se basan en este tipo de derivación.
+
+    \bigskip
+    \par
+    \textbf{e.g.} 0101\\
+    \begin{center}
+      \begin{minipage}{.2\textwidth}
+        N $\rightarrow$ N B\\
+        N $\rightarrow$ B\\
+        B $\rightarrow$ 0\\
+        B $\rightarrow$ 1\\
+      \end{minipage}%
+      \begin{minipage}{.4\textwidth}
+        \begin{tikzpicture}
+          \node[rectangle] (n0) {N};
+
+          \node[rectangle, below left=.5 of n0] (n1) {N};
+          \node[rectangle, below right=.5 of n0] (b1) {B};
+
+          \node[rectangle, below=.5 of b1] (vb1) {1};
+
+          \node[rectangle, below left=.5 of n1] (n2) {N};
+          \node[rectangle, below right=.5 of n1] (b2) {B};
+
+          \node[rectangle, below=.5 of b2] (vb2) {0};
+
+          \node[rectangle, below left=.5 of n2] (n3) {N};
+          \node[rectangle, below right=.5 of n2] (b3) {B};
+
+          \node[rectangle, below=.5 of b3] (vb3) {1};
+
+          \node[rectangle, below=.5 of n3] (b4) {B};
+
+          \node[rectangle, below=.5 of b4] (vb4) {0};
+
+          \path
+            (n0.south)  edge  node[above left]  {1} (n1.north)
+                        edge  node[above right]  {10} (b1.north)
+            (n1.south)  edge  node[above left]  {2} (n2.north)
+                        edge  node[above right]  {8} (b2.north)
+            (n2.south)  edge  node[above left]  {3} (n3.north)
+                        edge  node[above right]  {6} (b3.north)
+            (n3.south)  edge  node[left]  {4} (b4.north)
+            (b1.south)  edge  node[right]  {11} (vb1.north)
+            (b2.south)  edge  node[left]  {9} (vb2.north)
+            (b3.south)  edge  node[right]  {7} (vb3.north)
+            (b4.south)  edge  node[left]  {5} (vb4.north);
+        \end{tikzpicture}
+      \end{minipage}%
+      \begin{minipage}{.4\textwidth}
+        {\color{red}N} $\Rightarrow$ {\color{red}N}B $\Rightarrow$ {\color{red}N}BB $\Rightarrow$
+        {\color{red}N}BBB $\Rightarrow$ {\color{red}B}BBB $\Rightarrow$ 0{\color{red}B}BB
+        $\Rightarrow$ 01{\color{red}B}B $\Rightarrow$ 010{\color{red}B} $\Rightarrow$ 0101
+      \end{minipage}
+    \end{center}
+
+    \vspace{5mm}
+    \begin{center}
+      \begin{tabular}{||r c c||}
+        \hline
+        Pila de analisis ($\leftarrow$) & Entrada & Movimiento \\ [0.5ex]
+        \hline\hline
+        N & $\mid$0101 & Expandir N $\rightarrow$ N B\\
+        \hline
+        NB & $\mid$0101 & Expandir N $\rightarrow$ N B\\
+        \hline
+        NBB & $\mid$0101 & Expandir N $\rightarrow$ N B\\
+        \hline
+        NBBB & $\mid$0101 & Expandir N $\rightarrow$ B\\
+        \hline
+        BBBB & $\mid$0101 & Expandir B $\rightarrow$ 0 \\
+        \hline
+        0BBB & $\mid$0101 & Desplazar 0\\
+        \hline
+        BBB & 0$\mid$101 & Expandir B $\rightarrow$ 1\\
+        \hline
+        1BB & 0$\mid$101 & Desplazar 1\\
+        \hline
+        BB & 01$\mid$01 & Expandir B $\rightarrow$ 0\\
+        \hline
+        0B & 01$\mid$01 & Desplazar 0\\
+        \hline
+        B & 010$\mid$1 & Expandir B $\rightarrow$ 1\\
+        \hline
+        1 & 010$\mid$1 & Desplazar 1\\
+        \hline
+        & 0101$\mid$ & Aceptar\\ [1ex]
+        \hline
+      \end{tabular}
+    \end{center}
+
+    \begin{center}
+      \begin{minipage}{.2\textwidth}
+        \par
+        Gramática\\
+        \hspace*{5mm}N' $\rightarrow$ N $\vdash$\\
+        \hspace*{5mm}N $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ $\varepsilon$\\
+        \hspace*{5mm}B $\rightarrow$ 0\\
+        \hspace*{5mm}B $\rightarrow$ 1
+      \end{minipage}%
+      \begin{minipage}{.8\textwidth}
+        \par
+        Los no terminales se interpretan como funciones que reconocen partes de la entrada.\\
+        Las decisiones se basan en un token, el algoritmo siempre lleva un token adelantado.\\
+        Los terminales consumen el token si coincide y rechazan la entrada si no.\\
+        Para asegurarse de que la cadena pertenece y no solo un prefijo siempre se añade una
+        producción adicional, N', que llama al simbolo inicial y luego reconoce el fin de fichero.
+      \end{minipage}
+    \end{center}
+
+    \par
+    \textbf{Pseudocódigo}
+    \begin{center}
+      \begin{minipage}{.2\textwidth}
+        $N_p$() \{\\
+        \hspace*{5mm}N();\\
+        \hspace*{5mm}rec(EOF);\\
+        \}
+      \end{minipage}%
+      \begin{minipage}{.2\textwidth}
+        N() \{\\
+        \hspace*{5mm}B();\\
+        \hspace*{5mm}R();\\
+        \}
+      \end{minipage}%
+      \begin{minipage}{.6\textwidth}
+        rec(T) \{\\
+        \hspace*{5mm}\textbf{if} sigToken == T \textbf{then}\\
+        \hspace*{10mm}sigToken $\leftarrow$ sigToken();\\
+        \hspace*{5mm}\textbf{else}\\
+        \hspace*{10mm}error\\
+        \hspace*{5mm}\textbf{fi}\\
+        \}
+      \end{minipage}
+
+      \begin{minipage}{.5\textwidth}
+        B() \{\\
+        \hspace*{5mm}\textbf{if} sigToken == 0 \textbf{then}\\
+        \hspace*{10mm}rec(0);\\
+        \hspace*{5mm}\textbf{else}\\
+        \hspace*{10mm}rec(1);\\
+        \hspace*{5mm}\textbf{fi}\\
+        \}
+      \end{minipage}%
+      \begin{minipage}{.5\textwidth}
+        R() \{\\
+        \hspace*{5mm}\textbf{if} sigToken $\in$ \{0,1\} \textbf{then}\\
+        \hspace*{10mm}B();\\
+        \hspace*{10mm}R();\\
+        \hspace*{5mm}\textbf{fi}\\
+        \}
+      \end{minipage}
+    \end{center}
+
+    \par
+    \textbf{e.g.} 0101$\vdash$\\
+    \begin{center}
+      \begin{tikzpicture}
+        \node[rectangle] (np) {$N_p$};
+
+        \node[rectangle, below left=.5 of np] (n1) {N};
+        \node[rectangle, below right=.5 of np] (r1) {rec(EOF)};
+
+        \node[rectangle, below left=.5 of n1] (b2) {B};
+        \node[rectangle, below right=.5 of n1] (r2) {R};
+
+        \node[rectangle, below =.5 of b2] (rb2) {rec(0)};
+
+        \node[rectangle, below left=.5 of r2] (b3) {B};
+        \node[rectangle, below right=.5 of r2] (r3) {R};
+
+        \node[rectangle, below =.5 of b3] (rb3) {rec(1)};
+
+        \node[rectangle, below left=.5 of r3] (b4) {B};
+        \node[rectangle, below right=.5 of r3] (r4) {R};
+
+        \node[rectangle, below =.5 of b4] (rb4) {rec(0)};
+
+        \node[rectangle, below left=.5 of r4] (b5) {B};
+        \node[rectangle, below right=.5 of r4] (r5) {R};
+
+        \node[rectangle, below =.5 of b5] (rb5) {rec(1)};
+
+        \node[rectangle, below =.5 of r5] (vr5) {$\varepsilon$};
+
+        \path
+          (np.south)  edge  node[above left]  {1} (n1.north)
+                      edge  node[above right] {15} (r1.north)
+          (n1.south)  edge  node[above left]  {2} (b2.north)
+                      edge  node[above right] {4} (r2.north)
+          (b2.south)  edge  node[right] {3} (rb2.north)
+          (r2.south)  edge  node[above left]  {5} (b3.north)
+                      edge  node[above right] {7} (r3.north)
+          (b3.south)  edge  node[right] {6} (rb3.north)
+          (r3.south)  edge  node[above left]  {8} (b4.north)
+                      edge  node[above right] {10}  (r4.north)
+          (b4.south)  edge  node[right] {9} (rb4.north)
+          (r4.south)  edge  node[above left]  {11} (b5.north)
+                      edge  node[above right] {13}  (r5.north)
+          (b5.south)  edge  node[right] {12} (rb5.north)
+          (r5.south)  edge  node[right] {14} (vr5.north);
+      \end{tikzpicture}
+    \end{center}
+
+    \newpage
+    \par
+    \textbf{¿Funciona este método para cualquier gramática?}
+
+    \bigskip
+    \par
+    Como se puede ver con un único token no es posible decidir que producción usar.
+    \begin{center}
+      \begin{minipage}{.2\textwidth}
+        A $\rightarrow$ 0 X\\
+        A $\rightarrow$ 0 Y
+      \end{minipage}%
+      \begin{minipage}{.2\textwidth}
+        L $\rightarrow$ L i\\
+        L $\rightarrow$ i
+      \end{minipage}
+    \end{center}
+
+    \par
+    En general la recursión a izquierdas es problemática para esta metodologia. La solución
+    es transformar estas gramáticas con métodos que veremos más adelante.
+
+    \vspace{5mm}
+    \begin{tikzpicture}
+      \node[rectangle] (input) {G};
+      \node[unit, right=of input, align=center] (alg) {Algoritmo\\de cálculo de\\las decisiones
+        \\de expansión};
+      \node[rectangle, right=of alg, align=left] (output) {Para A\\\hspace{5mm}si el sig. token es $C_0$...
+        $C_n$ aplica A $\rightarrow$ $\alpha_0$\\\hspace{5mm}...\\Para B\\\hspace{5mm}...};
+
+      \draw[myarrow] (input.east) -- ++(0,0) -> (alg.west);
+      \draw[myarrow] (alg.east) -- ++(0,0) -> (output.west);
+    \end{tikzpicture}
+
+    \vspace{3mm}
+    \par
+    Con este método podemos implementar gramáticas LL(1).\\
+    Si tenemos A $\rightarrow$ $\alpha$ tenemos que preguntarnos por qué token pueden empezar las
+    cadenas de $\alpha$ y comprobar sigToken.
+
+    \bigskip
+    \par
+    Vamos a definir una función que emplearemos más adelante:\\
+    \vspace{2mm}
+    {\large \textbf{PRIM($\alpha$)}}, primeros de $\alpha$.\\
+    Son todos los terminales que pueden comenzar sentencias derivables desde $\alpha$. Además,
+    $\varepsilon$ $\in$ PRIM($\alpha$) si $\alpha$ $\Rightarrow^\ast$ $\varepsilon$.
+
+    \par
+    \textbf{e.g.}
+    \begin{center}
+      \begin{minipage}{.3\textwidth}
+        \hspace*{5mm}N $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ $\varepsilon$\\
+        \hspace*{5mm}B $\rightarrow$ 0\\
+        \hspace*{5mm}B $\rightarrow$ 1
+      \end{minipage}%
+      \begin{minipage}{.7\textwidth}
+        PRIM(N) = \{0, 1\}\\
+        PRIM(B R) = \{0, 1\}
+      \end{minipage}
+    \end{center}
+
+    \par
+    Luego A$\rightarrow$ $\alpha$ se podrá aplicar durante la expansión si el siguiente simbolo
+    $\in$ PRIM($\alpha$)-\{$\varepsilon$\}. Al conjunto de estos símbolos se le denomina
+    directores, Dir(A $\rightarrow$ $\alpha$).\\
+    \vspace{2mm}
+    \hspace{5mm}PRIM($\alpha$)-\{$\varepsilon$\} $\subseteq$ Dir(A $\rightarrow$ $\alpha$)
+
+    \par
+    Introducimos un operador, concatenación en modulo $\varepsilon$ denotada por el símbolo
+    $\oplus$.\\
+    \vspace{2mm}
+    \hspace{5mm}$\Gamma_0$ $\oplus$ $\Gamma_1$ = ($\Gamma_0$ - \{$\varepsilon$\}) $\cup$ $\Gamma_1$
+      \hspace{10mm}si $\varepsilon$ $\in$ $\Gamma_0$\\
+    \hspace{24.5mm}($\Gamma_0$ - \{$\varepsilon$\}) $\cup$ \O \hspace{11mm}c.o.c.
+
+    \par
+    \textbf{e.g.}\\
+    \hspace{5mm}\{a, b\} $\oplus$ \{c, d\} = \{a, b\}\\
+    \hspace{5mm}\{a, b, $\varepsilon$\} $\oplus$ \{c, d\} = \{a, b, c, d\}\\
+    \hspace{5mm}\{a, b, $\varepsilon$\} $\oplus$ \{c, d, $\varepsilon$\} = \{a, b, c, d,
+      $\varepsilon$\}
+
+    \bigskip
+    \par
+    Sea \textbf{a} un terminal y \textbf{A} un no terminal.\\
+    \hspace{5mm}PRIM(a) = \{a\}\\
+    \hspace{5mm}PRIM($\varepsilon$) = \{$\varepsilon$\}\\
+    \hspace{5mm}PRIM(A) = $\cup$ PRIM($\alpha_i$) \hspace{5mm}donde \{$\alpha$ $\mid$ A
+      $\rightarrow$ $\alpha$\}\\
+
+    \bigskip
+    \par
+    En general:\\
+    \begin{center}
+      \large
+      PRIM($X_0$...$X_n$) = PRIM($X_0$) $\oplus$ PRIM($X_1$) $\oplus$ ... $\oplus$ PRIM($X_n$)
+    \end{center}
+
+    \par
+    \textbf{e.g.}\\
+    \hspace{5mm}PRIM(B R) = PRIM(B) $\oplus$ PRIM(R)
+
+    \bigskip
+    \par
+    \textbf{e.g.}\\
+    \begin{center}
+      \begin{minipage}{.3\textwidth}
+        \hspace*{5mm}N $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ $\varepsilon$\\
+        \hspace*{5mm}B $\rightarrow$ 0\\
+        \hspace*{5mm}B $\rightarrow$ 1
+      \end{minipage}%
+      \begin{minipage}{.7\textwidth}
+        PRIM(N) = PRIM(B) $\oplus$ PRIM(R)\\
+        PRIM(R) = PRIM(B) $\oplus$ PRIM(R) $\cup$ PRIM($\varepsilon$)\\
+        PRIM(B) = PRIM(0) $\cup$ PRIM(1)
+      \end{minipage}
+    \end{center}
 \end{document}
