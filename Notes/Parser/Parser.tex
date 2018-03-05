@@ -1525,9 +1525,198 @@
         \hspace*{5mm}B $\rightarrow$ 1
       \end{minipage}%
       \begin{minipage}{.7\textwidth}
+        \par
         PRIM(N) = PRIM(B) $\oplus$ PRIM(R)\\
         PRIM(R) = PRIM(B) $\oplus$ PRIM(R) $\cup$ PRIM($\varepsilon$)\\
         PRIM(B) = PRIM(0) $\cup$ PRIM(1)
+
+        \bigskip
+        \par
+        Por tanto:\\
+        PRIM(B) = \{0, 1\}\\
+        PRIM(R) = \{0, 1\} $\cup$ \{$\varepsilon$\}\\
+        PRIM(N) = \{0, 1\}
+      \end{minipage}
+    \end{center}
+
+    \bigskip
+    \par
+    Los primeros no resuelven R $\rightarrow$ $\varepsilon$ porque el cuerpo de la regla se puede
+    anular, necesitamos más terminales.
+
+    \bigskip
+    \par
+    Introducimos el operador siguientes de A, {\large SIG(A)}.\\
+    El operador se define como el conjunto de posibles terminales que siguen en las sentencias del
+    lenguaje los fragmentos derivados de A.\\
+    \vspace{2mm}
+    $\vdash$ $\in$ SIG(S), donde S es el símbolo inicial.\\
+    Dada la producción A $\rightarrow$ $\alpha$B$\beta$ sabemos que:
+    \begin{itemize}
+      \item PRIM($\beta$) - \{$\varepsilon$\} $\subseteq$ SIG(B)
+      \item Si $\varepsilon$ $\in$ PRIM($\beta$) $\Rightarrow$ SIG(A) $\subseteq$ SIG(B)
+    \end{itemize}
+
+    \par
+    \textbf{e.g.}
+    \begin{center}
+      \begin{minipage}{.35\textwidth}
+        \hspace*{5mm}Obj $\rightarrow$ Desig RParams\\
+        \hspace*{5mm}RParams $\rightarrow$ ( LParams )\\
+        \hspace*{5mm}RParams $\rightarrow$ $\varepsilon$
+      \end{minipage}%
+      \begin{minipage}{.65\textwidth}
+        \hspace*{5mm}SIG(Desig) = PRIM(RParams) - \{$\varepsilon$\} $\cup$ SIG(Obj)\\
+        \hspace*{5mm}SIG(Obj) = \{;\}\\
+        \hspace*{5mm}PRIM(RParams) = \{(, $\varepsilon$\}\\
+        \hspace*{5mm}SIG(Desig) = \{(, ;\}
+      \end{minipage}
+    \end{center}
+
+    \newpage
+    \par
+    \textbf{e.g.}
+    \begin{center}
+      \begin{minipage}{.3\textwidth}
+        \hspace*{5mm}N $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ $\varepsilon$\\
+        \hspace*{5mm}B $\rightarrow$ 0\\
+        \hspace*{5mm}B $\rightarrow$ 1
+      \end{minipage}%
+      \begin{minipage}{.65\textwidth}
+        \hspace*{5mm}SIG(N) = \{$\vdash$\}\\
+        \hspace*{5mm}SIG(R) = PRIM($\varepsilon$) $\oplus$ SIG(N) $\cup$ PRIM($\varepsilon$)
+          $\oplus$ SIG(R)\\
+        \hspace*{19mm}= \{$\varepsilon$\} $\oplus$ SIG(N) $\cup$ \{$\varepsilon$\} $\oplus$
+          SIG(R)\\
+        \hspace*{19mm}= SIG(N) $\cup$ SIG(R)\\
+        \hspace*{19mm}= \{$\vdash$\} $\cup$ SIG(R)\\
+        \hspace*{19mm}= \{$\vdash$\}\\
+        \hspace*{5mm}SIG(B) = PRIM(R) $\oplus$ SIG(N) $\cup$ PRIM(R) $\oplus$ SIG(R)\\
+        \hspace*{19mm}= \{0, 1, $\varepsilon$\} $\oplus$ SIG(N) $\cup$ \{0, 1, $\varepsilon$\}
+          $\oplus$ SIG(R)\\
+        \hspace*{19mm}= \{0, 1, $\vdash$\} $\cup$ \{0, 1, $\vdash$\}
+      \end{minipage}
+    \end{center}
+
+    \bigskip
+    \par
+    Revisemos ahora los el conjunto de directores, teniamos que:\\
+    \hspace{10mm}{\large DIR(A $\rightarrow$ $\alpha$) = PRIM($\alpha$) - \{$\varepsilon$\}}\\
+    Pero ahora al anularse podemos definir qué ocurre, la formula quedaria:\\
+    \hspace{10mm}{\large DIR(A $\rightarrow$ $\alpha$) = PRIM($\alpha$) $\oplus$ SIG(A)}
+
+    \par
+    \textbf{e.g.}
+    \begin{center}
+      \begin{minipage}{.3\textwidth}
+        \hspace*{5mm}N $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ B R\\
+        \hspace*{5mm}R $\rightarrow$ $\varepsilon$\\
+        \hspace*{5mm}B $\rightarrow$ 0\\
+        \hspace*{5mm}B $\rightarrow$ 1
+      \end{minipage}%
+      \begin{minipage}{.65\textwidth}
+        \hspace*{5mm}DIR(N $\rightarrow$ B R) = PRIM(B R) $\oplus$ SIG(N)\\
+        \hspace*{33mm}= PRIM(B) $\oplus$ PRIM(R) $\oplus$ SIG(N)\\
+        \hspace*{33mm}= \{0, 1\}\\
+        \hspace*{5mm}DIR(R $\rightarrow$ B R) = \{0, 1\}\\
+        \hspace*{5mm}DIR(R $\rightarrow$ $\varepsilon$) = PRIM($\varepsilon$) $\oplus$ SIG(R)\\
+        \hspace*{28mm}= \{$\varepsilon$\} $\oplus$ SIG(R)\\
+        \hspace*{28mm}= \{$\vdash$\}\\
+        \hspace*{5mm}DIR(B $\rightarrow$ 0) = \{0\}\\
+        \hspace*{5mm}DIR(B $\rightarrow$ 1) = \{1\}
+      \end{minipage}
+    \end{center}
+
+    \bigskip
+    \par
+    Sea G una gramática LL1 de la forma\\
+    \hspace{5mm}A $\rightarrow$ $\alpha$\\
+    \hspace{5mm}A $\rightarrow$ $\beta$\\
+    siempre se cumple que DIR(A $\rightarrow$ $\alpha$) $\cap$ DIR(A $\rightarrow$ $\beta$) = \O
+
+    \bigskip
+    \par
+    Revisemos ahora el pseudocódigo de R.
+    \begin{center}
+      \begin{minipage}{.4\textwidth}
+        R() \{\\
+        \hspace*{5mm}\textbf{if} sigToken $\in$ \{0,1\} \textbf{then}\\
+        \hspace*{10mm}B();\\
+        \hspace*{10mm}R();\\
+        \hspace*{5mm}\textbf{elif} sigToken $\in$ \{$\vdash$\} \textbf{then}\\
+        \hspace*{10mm}//TODO\\
+        \hspace*{5mm}\textbf{else}\\
+        \hspace*{10mm}error(\{0, 1, $\vdash$\})\\
+        \hspace*{5mm}\textbf{fi}\\
+        \}
+      \end{minipage}%
+      \begin{minipage}{.6\textwidth}
+        error($\Gamma$) \{\\
+        \hspace*{5mm}\textbf{print} Token inesperado sigToken, se esperaba $\Gamma$.\\
+        \}
+      \end{minipage}
+    \end{center}
+
+    \bigskip
+    \par
+    \textbf{e.g.}
+    \begin{center}
+      \begin{minipage}{.25\textwidth}
+        L $\rightarrow$ [ $E_s$ ]\\
+        $E_s$ $\rightarrow$ $LI_s$\\
+        $E_s$ $\rightarrow$ $\varepsilon$\\
+        $LI_s$ $\rightarrow$ I $RLI_s$\\
+        $RLI_s$ $\rightarrow$ , I $RLI_s$\\
+        $RLI_s$ $\rightarrow$ $\varepsilon$\\
+        I $\rightarrow$ a\\
+        I $\rightarrow$ L\\
+        \vspace*{2mm}
+
+        [a, a, [ ], [a, a]]
+      \end{minipage}%
+      \begin{minipage}{.75\textwidth}
+        PRIM(L) = PRIM([) $\oplus$ PRIM($E_s$) $\oplus$ PRIM(])\\
+        \hspace*{17mm}= \{[\}\\
+        PRIM($E_s$) = PRIM($LI_s$) $\cup$ PRIM($\varepsilon$)\\
+        \hspace*{19mm}= \{a, [, $\varepsilon$\}\\
+        PRIM($LI_s$) = PRIM(I) $\oplus$ PRIM($RLI_s$)\\
+        \hspace*{20.5mm}= \{a, [\}\\
+        PRIM($RLI_s$) = PRIM(,) $\oplus$ PRIM(I) $\oplus$ PRIM($RLI_s$) $\cup$ PRIM($\varepsilon$)\\
+        \hspace*{23.5mm}= \{{\LARGE ,} , $\varepsilon$\}\\
+        PRIM(I) = PRIM(a) $\cup$ PRIM(L)\\
+        \hspace*{16mm}= \{a, [\}\\
+      \end{minipage}
+
+      \vspace{5mm}
+      \begin{minipage}{.75\textwidth}
+        SIG(L) = \{$\vdash$\} $\cup$ PRIM($\varepsilon$) $\oplus$ SIG(I)\\
+        \hspace*{13.5mm}= \{$\vdash$, {\LARGE ,} ,[\}\\
+        SIG($E_s$) = PRIM(]) $\oplus$ SIG(L)\\
+        \hspace*{15.5mm}= \{]\}\\
+        SIG($LI_s$) = PRIM($\varepsilon$) $\oplus$ SIG($E_s$)\\
+        \hspace*{17mm}= \{]\}\\
+        SIG($RLI_s$) = PRIM($\varepsilon$) $\oplus$ SIG($LI_s$) $\cup$ PRIM($\varepsilon$)
+          $\oplus$ SIG($RLI_s$)\\
+        \hspace*{20mm}= \{]\}\\
+        SIG(I) = PRIM($RLI_s$) $\oplus$ SIG($LI_s$) $\cup$ PRIM($RLI_s$) $\oplus$ SIG($RLI_s$)\\
+        \hspace*{12mm}= \{{\LARGE ,}, ]\}\\
+      \end{minipage}
+
+      \vspace{5mm}
+      \begin{minipage}{.75\textwidth}
+        DIR(L $\rightarrow$ [ $E_s$ ]) = PRIM([ $E_s$ ]) $\oplus$ SIG(L)\\
+        \hspace*{29.5mm}= PRIM([) $\oplus$ PRIM($E_s$) $\oplus$ PRIM(]) $\oplus$ SIG(L)\\
+        \hspace*{29.5mm}= \{[\}\\
+        DIR($E_s$ $\rightarrow$ $LI_s$) = \{a, [\}\\
+        DIR($E_s$ $\rightarrow$ $\varepsilon$) = \{]\}\\
+        DIR($LI_s$ $\rightarrow$ I $RLI_s$) = \{a, [\}\\
+        DIR($RLI_s$ $\rightarrow$ , I $RLI_s$) = \{{\LARGE ,}\}\\
+        DIR($RLI_s$ $\rightarrow$ $\varepsilon$) = \{]\}\\
+        DIR(I $\rightarrow$ a) = \{a\}\\
+        DIR(I $\rightarrow$ L) = \{[\}
       \end{minipage}
     \end{center}
 \end{document}
