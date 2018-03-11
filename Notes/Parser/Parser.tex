@@ -343,7 +343,7 @@
       \end{center}
 
       \par
-      Cada operador tiene un nivel de prioridad, pueden existir multiples operadores con un mismo
+      Cada operador tiene un nivel de prioridad, pueden existir múlitples operadores con un mismo
       nivel.
       \begin{itemize}
         \item Operadores binarios infijos.\\
@@ -405,7 +405,7 @@
 
       \par
       Si existen varios operadores con la misma prioridad pero que asocian distinto porque existen
-      multiples interpretaciones.
+      múlitples interpretaciones.
       \begin{center}
         \begin{minipage}{.65\textwidth}
           \begin{tabular}{||c c c c c||}
@@ -1723,16 +1723,295 @@
     \subsection{Resolución por aproximaciones sucesivas}
       \par
       La resolución por sustitución nos ha servido hasta ahora pero es un problema ante gramáticas
-      con multiples equiaciones del tipo:
+      con múlitples equiaciones del tipo:
       \begin{center}
-        \hspace{1mm}\overrightarrow{x} = $\Phi$ [\overrightarrow{x}], \overrightarrow{x} $in$ U con U finito.\\
+        \hspace{1mm}\overrightarrow{x} = $\Phi$ [\overrightarrow{x}], \overrightarrow{x} $in$ U
+        con U finito.\\
         \hspace{1mm}\overrightarrow{x} es un punto fijo de $\Phi$
       \end{center}
 
       \par
       Planteamos ahora como método la resolución por aproximaciones sucesivas.
       \begin{center}
-        \hspace{1mm}\overrightarrow{$x_0$}: \overrightarrow{$x_{0 i}$} = \O para cada i.\\
-        \hspace{1mm}\overrightarrow{$x_{n+1}$} = $\Phi$(\overrightarrow{$X_n$})
+        \hspace{1mm}$\overrightarrow{x}_0$: $\overrightarrow{x}_{0 i}$ = \O, para cada i.\\
+        \hspace{1mm}$\overrightarrow{x}_{n+1}$ = $\Phi$($\overrightarrow{X}_n$)
       \end{center}
+      Si $\overrightarrow{x}_n$ tal que $\Phi$($\overrightarrow{X}_n$) =
+      $\overrightarrow{x}_n$, entonces $\overrightarrow{x}_n$ satisface \overrightarrow{x} =
+      $\Phi$[\overrightarrow{X}].\\
+      $\overrightarrow{x}_n$ es el mínimo punto fijo.
+
+      \bigskip
+      \par
+      \textbf{e.g.}
+      \begin{center}
+        \begin{minipage}{.3\textwidth}
+          \hspace*{5mm}L $\rightarrow$ [ $I_s$ ]\\
+          \hspace*{5mm}$I_s$ $\rightarrow$ $LI_s$ \\
+          \hspace*{5mm}$I_s$ $\rightarrow$ $\varepsilon$\\
+          \hspace*{5mm}$LI_s$ $\rightarrow$ I $RLI_s$ \\
+          \hspace*{5mm}$RLI_s$ $\rightarrow$ , I $RLI_s$ \\
+          \hspace*{5mm}$RLI_s$ $\rightarrow$ $\varepsilon$\\
+          \hspace*{5mm}I $\rightarrow$ a\\
+          \hspace*{5mm}I $\rightarrow$ L\\
+        \end{minipage}%
+        \begin{minipage}{.7\textwidth}
+          PRIM(L) = PRIM([) $\oplus$ PRIM($I_s$) $\oplus$ PRIM(])\\
+          PRIM($I_s$) = PRIM($LI_s$) $\cup$ PRIM($\varepsilon$)\\
+          PRIM($LI_s$) = PRIM(I) $\oplus$ PRIM($RLI_s$)\\
+          PRIM($RLI_s$) = PRIM(,) $\oplus$ PRIM(]) $\oplus$ PRIM($RLI_s$) $\cup$\\
+          \hspace*{28mm}PRIM($\varepsilon$)\\
+          PRIM(I) = PRIM(a) $\cup$ PRIM(L)\\
+          \vspace*{2mm}
+
+          \begin{tabular}{||c c c c c c c||}
+            \hline
+            Iteración & 0 & 1 & 2 & 3 & 4 & 5 \\ [0.5ex]
+            \hline\hline
+            PRIM(L) & \O & [ & [ & [ & [ & [ \\
+            \hline
+            PRIM($I_s$) & \O & $\varepsilon$ & $\varepsilon$ & a $\varepsilon$ & a [ $\varepsilon$
+              & a [ $\varepsilon$ \\
+            \hline
+            PRIM($LI_s$) & \O & \O & a & a [ & a [ & a [ \\
+            \hline
+            PRIM($RLI_s$) & \O & , $\varepsilon$ & , $\varepsilon$ & , $\varepsilon$ & , $\varepsilon$
+              & , $\varepsilon$ \\
+            \hline
+            PRIM(I) & \O & a & a [ & a [ & a [ & a [ \\ [1ex]
+            \hline
+          \end{tabular}
+        \end{minipage}
+      \end{center}
+
+      \par
+      Como en la iteración 5 ya no se han producido cambios, se ha estabilizado, sabemos que hemos
+      alcanzado el mínimo punto fijo.
+
+      \bigskip
+      \par
+      Los siguientes se pueden calcular con el mismo tipo de algoritmo.
+
+    \subsection{Transformación de gramáticas}
+      \par
+      Con los métodos que conocemos tenemos problemas para implementar gramáticas como\\
+      \hspace{5mm}$E_0$ $\rightarrow$ $E_0$ + $E_1$\\
+      \hspace{5mm}$E_0$ $\rightarrow$ $E_1$\\
+      porque\\
+      \hspace{5mm}PRIM($E_1$) $\subseteq$ PRIM($E_0$), por la regla (2)\\
+      \hspace{5mm}PRIM($E_0$) $-$ \{$\varepsilon$\} $\subseteq$ DIR($E_0$ $\rightarrow$ $E_0$ + $E_1$)\\
+      \hspace{5mm}PRIM($E_1$) $-$ \{$\varepsilon$\} $\subseteq$ DIR($E_0$ $\rightarrow$ $E_1$)\\
+      \hspace{5mm}PRIM($E_1$) $-$ \{$\varepsilon$\} $\subseteq$ DIR($E_0$ $\rightarrow$ $E_0$ + $E_1$)
+
+      \bigskip
+      \par
+      Por las últimas dos conclusiones vemos un problema, los directores no son disjuntos,
+      que nos impide decidir.
+
+      \bigskip
+      \par
+      Sea G una gramática de la forma\\
+      \hspace{5mm}A $\rightarrow$ {\color{red}$\alpha$} $\beta_0$\\
+      \hspace{5mm}...\\
+      \hspace{5mm}A $\rightarrow$ {\color{red}$\alpha$} $\beta_n$\\
+      \newpage
+      podemos crear G', la gramática transformada, sacando el factor común\\
+      \hspace{5mm}A $\rightarrow$ $\alpha$ RA\\
+      \hspace{5mm}RA $\rightarrow$ $\beta_0$\\
+      \hspace{5mm}...\\
+      \hspace{5mm}RA $\rightarrow$ $\beta_n$\\
+
+      \bigskip
+      \par
+      \textbf{e.g.}
+      \begin{center}
+        \begin{minipage}{.3\textwidth}
+          \hspace*{5mm}$E_0$ $\rightarrow$ {\color{red}$E_1$} + $E_0$\\
+          \hspace*{5mm}$E_0$ $\rightarrow$ {\color{red}$E_1$}\\
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \hspace*{5mm}$E_0$ $\rightarrow$ $E_1$ $R_0$\\
+          \hspace*{5mm}$R_0$ $\rightarrow$ + $E_0$\\
+          \hspace*{5mm}$R_0$ $\rightarrow$ $\varepsilon$\\
+        \end{minipage}
+      \end{center}
+
+      \bigskip
+      \par
+      Veamos ahora como tratar la recursón. Sea G una gramática de la forma\\
+      \hspace{5mm}A $\rightarrow$ {\color{red}A} $\alpha_0$\\
+      \hspace{5mm}...\\
+      \hspace{5mm}A $\rightarrow$ {\color{red}A} $\alpha_n$\\
+      \hspace{5mm}A $\rightarrow$ $\beta_0$\\
+      \hspace{5mm}...\\
+      \hspace{5mm}A $\rightarrow$ $\beta_n$\\
+      podemos crear G' cambiando el tipo de recursión, de izquierdas a derechas.\\
+      \begin{center}
+        \begin{minipage}{.2\textwidth}
+          A $\rightarrow$ $\beta_0$ $R_A$\\
+          ...\\
+          A $\rightarrow$ $\beta_n$ $R_A$\\
+          $R_A$ $\rightarrow$ $\alpha_0$ $R_A$\\
+          ...\\
+          $R_A$ $\rightarrow$ $\alpha_n$ $R_A$\\
+          $R_A$ $\rightarrow$ $\varepsilon$\\
+        \end{minipage}%
+        \begin{minipage}{.4\textwidth}
+          \begin{tikzpicture}
+            \node[rectangle] (a0) {A};
+
+            \node[rectangle, below left =.4 of a0] (a1) {A};
+            \node[rectangle, below right =.4 of a0] (al1) {$\alpha_3$};
+
+            \node[rectangle, below left =.4 of a1] (a2) {A};
+            \node[rectangle, below right =.4 of a1] (al2) {$\alpha_2$};
+
+            \node[rectangle, below left =.4 of a2] (a3) {A};
+            \node[rectangle, below right =.4 of a2] (al3) {$\alpha_1$};
+
+            \node[rectangle, below =.4 of a3] (b4) {$\beta_3$};
+
+            \path[thick]
+              (a0.south)  edge (a1)
+                          edge (al1)
+              (a1.south)  edge (a2)
+                          edge (al2)
+              (a2.south)  edge (a3)
+                          edge (al3)
+              (a3.south)  edge (b4);
+          \end{tikzpicture}
+          \captionof{figure}{Árbol de G.}
+        \end{minipage}%
+        \begin{minipage}{.4\textwidth}
+          \begin{tikzpicture}
+            \node[rectangle] (a0) {A};
+
+            \node[rectangle, below left =.4 of a0] (b4) {$\beta_3$};
+            \node[rectangle, below right =.4 of a0] (ra1) {RA};
+
+            \node[rectangle, below left =.4 of ra1] (al1) {$\alpha_1$};
+            \node[rectangle, below right =.4 of ra1] (ra2) {RA};
+
+            \node[rectangle, below left =.4 of ra2] (al2) {$\alpha_2$};
+            \node[rectangle, below right =.4 of ra2] (ra3) {RA};
+
+            \node[rectangle, below =.4 of ra3] (al3) {$\alpha_3$};
+
+            \path[thick]
+              (a0.south)  edge (b4)
+                          edge (ra1)
+              (ra1.south) edge (al1)
+                          edge (ra2)
+              (ra2.south) edge (al2)
+                          edge (ra3)
+              (ra3.south) edge (al3);
+          \end{tikzpicture}
+          \captionof{figure}{Árbol de G'.}
+        \end{minipage}
+      \end{center}
+
+      \bigskip
+      \par
+      \textbf{e.g.}
+      \begin{center}
+        \begin{minipage}{.3\textwidth}
+          \hspace*{5mm}{\color{red}$E_0$ $\rightarrow$ $E_0$ + $E_1$}\\
+          \hspace*{5mm}{\color{red}$E_0$ $\rightarrow$ $E_1$}\\
+          \hspace*{5mm}{\color{blue}$E_1$ $\rightarrow$ $E_2$ $\ast$ $E_1$}\\
+          \hspace*{5mm}{\color{blue}$E_1$ $\rightarrow$ $E_2$}\\
+          \hspace*{5mm}$E_2$ $\rightarrow$ num\\
+          \hspace*{5mm}$E_2$ $\rightarrow$ ( $E_0$ )\\
+          \vspace*{2mm}
+
+          {\color{red}Recursión a izquierdas}\\
+          {\color{blue}Factor común}
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \hspace*{5mm}$E_0$ $\rightarrow$ $E_1$ $R_0$\\
+          \hspace*{5mm}$R_0$ $\rightarrow$ + $E_1$ $R_0$\\
+          \hspace*{5mm}$R_0$ $\rightarrow$ $\varepsilon$\\
+          \hspace*{5mm}$E_1$ $\rightarrow$ $E_2$ $R_1$\\
+          \hspace*{5mm}$R_1$ $\rightarrow$ $\ast$ $E_1$\\
+          \hspace*{5mm}$R_1$ $\rightarrow$ $\varepsilon$\\
+          \hspace*{5mm}$E_2$ $\rightarrow$ num\\
+          \hspace*{5mm}$E_2$ $\rightarrow$ ( $E_0$ )\\
+          \vspace*{2mm}
+        \end{minipage}
+      \end{center}
+
+      \bigskip
+      \par
+      Por tanto la especificación se haria utilizando G pero implementamos G'.
+
+      \bigskip
+      \par
+      Calculamos los primeros de G'\\
+      \hspace{5mm}PRIM($E_0$) = PRIM($E_1$) $\oplus$ PRIM($R_0$)\\
+      \hspace{5mm}PRIM($R_0$) = PRIM(+) $\oplus$ PRIM($E_1$) $\oplus$ PRIM($R_0$) $\cup$
+        PRIM($\varepsilon$)\\
+      \hspace{5mm}PRIM($E_1$) = PRIM($E_2$) $\oplus$ PRIM($R_1$)\\
+      \hspace{5mm}PRIM($R_1$) = PRIM($\ast$) $\oplus$ PRIM($E_1$) $\cup$ PRIM($\varepsilon$)\\
+      \hspace{5mm}PRIM($E_2$) = PRIM(num) $\cup$ PRIM(() $\oplus$ PRIM($E_0$) $\oplus$ PRIM())\\
+      \begin{center}
+        \begin{tabular}{||c c c c c c||}
+          \hline
+          & 0 & 1 & 2 & 3 & 4 \\ [0.5ex]
+          \hline\hline
+          PRIM($E_0$) & \O & \O & \O & num ( & num (\\
+          \hline
+          PRIM($R_0$) & \O & + $\varepsilon$ & + $\varepsilon$ & + $\varepsilon$ & +
+            $\varepsilon$\\
+          \hline
+          PRIM($E_1$) & \O & \O & num ( & num ( & num (\\
+          \hline
+          PRIM($R_1$) & \O & $\ast$ $\varepsilon$ & $\ast$ $\varepsilon$ & $\ast$
+            $\varepsilon$ & $\ast$ $\varepsilon$\\
+          \hline
+          PRIM($E_2$) & \O & num ( & num ( & num ( & num (\\ [1ex]
+          \hline
+        \end{tabular}
+      \end{center}
+
+      \par
+      Ahora los siguientes de G'\\
+      \hspace{5mm}SIG($E_0$) = \{$\vdash$\} $\cup$ PRIM()) $\oplus$ SIG($E_2$)\\
+      \hspace{5mm}SIG($R_0$) = PRIM($\varepsilon$) $\oplus$ SIG($E_0$) $\cup$ PRIM($\varepsilon$)
+        $\oplus$ SIG($R_0$)\\
+      \hspace{5mm}SIG($E_1$) = PRIM($R_0$) $\oplus$ SIG($E_0$) $\cup$ PRIM($R_0$) $\oplus$
+        SIG($R_0$)\\
+      \hspace{5mm}SIG($R_1$) = PRIM($\varepsilon$) $\oplus$ SIG($E_1$)\\
+      \hspace{5mm}SIG($E_2$) = PRIM($R_1$) $\oplus$ SIG($E_1$)\\
+      \begin{center}
+        \begin{tabular}{||c c c c c c||}
+          \hline
+          & 0 & 1 & 2 & 3 & 4 \\ [0.5ex]
+          \hline\hline
+          SIG($E_0$) & \O & $\vdash$ ) & $\vdash$ ) & $\vdash$ ) & $\vdash$ )\\
+          \hline
+          SIG($R_0$) & \O & \O & $\vdash$ ) & $\vdash$ ) & $\vdash$ )\\
+          \hline
+          SIG($E_1$) & \O & + & + $\vdash$ ) & + $\vdash$ ) & + $\vdash$ )\\
+          \hline
+          SIG($R_1$) & \O & \O & + & + $\vdash$ ) & + $\vdash$ )\\
+          \hline
+          SIG($E_2$) & \O & $\ast$ & $\ast$ + & $\ast$ + $\vdash$ ) & $\ast$ + $\vdash$ )\\ [1ex]
+          \hline
+        \end{tabular}
+      \end{center}
+
+      \par
+      Por último empleamos los siguientes y los primeros para calcular los directores.
+      \hspace{5mm}DIR($E_0$ $\rightarrow$ $E_1$ $R_0$) = \{num, (\}\\
+      \hspace{5mm}DIR($R_0$ $\rightarrow$ + $E_1$ $R_0$) = \{+\}\\
+      \hspace{5mm}DIR($R_0$ $\rightarrow$ $\varepsilon$) = \{$\vdash$, (\}\\
+      \hspace{5mm}DIR($E_1$ $\rightarrow$ $E_2$ $R_1$) = \{num, (\}\\
+      \hspace{5mm}DIR($R_1$ $\rightarrow$ $\ast$ $E_1$) = \{$\ast$\}\\
+      \hspace{5mm}DIR($R_1$ $\rightarrow$ $\varepsilon$) = \{+, $\vdash$, )\}\\
+      \hspace{5mm}DIR($E_2$ $\rightarrow$ num) = \{num\}\\
+      \hspace{5mm}DIR($E_2$ $\rightarrow$ ( $E_0$ )) = \{(\}\\
+
+      \bigskip
+      \par
+      Los directores para las gramáticas con múltiples producciones son disjuntos, por lo que
+      no vamos a tener problemas de decisión.
 \end{document}
