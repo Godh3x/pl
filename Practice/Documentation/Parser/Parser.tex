@@ -1,0 +1,231 @@
+\providecommand{\main}{..}
+\documentclass[\main/MemoriaPL.tex]{subfiles}
+
+% !TEX root = ../MemoriaPL.tex
+
+\begin{document}
+  \section{Gramática incontextual} \label{lexicon}
+    \par
+    La especificación sintáctica utilizara la siguiente tabla de operadores.
+
+    \begin{center}
+      \begin{tabular}{||c c c c c||}
+        \hline
+        Operador & Prioridad & Aridad & Tipo & Asociatividad \\ [0.5ex]
+        \hline\hline
+        +, $-$ & 0 & 2 & infijo & izq. \\
+        \hline
+        and & 1 & 2 & infijo & der. \\
+        \hline
+        or & 1 & 2 & infijo & no \\
+        \hline
+        \shortstack{$<$, $>$, ==,\\!=, $<$=, $>$=} & 2 & 2 & infijo & no \\
+        \hline
+        $\ast$, / & 3 & 2 & infijo & izq. \\
+        \hline
+        $-$ & 4 & 1 & prefijo & si \\
+        \hline
+        not & 4 & 1 & prefijo & no \\ [1ex]
+        \hline
+      \end{tabular}
+    \end{center}
+
+    \par
+    Con los operadores definidos procedemos a realizar la especificación.\\
+    \vspace{2mm}
+    S $\rightarrow$ Prog \underline{EOF}\\
+    Prog $\rightarrow$ SDec \underline{SPROG} SIns\\
+    SDec $\rightarrow$ Dec LDec\\
+    LDec $\rightarrow$ \underline{EOL} Dec LDec\\
+    LDec $\rightarrow$ $\varepsilon$\\
+    SIns $\rightarrow$ Ins LIns\\
+    LIns $\rightarrow$ \underline{EOL} Ins LIns\\
+    LIns $\rightarrow$ $\varepsilon$\\
+    Dec $\rightarrow$ \underline{NUM} \underline{ID}\\
+    Dec $\rightarrow$ \underline{BOOL} \underline{ID}\\
+    Ins $\rightarrow$ \underline{ID} \underline{EQ} Exp0\\
+    \vspace{2mm}
+    \begin{center}
+      \begin{minipage}{.5\textwidth}
+        Exp0 $\rightarrow$ Exp0 Op0 Exp1\\
+        Exp0 $\rightarrow$ Exp1\\
+        Exp1 $\rightarrow$ Exp2 \underline{AND} Exp1\\
+        Exp1 $\rightarrow$ Exp2 \underline{OR} Exp2\\
+        Exp1 $\rightarrow$ Exp2\\
+        Exp2 $\rightarrow$ Exp3 Op2 Exp3\\
+        Exp2 $\rightarrow$ Exp3\\
+        Exp3 $\rightarrow$ Exp3 Op3 Exp4\\
+        Exp3 $\rightarrow$ Exp4\\
+        Exp4 $\rightarrow$ \underline{MINUS} Exp4\\
+        Exp4 $\rightarrow$ \underline{NOT} Exp5\\
+        Exp4 $\rightarrow$ Exp5\\
+        Exp5 $\rightarrow$ \underline{LREAL}\\
+        Exp5 $\rightarrow$ \underline{TRUE}\\
+        Exp5 $\rightarrow$ \underline{FALSE}\\
+        Exp5 $\rightarrow$ \underline{POP} Exp0 \underline{PCL}
+      \end{minipage}%
+      \begin{minipage}{.5\textwidth}
+        Op0 $\rightarrow$ \underline{PLUS}\\
+        Op0 $\rightarrow$ \underline{MINUS}\\
+        Op2 $\rightarrow$ \underline{EQ}\\
+        Op2 $\rightarrow$ \underline{GT}\\
+        Op2 $\rightarrow$ \underline{GEQ}\\
+        Op2 $\rightarrow$ \underline{LT}\\
+        Op2 $\rightarrow$ \underline{LEQ}\\
+        Op2 $\rightarrow$ \underline{NEQ}\\
+        Op3 $\rightarrow$ \underline{MUL}\\
+        Op3 $\rightarrow$ \underline{DIV}\\
+      \end{minipage}
+    \end{center}
+  \section{Gramática transformada}
+    \par
+    Vamos a transformar la gramática de la sección anterior para obtener una gramática LL(1)
+    equivalente.\\
+    \vspace{2mm}
+    S $\rightarrow$ Prog \underline{EOF}\\
+    Prog $\rightarrow$ SDec \underline{SPROG} SIns\\
+    SDec $\rightarrow$ Dec LDec\\
+    LDec $\rightarrow$ \underline{EOL} Dec LDec\\
+    LDec $\rightarrow$ $\varepsilon$\\
+    SIns $\rightarrow$ Ins LIns\\
+    LIns $\rightarrow$ \underline{EOL} Ins LIns\\
+    LIns $\rightarrow$ $\varepsilon$\\
+    Dec $\rightarrow$ \underline{NUM} \underline{ID}\\
+    Dec $\rightarrow$ \underline{BOOL} \underline{ID}\\
+    Ins $\rightarrow$ \underline{ID} \underline{EQ} Exp0\\
+    \vspace{2mm}
+    \begin{center}
+      \begin{minipage}{.5\textwidth}
+        Exp0 $\rightarrow$ Exp1 R0\\
+        R0 $\rightarrow$ Op0 Exp1 R0\\
+        R0 $\rightarrow$ $\varepsilon$\\
+        Exp1 $\rightarrow$ Exp2 R1\\
+        R1 $\rightarrow$ \underline{AND} Exp2 R1\\
+        R1 $\rightarrow$ \underline{OR} Exp2\\
+        R1 $\rightarrow$ $\varepsilon$\\
+        Exp2 $\rightarrow$ Exp3 R2\\
+        R2 $\rightarrow$ Op2 Exp3 R2\\
+        R2 $\rightarrow$ $\varepsilon$\\
+        Exp3 $\rightarrow$ Exp4 R3\\
+        R3 $\rightarrow$ Op3 Exp4 R3\\
+        R3 $\rightarrow$ $\varepsilon$\\
+        Exp4 $\rightarrow$ \underline{MINUS} Exp4\\
+        Exp4 $\rightarrow$ \underline{NOT} Exp5\\
+        Exp4 $\rightarrow$ Exp5\\
+        Exp5 $\rightarrow$ \underline{LREAL}\\
+        Exp5 $\rightarrow$ \underline{TRUE}\\
+        Exp5 $\rightarrow$ \underline{FALSE}\\
+        Exp5 $\rightarrow$ \underline{POP} Exp0 \underline{PCL}
+      \end{minipage}%
+      \begin{minipage}{.5\textwidth}
+        Op0 $\rightarrow$ \underline{PLUS}\\
+        Op0 $\rightarrow$ \underline{MINUS}\\
+        Op2 $\rightarrow$ \underline{EQ}\\
+        Op2 $\rightarrow$ \underline{GT}\\
+        Op2 $\rightarrow$ \underline{GEQ}\\
+        Op2 $\rightarrow$ \underline{LT}\\
+        Op2 $\rightarrow$ \underline{LEQ}\\
+        Op2 $\rightarrow$ \underline{NEQ}\\
+        Op3 $\rightarrow$ \underline{MUL}\\
+        Op3 $\rightarrow$ \underline{DIV}\\
+      \end{minipage}
+    \end{center}
+
+  \newpage
+  \section{Primeros, siguientes y directores}
+    \par
+    Hemos utilizado la herramienta \href{http://smlweb.cpsc.ucalgary.ca/}{The Context Free Grammar Checker}
+    de la Universidad de Calgary para generar automáticamente los sets de símbolos. Para generarlos
+    tan solo es necesario ir a la web y copiar el contenido del fichero transformed\_grammar.md.\\
+    \vspace{2mm}
+    PRIM(S) = \{NUM, BOOL\}\\
+    PRIM(Prog) = \{NUM, BOOL\}\\
+    PRIM(SDec) = \{NUM, BOOL\}\\
+    PRIM(LDec) = \{EOL, $\varepsilon$\}\\
+    PRIM(SIns) = \{ID\}\\
+    PRIM(LIns) = \{EOL, $\varepsilon$\}\\
+    PRIM(Dec) = \{NUM, BOOL\}\\
+    PRIM(Ins) = \{ID\}\\
+    PRIM(R0) = \{PLUS, MINUS, $\varepsilon$\}\\
+    PRIM(Exp1) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    PRIM(R1) = \{AND, OR, $\varepsilon$\}\\
+    PRIM(Exp2) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    PRIM(R2) = \{EQ, GT, GEQ, LT, LEQ, NEQ, $\varepsilon$\}\\
+    PRIM(Exp3) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    PRIM(R3) = \{MUL, DIV, $\varepsilon$\}\\
+    PRIM(Exp4) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    PRIM(Exp5) = \{LREAL, TRUE, FALSE, POP\}\\
+    PRIM(Exp0) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    PRIM(Op0) = \{PLUS, MINUS\}\\
+    PRIM(Op2) = \{EQ, GT, GEQ, LT, LEQ, NEQ\}\\
+    PRIM(Op3) = \{MUL, DIV\}\\
+    \vspace{2mm}
+    SIG(S) = \O\\
+    SIG(Prog) = \{EOF\}\\
+    SIG(SDec) = \{SPROG\}\\
+    SIG(LDec) = \{SPROG\}\\
+    SIG(SIns) = \{EOF\}\\
+    SIG(LIns) = \{EOF\}\\
+    SIG(Dec) = \{EOL, SPROG\}\\
+    SIG(Ins) = \{EOL, EOF\}\\
+    SIG(R0) = \{PCL, EOL, EOF\}\\
+    SIG(Exp1) = \{PCL, PLUS, MINUS, EOL, EOF\}\\
+    SIG(R1) = \{PCL, PLUS, MINUS, EOL, EOF\}\\
+    SIG(Exp2) = \{PCL, AND, OR, PLUS, MINUS, EOL, EOF\}\\
+    SIG(R2) = \{PCL, AND, OR, PLUS, MINUS, EOL, EOF\}\\
+    SIG(Exp3) = \{PCL, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR, PLUS, MINUS,\\
+    \hspace{26mm}EOL, EOF\}\\
+    SIG(R3) = \{PCL, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR, PLUS, MINUS, EOL,\\
+    \hspace{22mm}EOF\}\\
+    SIG(Exp4) = \{PCL, MUL, DIV, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR, PLUS,\\
+    \hspace{26mm}MINUS, EOL, EOF\}\\
+    SIG(Exp5) = \{PCL, MUL, DIV, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR, PLUS,\\
+    \hspace{26mm}MINUS, EOL, EOF\}\\
+    SIG(Exp0) = \{PCL, EOL, EOF\}\\
+    SIG(Op0) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    SIG(Op2) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    SIG(Op3) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    \vspace{2mm}
+    DIR(S $\rightarrow$ Prog \underline{EOF}) = \{NUM, BOOL\}\\
+    DIR(Prog $\rightarrow$ SDec \underline{SPROG} SIns) = \{NUM, BOOL\}\\
+    DIR(SDec $\rightarrow$ Dec LDec) = \{NUM, BOOL\}\\
+    DIR(LDec $\rightarrow$ \underline{EOL} Dec LDec) = \{EOL\}\\
+    DIR(LDec $\rightarrow$ $\varepsilon$) = \{SPROG\}\\
+    DIR(SIns $\rightarrow$ Ins LIns) = \{ID\}\\
+    DIR(LIns $\rightarrow$ \underline{EOL} Ins LIns) = \{EOL\}\\
+    DIR(LIns $\rightarrow$ $\varepsilon$) = \{EOF\}\\
+    DIR(Dec $\rightarrow$ \underline{NUM} \underline{ID}) = \{NUM\}\\
+    DIR(Dec $\rightarrow$ \underline{BOOL} \underline{ID}) = \{BOOL\}\\
+    DIR(Ins $\rightarrow$ \underline{ID} \underline{EQ} Exp0) = \{ID\}\\
+    DIR(Exp0 $\rightarrow$ Exp1 R0) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    DIR(R0 $\rightarrow$ Op0 Exp1 R0) = \{PLUS, MINUS\}\\
+    DIR(R0 $\rightarrow$ $\varepsilon$) = \{PCL, EOL, EOF\}\\
+    DIR(Exp1 $\rightarrow$ Exp2 R1) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    DIR(R1 $\rightarrow$ \underline{AND} Exp2 R1) = \{AND\}\\
+    DIR(R1 $\rightarrow$ \underline{OR} Exp2) = \{OR\}\\
+    DIR(R1 $\rightarrow$ $\varepsilon$) = \{PCL, PLUS, MINUS, EOL, EOF\}\\
+    DIR(Exp2 $\rightarrow$ Exp3 R2) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    DIR(R2 $\rightarrow$ Op2 Exp3 R2) = \{EQ, GT, GEQ, LT, LEQ, NEQ\}\\
+    DIR(R2 $\rightarrow$ $\varepsilon$) = \{PCL, AND, OR, PLUS, MINUS, EOL, EOF\}\\
+    DIR(Exp3 $\rightarrow$ Exp4 R3) = \{MINUS, NOT, LREAL, TRUE, FALSE, POP\}\\
+    DIR(R3 $\rightarrow$ Op3 Exp4 R3) = \{MUL, DIV\}\\
+    DIR(R3 $\rightarrow$ $\varepsilon$) = \{PCL, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR, PLUS, MINUS,\\
+    \hspace{31mm}EOL, EOF\}\\
+    DIR(Exp4 $\rightarrow$ \underline{MINUS} Exp4) = \{MINUS\}\\
+    DIR(Exp4 $\rightarrow$ \underline{NOT} Exp5) = \{NOT\}\\
+    DIR(Exp4 $\rightarrow$ Exp5) = \{PCL, MUL, DIV, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,\\
+    \hspace{42mm}PLUS, MINUS, EOL, EOF\}\\
+    DIR(Exp5 $\rightarrow$ \underline{LREAL}) = \{LREAl\}\\
+    DIR(Exp5 $\rightarrow$ \underline{TRUE}) = \{TRUE\}\\
+    DIR(Exp5 $\rightarrow$ \underline{FALSE}) = \{FALSE\}\\
+    DIR(Exp5 $\rightarrow$ \underline{POP} Exp0 \underline{PCL}) = \{POP\}\\
+    DIR(Op0 $\rightarrow$ \underline{PLUS}) = \{PLUS\}\\
+    DIR(Op0 $\rightarrow$ \underline{MINUS}) = \{MINUS\}\\
+    DIR(Op2 $\rightarrow$ \underline{EQ}) = \{EQ\}\\
+    DIR(Op2 $\rightarrow$ \underline{GT}) = \{GT\}\\
+    DIR(Op2 $\rightarrow$ \underline{LT}) = \{LT\}\\
+    DIR(Op2 $\rightarrow$ \underline{LEQ}) = \{LEQ\}\\
+    DIR(Op2 $\rightarrow$ \underline{NEQ}) = \{NEQ\}\\
+    DIR(Op3 $\rightarrow$ \underline{MUL}) = \{MUL\}\\
+    DIR(Op3 $\rightarrow$ \underline{DIV}) = \{DIV\}\\
+\end{document}
