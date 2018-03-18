@@ -1,1 +1,1 @@
-rm -ErrorAction SilentlyContinue -recurse temp ; javac -d temp -cp .  ./*.java ; java -cp temp lexer.TinyLexer
+rm -ErrorAction SilentlyContinue -recurse temp ; javac -d temp -cp .  ./lexer/*.java ; java -cp temp lexer.TinyLexer
