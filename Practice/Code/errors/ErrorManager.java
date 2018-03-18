@@ -1,6 +1,8 @@
 package errors;
 
-import lexer.LexicalItem;
+import lexer_jlex.LexicalItem;
+import lexer_jlex.Lexicon;
+import java.util.List;
 
 /**
  * Error manager, the different stages can use it to report some errors to the user.
@@ -16,7 +18,7 @@ public class ErrorManager {
    * @param row Row the error was found on
    * @param lexeme Lexeme found in the given row
    */
-  public static void lexer(int row, String lexeme) {
+  public void lexer(int row, String lexeme) {
     System.out.println("***" + row + " - Unexpected character: " + lexeme);
     System.exit(1);
   }
@@ -30,9 +32,9 @@ public class ErrorManager {
    * @param found Token in the given row
    * @param expected List of expected tokens
    */
-  public static void parser(int row, LexicalItem found, LexicalItem[] expected) {
+  public void parser(int row, Lexicon found, List<Lexicon> expected) {
     System.out.print("***" + row + " - Found: " + found + " - Expected: ");
-    for(LexicalItem i: expected) {
+    for(Lexicon i: expected) {
       System.out.print(i + " ");
     }
     System.out.println();
@@ -45,7 +47,7 @@ public class ErrorManager {
    *
    * @param e Exception to report
    */
-  public static void fatal(Exception e) {
+  public void fatal(Exception e) {
     System.out.println(e);
     e.printStackTrace();
     System.exit(1);

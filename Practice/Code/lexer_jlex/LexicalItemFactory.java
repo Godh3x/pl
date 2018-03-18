@@ -84,11 +84,4 @@ public class LexicalItemFactory {
       throw new IllegalArgumentException("Invalid item type: " + item);
     }
   }
-
-  /**
-   * When called uses ErrorManager.lexer() to report an error.
-   */
-  public void error() {
-    ErrorManager.lexer(this.lexer.getRow(), this.lexer.getLexeme());
-  }
 }

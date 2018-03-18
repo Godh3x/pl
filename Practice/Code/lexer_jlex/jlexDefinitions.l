@@ -1,13 +1,17 @@
 package lexer_jlex;
 
+import errors.ErrorManager;
+
 %%
 %line
 %class TinyLexer
 %type  LexicalItem
 %unicode
+%public
 
 %{
   private LexicalItemFactory itemfact;
+  private ErrorManager err;
 
   public String getLexeme() {
     return yytext();
@@ -15,6 +19,10 @@ package lexer_jlex;
 
   public int getRow() {
     return yyline+1;
+  }
+
+  public void setErrorManager(ErrorManager err) {
+    this.err = err;
   }
 %}
 
@@ -85,4 +93,4 @@ SEP = [ \t\r\b\n]
 {PCL}   {return itemfact.getItem("PCL");}
 {POP}   {return itemfact.getItem("POP");}
 {EOL}   {return itemfact.getItem("EOL");}
-[^]     {itemfact.error();}
+[^]     {err.lexer(this.getRow(), this.getLexeme());}

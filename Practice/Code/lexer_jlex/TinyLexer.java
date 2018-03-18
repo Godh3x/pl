@@ -1,7 +1,8 @@
 package lexer_jlex;
+import errors.ErrorManager;
 
 
-class TinyLexer {
+public class TinyLexer {
 	private final int YY_BUFFER_SIZE = 512;
 	private final int YY_F = -1;
 	private final int YY_NO_STATE = -1;
@@ -13,11 +14,15 @@ class TinyLexer {
 	private final int YY_EOF = 65537;
 
   private LexicalItemFactory itemfact;
+  private ErrorManager err;
   public String getLexeme() {
     return yytext();
   }
   public int getRow() {
     return yyline+1;
+  }
+  public void setErrorManager(ErrorManager err) {
+    this.err = err;
   }
 	private java.io.BufferedReader yy_reader;
 	private int yy_buffer_index;
@@ -29,7 +34,7 @@ class TinyLexer {
 	private boolean yy_at_bol;
 	private int yy_lexical_state;
 
-	TinyLexer (java.io.Reader reader) {
+	public TinyLexer (java.io.Reader reader) {
 		this ();
 		if (null == reader) {
 			throw (new Error("Error: Bad input stream initializer."));
@@ -37,7 +42,7 @@ class TinyLexer {
 		yy_reader = new java.io.BufferedReader(reader);
 	}
 
-	TinyLexer (java.io.InputStream instream) {
+	public TinyLexer (java.io.InputStream instream) {
 		this ();
 		if (null == instream) {
 			throw (new Error("Error: Bad input stream initializer."));
@@ -338,7 +343,7 @@ class TinyLexer {
 					case -3:
 						break;
 					case 3:
-						{itemfact.error();}
+						{err.lexer(this.getRow(), this.getLexeme());}
 					case -4:
 						break;
 					case 4:
@@ -438,7 +443,7 @@ class TinyLexer {
 					case -28:
 						break;
 					case 29:
-						{itemfact.error();}
+						{err.lexer(this.getRow(), this.getLexeme());}
 					case -29:
 						break;
 					case 30:
@@ -450,7 +455,7 @@ class TinyLexer {
 					case -31:
 						break;
 					case 33:
-						{itemfact.error();}
+						{err.lexer(this.getRow(), this.getLexeme());}
 					case -32:
 						break;
 					case 34:
@@ -462,7 +467,7 @@ class TinyLexer {
 					case -34:
 						break;
 					case 36:
-						{itemfact.error();}
+						{err.lexer(this.getRow(), this.getLexeme());}
 					case -35:
 						break;
 					case 37:

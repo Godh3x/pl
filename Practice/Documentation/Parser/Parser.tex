@@ -211,8 +211,7 @@
     \hspace{31mm}EOL, EOF\}\\
     DIR(Exp4 $\rightarrow$ \underline{MINUS} Exp4) = \{MINUS\}\\
     DIR(Exp4 $\rightarrow$ \underline{NOT} Exp5) = \{NOT\}\\
-    DIR(Exp4 $\rightarrow$ Exp5) = \{PCL, MUL, DIV, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,\\
-    \hspace{42mm}PLUS, MINUS, EOL, EOF\}\\
+    DIR(Exp4 $\rightarrow$ Exp5) = \{LREAL, TRUE, FALSE, POP\}\\
     DIR(Exp5 $\rightarrow$ \underline{LREAL}) = \{LREAl\}\\
     DIR(Exp5 $\rightarrow$ \underline{TRUE}) = \{TRUE\}\\
     DIR(Exp5 $\rightarrow$ \underline{FALSE}) = \{FALSE\}\\
@@ -221,6 +220,7 @@
     DIR(Op0 $\rightarrow$ \underline{MINUS}) = \{MINUS\}\\
     DIR(Op2 $\rightarrow$ \underline{EQ}) = \{EQ\}\\
     DIR(Op2 $\rightarrow$ \underline{GT}) = \{GT\}\\
+    DIR(Op2 $\rightarrow$ \underline{GEQ}) = \{GEQ\}\\
     DIR(Op2 $\rightarrow$ \underline{LT}) = \{LT\}\\
     DIR(Op2 $\rightarrow$ \underline{LEQ}) = \{LEQ\}\\
     DIR(Op2 $\rightarrow$ \underline{NEQ}) = \{NEQ\}\\
