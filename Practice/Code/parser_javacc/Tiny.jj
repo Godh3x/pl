@@ -1,0 +1,48 @@
+options  {
+  STATIC=false;
+}
+PARSER_BEGIN(TinyParser)
+package parser_javacc;
+
+public class TinyParser {}
+PARSER_END(TinyParser)
+
+  TOKEN:{<#letter:["a"-"z","A"-"Z"]>}
+  TOKEN:{<#dig:["0"-"9"]>}
+  TOKEN:{<#sign:["+","-"]>}
+  TOKEN:{<#pdec:"." (<dig>)* <dig>>}
+  TOKEN:{<#pexp:["e","E"] <lent>>}
+  SKIP:{<["\t"," ","\r","\b","\n"]>}
+  TOKEN: {<bool:"bool">}
+  TOKEN: {<num:"num">}
+  TOKEN: {<t:"true">}
+  TOKEN: {<f:"false">}
+  TOKEN: {<and:"and">}
+  TOKEN: {<or:"or">}
+  TOKEN: {<not:"not">}
+  TOKEN:{<id:<letter>(<letter>|<dig>|"_")*>}
+  TOKEN:{<lent:(<sign>)? (<dig>)* <dig>>}
+  TOKEN:{<ldec:<lent> <pdec>>}
+  TOKEN:{<lexp:(<lent>|<ldec>) <pexp>>}
+
+  void S() : {} {Prog() <EOF>}
+  void Prog() : {} {SDec() "&&" SIns()}
+  void SDec() : {} {Dec() LDec()}
+  void LDec() : {} {";" Dec() LDec() | {}}
+  void SIns() : {} {Ins() LIns()}
+  void LIns() : {} {";" Ins() LIns() | {}}
+  void Dec() : {} {<num> <id> | <bool> <id>}
+  void Ins() : {} {<id> "=" E0()}
+  void E0() : {} {E1() R0()}
+  void R0() : {} {Op0() E1() R0() | {}}
+  void E1() : {} {E2() R1()}
+  void R1() : {} {<and> E2() R1() | <or> E2() | {}}
+  void E2() : {} {E3() R2()}
+  void R2() : {} {Op2() E3() R2() | {}}
+  void E3() : {} {E4() R3()}
+  void R3() : {} {Op3() E4() R3() | {}}
+  void E4() : {} {"-" E4() | <not> E5() | E5()}
+  void E5() : {} {<lent> | <ldec> | <lexp> | <t> | <f> | "(" E0() ")"}
+  void Op0() : {} {"+" | "-"}
+  void Op2() : {} {"==" | ">" | ">=" | "<" | "<=" | "!="}
+  void Op3() : {} {"*" | "/"}
