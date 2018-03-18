@@ -8,7 +8,7 @@ LIns -> eol Ins LIns
       | .
 Dec -> num id
      | bool id.
-Ins -> id eq Exp0.
+Ins -> id is Exp0.
 
 Exp0 -> Exp1 R0.
 R0 -> Op0 Exp1 R0
