@@ -1193,7 +1193,7 @@
       \end{center}
 
   \newpage
-  \section{Implementación}
+  \section{Implementación de anazlizadores descencentes}
     \par
     Vamos a ver analizadores descencentes (top-down parsers), concretamente implementaremos
     analizadores sintácticos predictivos recursivos descendentes.
@@ -1261,7 +1261,7 @@
     \begin{center}
       \begin{tabular}{||r c c||}
         \hline
-        Pila de analisis ($\leftarrow$) & Entrada & Movimiento \\ [0.5ex]
+        Pila de análisis ($\leftarrow$) & Entrada & Movimiento \\ [0.5ex]
         \hline\hline
         N & $\mid$0101 & Expandir N $\rightarrow$ N B\\
         \hline
@@ -2000,7 +2000,7 @@
       \end{center}
 
       \par
-      Por último empleamos los siguientes y los primeros para calcular los directores.
+      Por último empleamos los siguientes y los primeros para calcular los directores.\\
       \hspace{5mm}DIR($E_0$ $\rightarrow$ $E_1$ $R_0$) = \{num, (\}\\
       \hspace{5mm}DIR($R_0$ $\rightarrow$ + $E_1$ $R_0$) = \{+\}\\
       \hspace{5mm}DIR($R_0$ $\rightarrow$ $\varepsilon$) = \{$\vdash$, (\}\\
@@ -2014,4 +2014,285 @@
       \par
       Los directores para las gramáticas con múltiples producciones son disjuntos, por lo que
       no vamos a tener problemas de decisión.
+
+    \subsection{Tabla de análisis sintáctico descendente}
+      \par
+      Sea G una gramática de la forma\\
+      \begin{center}
+        \begin{minipage}{.25\textwidth}
+          \hspace*{5mm}N $\rightarrow$ B RN\\
+          \hspace*{5mm}RN $\rightarrow$ B RN\\
+          \hspace*{5mm}RN $\rightarrow$ $\varepsilon$\\
+          \hspace*{5mm}B $\rightarrow$ 0\\
+          \hspace*{5mm}B $\rightarrow$ 1
+        \end{minipage}%
+        \begin{minipage}{.75\textwidth}
+          DIR(N $\rightarrow$ B RN) = \{0, 1\}\\
+          DIR(RN $\rightarrow$ B RN) = \{0, 1\}\\
+          DIR(RN $\rightarrow$ $\varepsilon$) = \{$\vdash$\}\\
+          DIR(B $\rightarrow$ 0) = \{0\}\\
+          DIR(B $\rightarrow$ 1) = \{1\}
+        \end{minipage}
+      \end{center}
+
+      \bigskip
+      \par
+      La tabla de análisis de G sería la siguiente.
+      \begin{center}
+        \begin{minipage}{.6\textwidth}
+          \begin{tabular}{||c c c c||}
+            \hline
+            & 0 & 1 & $\vdash$\\ [0.5ex]
+            \hline\hline
+            N & N $\rightarrow$ B RN & N $\rightarrow$ B RN &\\
+            \hline
+            RN & RN $\rightarrow$ B RN & RN $\rightarrow$ B RN & RN $\rightarrow$ $\varepsilon$\\
+            \hline
+            B & B $\rightarrow$ 0 & B $\rightarrow$ 1 &\\ [1ex]
+            \hline
+          \end{tabular}
+        \end{minipage}%
+        \begin{minipage}{.4\textwidth}
+          \par
+          Cada celda indica qué producción aplicar al detectar cierto símbolo, si una celda está
+          vacía daría error.
+        \end{minipage}
+      \end{center}
+
+      \par
+      La gramática es LL(1) si en cada celda hay a lo sumo una producción.
+
+      \bigskip
+      \par
+      Se puede implementar un programa genérico que utilice la tabla para implementar el analizador,
+      se llama analizador sintáctico descendente predictivo no-recursivo, o dirigido por tabla.
+
+      \bigskip
+      \par
+      \textbf{e.g.} Queremos reconocer 010$\vdash$, utilizando la tabla de análisis de G.
+      \begin{center}
+        \begin{tabular}{||r r l||}
+          \hline
+          Pila ($\leftarrow$) & Entrada & Acción \\ [0.5ex]
+          \hline\hline
+          N & 010$\vdash$ & N[0] $\equiv$ N $\rightarrow$ B RN\\
+          \hline
+          B RN & 010$\vdash$ & B[0] $\equiv$ B $\rightarrow$ 0\\
+          \hline
+          0 RN & 010$\vdash$ & Consume 0\\
+          \hline
+          RN & 10$\vdash$ & RN[1] $\equiv$ RN $\rightarrow$ B RN\\
+          \hline
+          B RN & 10$\vdash$ & B[1] $\equiv$ B $\rightarrow$ 1\\
+          \hline
+          1 RN & 10$\vdash$ & Consume 1\\
+          \hline
+          RN & 0$\vdash$ & RN[0] $\equiv$ RN $\rightarrow$ B RN\\
+          \hline
+          B RN & 0$\vdash$ & B[0] $\equiv$ B $\rightarrow$ 0\\
+          \hline
+          0 RN & 0$\vdash$ & Consume 0\\
+          \hline
+          RN & $\vdash$ & RN[$\vdash$] $\equiv$ RN $\rightarrow$ $\varepsilon$\\
+          \hline
+          & $\vdash$ & Pila vacía $\rightarrow$ aceptar\\ [1ex]
+          \hline
+        \end{tabular}
+      \end{center}
+
+    \subsection{Implementación mediante herramientas}
+      \begin{tikzpicture}
+        \node[sheet, label = {[align=center]Especificación}] (input) {};
+        \node[unit, right = 1.9 of input, align = center] (gen) {Generador};
+        \node[clo, right = 1.6 of gen,  align = center] (output) {Analizador\\sintáctico};
+        \node[rectangle, right = .5of output] (plus) {+};
+        \node[clo, right = .5of plus,  align = center] (anle) {Analizador\\léxico};
+        \node[err2, below = .8 of gen, align = center,  label =below:Error] (e) {!};
+
+        \draw[myarrow] (input.east) -- ++(0,0) -> (gen.west);
+        \draw[myarrow] (gen.east) -- ++(0,0) -> (output.west);
+        \draw[myarrow] (gen.south) -- ++(0,0) -> (e.north);
+      \end{tikzpicture}
+
+      \par
+      En nuestro caso el generador será JavaCC que dará lugar al analizador sintáctico codificado
+      en Java.
+
+      \begin{tikzpicture}
+        \node[sheet, align = center] (input) {léxico\\-----------------\\sintáctico};
+        \node[unit, right = 1.9 of input, align = center] (gen) {JavaCC};
+        \node[clo, right = 1.6 of gen,  label = below:Analizador léxico + sintáctico]
+          (output) {};
+        \node[err2, below = .8 of gen, align = center,  label =below:Error] (e) {!};
+
+        \draw[myarrow] (input.east) -- ++(0,0) -> (gen.west);
+        \draw[myarrow] (gen.east) -- ++(0,0) -> (output.west);
+        \draw[myarrow] (gen.south) -- ++(0,0) -> (e.north);
+      \end{tikzpicture}
+
+      \par
+      Soporta gramáticasen formato EBNF (Extended BNF) aunque no lo vamos a usar.\\
+      BNF (Backus Normal Form) es el formato de reglas gramaticales que hemos empleado hasta ahora.
+
+      \bigskip
+      \par
+      \textbf{e.g.} BNF\\
+      \hspace{5mm}$E_0$ $\rightarrow$ $E_1$ ((\textbackslash+ $\mid$ \textbackslash-) $RE_0$)$\ast$
+
+      \bigskip
+      \par
+      Para compilar usar: java -cp javacc.jar javacc input.jj\\
+      Generara varios ficheros, *TokenManager.java es el analizador.
+
+      \bigskip
+      \par
+      Esta herramiento soporta gramáticas LL(k), pueden tener k símbolos adelantados. En el caso de
+      nuestras gramáticas la k es 1.
+
+      \bigskip
+      \par
+      LL($\ast$) son gramáticas que pueden utilizar cadenas arbitrariamente largas, la herramienta
+      usada para esta tipología es ANTLR.
+
+  \section{Análisis ascendente}
+    \begin{center}
+      \begin{minipage}{.2\textwidth}
+        \par
+        Sea G\\
+        \hspace*{5mm}N $\rightarrow$ N B\\
+        \hspace*{5mm}N $\rightarrow$ B\\
+        \hspace*{5mm}B $\rightarrow$ 0\\
+        \hspace*{5mm}B $\rightarrow$ 1\\
+      \end{minipage}%
+      \begin{minipage}{.4\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \node[rectangle] (n0) {N};
+
+          \node[rectangle, below left =.4 of n0] (n1) {N};
+          \node[rectangle, below right =.4 of n0] (b1) {B};
+
+          \node[rectangle, below =.4 of b1] (vb1) {0};
+
+          \node[rectangle, below left =.4 of n1] (n2) {N};
+          \node[rectangle, below right =.4 of n1] (b2) {B};
+
+          \node[rectangle, below =.4 of b2] (vb2) {1};
+
+          \node[rectangle, below =.4 of n2] (b3) {B};
+
+          \node[rectangle, below =.4 of b3] (vb3) {0};
+
+          \path[thick]
+            (n0.south)  edge node[above left] {1} (n1)
+                        edge node[above right] {7} (b1)
+            (n1.south)  edge node[above left] {2} (n2)
+                        edge node[above right] {5} (b2)
+            (n2.south)  edge node[left] {3} (b3)
+            (b1.south)  edge node[right] {8} (vb1)
+            (b2.south)  edge node[right] {6} (vb2)
+            (b3.south)  edge node[left] {4} (vb3);
+        \end{tikzpicture}
+        \captionof{figure}{Descendente}
+      \end{minipage}%
+      \begin{minipage}{.4\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \node[rectangle] (n0) {N};
+          \node[rectangle, below =.4 of n0] (b0) {B};
+          \node[rectangle, below =.4 of b0] (vb0) {0};
+
+          \node[rectangle, right =.4 of b0] (b1) {B};
+          \node[rectangle, below =.4 of b1] (vb1) {1};
+
+          \node[rectangle, right =.4 of vb1] (vb2) {0};
+
+          \path[thick]
+            (n0.south)  edge  (b0)
+            (b0.south)  edge  (vb0)
+            (b1.south)  edge  (vb1);
+        \end{tikzpicture}
+        \captionof{figure}{Ascendente}
+      \end{minipage}
+    \end{center}
+
+    \par
+    El modelo que vamos a seguir es el analizador por desplazamiento-reducción.
+
+    \begin{center}
+      \begin{tabular}{||c r r l||}
+        \hline
+        N & Pila ($\leftarrow$) & Entrada & Acción \\ [0.5ex]
+        \hline\hline
+        0 &  & 010$\vdash$ & \\
+        \hline
+        1 & 0 & 10$\vdash$ & desplazamiento\\
+        \hline
+        2 & B & 10$\vdash$ & reducción B $\rightarrow$ 0\\
+        \hline
+        3 & N & 10$\vdash$ & reducción N $\rightarrow$ B\\
+        \hline
+        4 & N 1 & 0$\vdash$ & desplazamiento\\
+        \hline
+        5 & N B & 0$\vdash$ & reducción B $\rightarrow$ 1\\
+        \hline
+        6 & N & 10$\vdash$ & reducción N $\rightarrow$ N B\\
+        \hline
+        7 & N 0 & $\vdash$ & desplazamiento\\
+        \hline
+        8 & N B & $\vdash$ & reducción B $\rightarrow$ 0\\
+        \hline
+        9 & N & $\vdash$ & reducción N $\rightarrow$ N B\\ [1ex]
+        \hline
+      \end{tabular}
+    \end{center}
+
+    \par
+    La entrada se ha reducido al símbolo inicial por tanto aceptamos la cadena. El siguiente
+    árbol muestra el orden de expansión, los numeros indican el N de la tabla que lo ha generado.
+
+    \begin{center}
+      \begin{tikzpicture}
+        \node[rectangle] (n0) {N};
+
+        \node[rectangle, below left =.4 of n0] (n1) {N};
+        \node[rectangle, below right =.4 of n0] (b1) {B};
+
+        \node[rectangle, below =.4 of b1] (vb1) {0};
+
+        \node[rectangle, below left =.4 of n1] (n2) {N};
+        \node[rectangle, below right =.4 of n1] (b2) {B};
+
+        \node[rectangle, below =.4 of b2] (vb2) {1};
+
+        \node[rectangle, below =.4 of n2] (b3) {B};
+
+        \node[rectangle, below =.4 of b3] (vb3) {0};
+
+        \path[thick]
+          (n0.south)  edge node[above left] {9} (n1)
+                      edge node[above right] {9} (b1)
+          (n1.south)  edge node[above left] {6} (n2)
+                      edge node[above right] {6} (b2)
+          (n2.south)  edge node[left] {3} (b3)
+          (b1.south)  edge node[right] {8} (vb1)
+          (b2.south)  edge node[right] {5} (vb2)
+          (b3.south)  edge node[left] {2} (vb3);
+      \end{tikzpicture}
+    \end{center}
+
+    \par
+    Veamos ahora una derivación más a la derecha de la sentencia.\\
+    {\color{red}N} $\Rightarrow$ N{\color{red}B} $\Rightarrow$ {\color{red}N}0  $\Rightarrow$
+    N{\color{red}B}0 $\Rightarrow$ {\color{red}N}10 $\Rightarrow$ {\color{red}B}10
+    $\Rightarrow$ 010\\
+    La secuencia, leida de derecha a izquierda, se corresponde con la construcción ascendente del
+    árbol.
+
+    \bigskip
+    \par
+    Los posibles contenidos de la pila se llaman prefijo viable.\\
+    \begin{itemize}
+      \item Asidero: sufijo del prefijo viable que se sustituye en una reducción.
+    \end{itemize}
 \end{document}
