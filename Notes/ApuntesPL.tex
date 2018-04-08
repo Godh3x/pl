@@ -26,6 +26,7 @@
 \usepackage[spanish]{cleveref}
 \usepackage{amssymb}
 \usepackage{caption}
+\usepackage{titlesec}
 
 \usetikzlibrary{positioning,shapes,arrows,chains,automata}
 
@@ -33,6 +34,38 @@
 
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
+
+%%% DEFINE SUBSUBSUBSECTION
+\titleclass{\subsubsubsection}{straight}[\subsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}} % optional; useful if paragraphs are to be numbered
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@paragraph{6}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\def\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{6}{14em}{6em}}
+\makeatother
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
 
 %%% SECTION TITLE APPEARANCE
 \usepackage{sectsty}
@@ -48,10 +81,12 @@
 \counterwithin*{figure}{section}
 \counterwithin*{figure}{subsection}
 \counterwithin*{figure}{subsubsection}
+\counterwithin*{figure}{subsubsubsection}
 
 \counterwithin*{table}{section}
 \counterwithin*{table}{subsection}
 \counterwithin*{table}{subsubsection}
+\counterwithin*{table}{subsubsubsection}
 
 \addtolength{\cftfignumwidth}{2em}
 
@@ -62,7 +97,11 @@
     \ifnum\value{subsubsection}=0
       \thesubsection.\arabic{figure}
     \else
-      \thesubsubsection.\arabic{figure}
+      \ifnum\value{subsubsubsection}=0
+        \thesubsubsection.\arabic{figure}
+      \else
+        \thesubsubsubsection.\arabic{figure}
+      \fi
     \fi
   \fi
 }
@@ -74,7 +113,11 @@
     \ifnum\value{subsubsection}=0
       \thesubsection.\arabic{table}
     \else
-      \thesubsubsection.\arabic{table}
+      \ifnum\value{subsubsubsection}=0
+        \thesubsubsection.\arabic{table}
+      \else
+        \thesubsubsubsection.\arabic{table}
+      \fi
     \fi
   \fi
 }
@@ -88,57 +131,62 @@
 \date{}
 
 \begin{document}
-  \tikzstyle{sheet}= [rectangle, draw = black, minimum width = .8cm, minimum height = 1.2cm]
-  \tikzstyle{unit}= [rectangle, draw = blue, minimum width = 2.4cm, minimum height = 1.6cm]
-  \tikzstyle{clo} = [cloud, draw, cloud puffs = 10, cloud puff arc = 120, aspect = 1.5, inner ysep=1em]
-  \tikzstyle{err2} = [regular polygon, regular polygon sides=3, draw = red, fill=white, text width=1em, inner sep=1mm, outer sep=0mm, shape border rotate=0 ]
-  \tikzstyle{txt}= [rectangle, draw = white, align = center]
-  \tikzstyle{err}= [rectangle, draw = red, minimum width = .8cm, minimum height = 1.2cm]
+\tikzstyle{sheet}= [rectangle, draw = black, minimum width = .8cm, minimum height = 1.2cm]
+\tikzstyle{unit}= [rectangle, draw = blue, minimum width = 2.4cm, minimum height = 1.6cm]
+\tikzstyle{clo} = [cloud, draw, cloud puffs = 10, cloud puff arc = 120, aspect = 1.5, inner ysep=1em]
+\tikzstyle{err2} = [regular polygon, regular polygon sides=3, draw = red, fill=white, text width=1em, inner sep=1mm, outer sep=0mm, shape border rotate=0 ]
+\tikzstyle{txt}= [rectangle, draw = white, align = center]
+\tikzstyle{err}= [rectangle, draw = red, minimum width = .8cm, minimum height = 1.2cm]
 
-  \tikzstyle{myarrow}=[->, >=open triangle 90, thick]
-  \tikzstyle{myarrow2}=[->, >=latex', thick,dashed]
+\tikzstyle{myarrow}=[->, >=open triangle 90, thick]
+\tikzstyle{myarrow2}=[->, >=latex', thick,dashed]
 
 
-  \raggedright
-  % Title and Table of Contents
-  \pagenumbering{gobble}
-  \maketitle
-  \newpage
-  \tableofcontents
-  \newpage
-  \pagenumbering{arabic}
+\raggedright
+% Title and Table of Contents
+\pagenumbering{gobble}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
 
-  \section{Introducción}
-  {
-    \let\section\subsection
-    \let\subsection\subsubsection
-    \subfile{Introduction/Introduction}
-  }
+\section{Introducción}
+ {
+  \let\section\subsection
+  \let\subsection\subsubsection
+  \let\subsubsection\subsubsubsection
+  \subfile{Introduction/Introduction}
+ }
 
-  \section{Análisis léxico}
-  {
-    \let\section\subsection
-    \let\subsection\subsubsection
-    \subfile{Lexer/Lexer}
-  }
+\section{Análisis léxico}
+ {
+  \let\section\subsection
+  \let\subsection\subsubsection
+  \let\subsubsection\subsubsubsection
+  \subfile{Lexer/Lexer}
+ }
 
-  \section{Análisis sintáctico}
-  {
-    \let\section\subsection
-    \let\subsection\subsubsection
-    \subfile{Parser/Parser}
-  }
+\section{Análisis sintáctico}
+ {
+  \let\section\subsection
+  \let\subsection\subsubsection
+  \let\subsubsection\subsubsubsection
+  \subfile{Parser/Parser}
+ }
 
-  \section{Semántica estática}
-  {
-    \let\section\subsection
-    \let\subsection\subsubsection
-  }
+\section{Semántica estática}
+ {
+  \let\section\subsection
+  \let\subsection\subsubsection
+  \let\subsubsection\subsubsubsection
+ }
 
-  \section{Traducción}
-  {
-    \let\section\subsection
-    \let\subsection\subsubsection
-  }
+\section{Traducción}
+ {
+  \let\section\subsection
+  \let\subsection\subsubsection
+  \let\subsubsection\subsubsubsection
+ }
 
 \end{document}

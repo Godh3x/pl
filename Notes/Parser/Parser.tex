@@ -5,11 +5,11 @@
 
 \begin{document}
   \begin{tikzpicture}
-    \node[rectangle, draw = black, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl1) {};
-    \node[rectangle, draw = black, right = .2 of cl1, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl2) {};
-    \node[rectangle, draw = black, right = .2 of cl2, align = center, rectangle split, rectangle split horizontal, rectangle split parts = 2] (cl3) {};
+    \node[rectangle, draw=black, align = center, rectangle split, rectangle split horizontal, rectangle split parts=2] (cl1) {};
+    \node[rectangle, draw=black, right=.2 of cl1, align = center, rectangle split, rectangle split horizontal, rectangle split parts=2] (cl2) {};
+    \node[rectangle, draw=black, right=.2 of cl2, align = center, rectangle split, rectangle split horizontal, rectangle split parts=2] (cl3) {};
 
-    \node[unit, right = of cl3, align = center] (ansi) {Analizador\\sintáctico};
+    \node[unit, right=of cl3, align = center] (ansi) {Analizador\\sintáctico};
     \node[err, below=of ansi] (err) {error};
 
     \node[rectangle, right=2of ansi, label={Árbol incontextual}] (t1) {$e_0$};
@@ -452,11 +452,11 @@
             \node[rectangle, below left=.5 and .2 of e2] (ob2) {OpBin};
             \node[rectangle, below left =.5 and -.7 of e2] (e5) {Exp};
 
-            \node[rectangle, below = .5 of e3] (v1) {Num};
-            \node[rectangle, below = .5 of e4] (v2) {Num};
-            \node[rectangle, below = .5 of e5] (v3) {Num};
-            \node[rectangle, below = .5 of ob1] (o1) {+};
-            \node[rectangle, below = .5 of ob2] (o2) {+};
+            \node[rectangle, below=.5 of e3] (v1) {Num};
+            \node[rectangle, below=.5 of e4] (v2) {Num};
+            \node[rectangle, below=.5 of e5] (v3) {Num};
+            \node[rectangle, below=.5 of ob1] (o1) {+};
+            \node[rectangle, below=.5 of ob2] (o2) {+};
 
             \path[thick]
               (e1.south) edge (e2)
@@ -487,11 +487,11 @@
             \node[rectangle, below right=.5 and .2 of e3] (ob2) {OpBin};
             \node[rectangle, below right =.5 and -.7 of e3] (e5) {Exp};
 
-            \node[rectangle, below = .5 of e2] (v1) {Num};
-            \node[rectangle, below = .5 of e4] (v2) {Num};
-            \node[rectangle, below = .5 of e5] (v3) {Num};
-            \node[rectangle, below = .5 of ob1] (o1) {+};
-            \node[rectangle, below = .5 of ob2] (o2) {+};
+            \node[rectangle, below=.5 of e2] (v1) {Num};
+            \node[rectangle, below=.5 of e4] (v2) {Num};
+            \node[rectangle, below=.5 of e5] (v3) {Num};
+            \node[rectangle, below=.5 of ob1] (o1) {+};
+            \node[rectangle, below=.5 of ob2] (o2) {+};
 
             \path[thick]
               (e1.south) edge (e2)
@@ -543,23 +543,23 @@
             \node[rectangle, below left=.5 and .1 of e2] (ob2) {OpBin0};
             \node[rectangle, below left =.5 and -1 of e2] (e5) {Exp1};
 
-            \node[rectangle, below = .5 of e3] (e31) {Exp1};
-            \node[rectangle, below = .5 of e31] (e32) {Exp2};
-            \node[rectangle, below = .5 of e32] (e33) {Exp3};
-            \node[rectangle, below = .5 of e33] (v1) {Num};
+            \node[rectangle, below=.5 of e3] (e31) {Exp1};
+            \node[rectangle, below=.5 of e31] (e32) {Exp2};
+            \node[rectangle, below=.5 of e32] (e33) {Exp3};
+            \node[rectangle, below=.5 of e33] (v1) {Num};
 
-            \node[rectangle, below = .5 of e4] (e41) {Exp1};
-            \node[rectangle, below = .5 of e41] (e42) {Exp2};
-            \node[rectangle, below = .5 of e42] (e43) {Exp3};
-            \node[rectangle, below = .5 of e43] (v2) {Num};
+            \node[rectangle, below=.5 of e4] (e41) {Exp1};
+            \node[rectangle, below=.5 of e41] (e42) {Exp2};
+            \node[rectangle, below=.5 of e42] (e43) {Exp3};
+            \node[rectangle, below=.5 of e43] (v2) {Num};
 
-            \node[rectangle, below = .5 of e5] (e51) {Exp1};
-            \node[rectangle, below = .5 of e51] (e52) {Exp2};
-            \node[rectangle, below = .5 of e52] (e53) {Exp3};
-            \node[rectangle, below = .5 of e53] (v3) {Num};
+            \node[rectangle, below=.5 of e5] (e51) {Exp1};
+            \node[rectangle, below=.5 of e51] (e52) {Exp2};
+            \node[rectangle, below=.5 of e52] (e53) {Exp3};
+            \node[rectangle, below=.5 of e53] (v3) {Num};
 
-            \node[rectangle, below = .5 of ob1] (o1) {+};
-            \node[rectangle, below = .5 of ob2] (o2) {+};
+            \node[rectangle, below=.5 of ob1] (o1) {+};
+            \node[rectangle, below=.5 of ob2] (o2) {+};
 
             \path[thick]
               (e1.south) edge (e2)
@@ -602,23 +602,23 @@
             \node[rectangle, below =.4 of e30] (ob2) {OpBin0};
             \node[rectangle, below right =.5 of e30] (e5) {Exp0};
 
-            \node[rectangle, below = .5 of e2] (e21) {Exp1};
-            \node[rectangle, below = .5 of e21] (e22) {Exp2};
-            \node[rectangle, below = .5 of e22] (e23) {Exp3};
-            \node[rectangle, below = .5 of e23] (v1) {Num};
+            \node[rectangle, below=.5 of e2] (e21) {Exp1};
+            \node[rectangle, below=.5 of e21] (e22) {Exp2};
+            \node[rectangle, below=.5 of e22] (e23) {Exp3};
+            \node[rectangle, below=.5 of e23] (v1) {Num};
 
-            \node[rectangle, below = .5 of e4] (e41) {Exp1};
-            \node[rectangle, below = .5 of e41] (e42) {Exp2};
-            \node[rectangle, below = .5 of e42] (e43) {Exp3};
-            \node[rectangle, below = .5 of e43] (v2) {Num};
+            \node[rectangle, below=.5 of e4] (e41) {Exp1};
+            \node[rectangle, below=.5 of e41] (e42) {Exp2};
+            \node[rectangle, below=.5 of e42] (e43) {Exp3};
+            \node[rectangle, below=.5 of e43] (v2) {Num};
 
-            \node[rectangle, below = .5 of e5] (e51) {Exp1};
-            \node[rectangle, below = .5 of e51] (e52) {Exp2};
-            \node[rectangle, below = .5 of e52] (e53) {Exp3};
-            \node[rectangle, below = .5 of e53] (v3) {Num};
+            \node[rectangle, below=.5 of e5] (e51) {Exp1};
+            \node[rectangle, below=.5 of e51] (e52) {Exp2};
+            \node[rectangle, below=.5 of e52] (e53) {Exp3};
+            \node[rectangle, below=.5 of e53] (v3) {Num};
 
-            \node[rectangle, below = .5 of ob1] (o1) {+};
-            \node[rectangle, below = .5 of ob2] (o2) {+};
+            \node[rectangle, below=.5 of ob1] (o1) {+};
+            \node[rectangle, below=.5 of ob2] (o2) {+};
 
             \path[thick]
               (e1.south) edge (e2)
@@ -675,12 +675,12 @@
             \node[rectangle] (e1) {Exp0};
 
             \node[rectangle, below =.5 of e1] (ob1) {OpBin0};
-            \node[rectangle, left = 3 of ob1] (e2) {Exp0};
-            \node[rectangle, right = 3 of ob1] (e3) {Exp1};
+            \node[rectangle, left=3 of ob1] (e2) {Exp0};
+            \node[rectangle, right=3 of ob1] (e3) {Exp1};
 
             \node[rectangle, below =.5 of e2] (ob2) {OpBin0};
-            \node[rectangle, left = of ob2] (e4) {Exp0};
-            \node[rectangle, right = of ob2] (e5) {Exp1};
+            \node[rectangle, left=of ob2] (e4) {Exp0};
+            \node[rectangle, right=of ob2] (e5) {Exp1};
 
             \node[rectangle, below =.5 of e4] (e41) {Exp1};
             \node[rectangle, below =.5 of e41] (e42) {Exp2};
@@ -690,8 +690,8 @@
             \node[rectangle, below =.5 of ob2] (vob2) {+};
 
             \node[rectangle, below =.5 of e5] (e6) {Exp1};
-            \node[rectangle, right = of e6] (ob3) {OpBin1};
-            \node[rectangle, right = of ob3] (e7) {Exp2};
+            \node[rectangle, right=of e6] (ob3) {OpBin1};
+            \node[rectangle, right=of ob3] (e7) {Exp2};
 
             \node[rectangle, below =.5 of e6] (e62) {Exp2};
             \node[rectangle, below =.5 of e62] (e63) {Exp3};
@@ -2102,12 +2102,12 @@
 
     \subsection{Implementación mediante herramientas}
       \begin{tikzpicture}
-        \node[sheet, label = {[align=center]Especificación}] (input) {};
-        \node[unit, right = 1.9 of input, align = center] (gen) {Generador};
-        \node[clo, right = 1.6 of gen,  align = center] (output) {Analizador\\sintáctico};
-        \node[rectangle, right = .5of output] (plus) {+};
-        \node[clo, right = .5of plus,  align = center] (anle) {Analizador\\léxico};
-        \node[err2, below = .8 of gen, align = center,  label =below:Error] (e) {!};
+        \node[sheet, label={[align=center]Especificación}] (input) {};
+        \node[unit, right=1.9 of input, align = center] (gen) {Generador};
+        \node[clo, right=1.6 of gen,  align = center] (output) {Analizador\\sintáctico};
+        \node[rectangle, right=.5of output] (plus) {+};
+        \node[clo, right=.5of plus,  align = center] (anle) {Analizador\\léxico};
+        \node[err2, below=.8 of gen, align = center,  label =below:Error] (e) {!};
 
         \draw[myarrow] (input.east) -- ++(0,0) -> (gen.west);
         \draw[myarrow] (gen.east) -- ++(0,0) -> (output.west);
@@ -2120,10 +2120,10 @@
 
       \begin{tikzpicture}
         \node[sheet, align = center] (input) {léxico\\-----------------\\sintáctico};
-        \node[unit, right = 1.9 of input, align = center] (gen) {JavaCC};
-        \node[clo, right = 1.6 of gen,  label = below:Analizador léxico + sintáctico]
+        \node[unit, right=1.9 of input, align = center] (gen) {JavaCC};
+        \node[clo, right=1.6 of gen,  label=below:Analizador léxico + sintáctico]
           (output) {};
-        \node[err2, below = .8 of gen, align = center,  label =below:Error] (e) {!};
+        \node[err2, below=.8 of gen, align = center,  label =below:Error] (e) {!};
 
         \draw[myarrow] (input.east) -- ++(0,0) -> (gen.west);
         \draw[myarrow] (gen.east) -- ++(0,0) -> (output.west);
@@ -2295,4 +2295,791 @@
     \begin{itemize}
       \item Asidero: sufijo del prefijo viable que se sustituye en una reducción.
     \end{itemize}
+
+    \bigskip
+    \par
+    \textbf{e.g.} n + n + n\\
+    Los asideros serán los marcados de color {\color{red}rojo}.
+    \begin{center}
+      \begin{minipage}{.2\textwidth}
+        \hspace*{5mm}E $\rightarrow$ E + n\\
+        \hspace*{5mm}E $\rightarrow$ n\\
+      \end{minipage}%
+      \begin{minipage}{.2\textwidth}
+        \begin{flushright}
+          \textbf{PILA}\\
+          {\color{red}n}\\
+          E\\
+          E +\\
+          {\color{red}E + n}\\
+          E\\
+          E +\\
+          {\color{red}E + n}\\
+          E
+        \end{flushright}
+      \end{minipage}%
+      \begin{minipage}{.5\textwidth}
+      \end{minipage}
+    \end{center}
+
+    \bigskip
+    \par
+    El conjunto de prefijos viables para una gramática G es un conjunto regular,
+    es decir, puede ser reconocido por una AFD.
+
+    \begin{tikzpicture}
+      \node[sheet, label=Input] (input) {};
+      \node[sheet, right=of input, label=Pila] (stack) {};
+      \node[unit, right=of stack, align = center] (afd) {AFD\\reconocedor\\de prefijos\\viables};
+      \node[clo, right=of afd, label=Acción] (output) {};
+    \path[thick, ->]
+      (input.east) edge (stack)
+      (stack.east) edge (afd)
+      (afd.east) edge (output);
+    \end{tikzpicture}
+
+    \par
+    \textbf{e.g.} AFD
+    \begin{center}
+      \begin{minipage}{.5\textwidth}
+        \hspace*{5mm}(1) E $\rightarrow$ E + n\\
+        \hspace*{5mm}(2) E $\rightarrow$ n\\
+      \end{minipage}%
+      \begin{minipage}{.5\textwidth}
+        \begin{tikzpicture}[shorten >= 1pt, node distance=2cm, on grid, auto]
+          \node[state, initial, accepting] (q0) {};
+          \node[state, accepting] (q2) [right=of q0] {};
+          \node[state, accepting] (q1) [above=of q2] {2};
+          \node[state, accepting] (q3) [right=of q2] {};
+          \node[state, accepting] (q4) [right=of q3] {1};
+
+          \path[->]
+            (q0) edge[bend left] node[fill=white, anchor=center, pos=.5]
+                {n} (q1)
+              edge node[fill=white, anchor=center, pos=.5] {E} (q2)
+            (q2) edge node[fill=white, anchor=center, pos=.5] {+} (q3)
+            (q3) edge node[fill=white, anchor=center, pos=.5] {n} (q4);
+        \end{tikzpicture}
+      \end{minipage}
+    \end{center}
+
+    \par
+    El número en un estado indica cuál de las reglas reducirá, los estados sin
+    número representan la acción de desplazar.
+
+    \bigskip
+    \par
+    \textbf{e.g.} AFD
+    \begin{center}
+      \begin{minipage}{.5\textwidth}
+        \hspace*{5mm}(1) E' $\rightarrow$ E $\vdash$\\
+        \hspace*{5mm}(2) E $\rightarrow$ E + n\\
+        \hspace*{5mm}(3) E $\rightarrow$ n\\
+      \end{minipage}%
+      \begin{minipage}{.5\textwidth}
+        \begin{tikzpicture}[shorten >= 1pt, node distance=2cm, on grid, auto]
+          \node[state, initial, accepting, label=0] (q0) {};
+          \node[state, accepting, label=2] (q2) [right=of q0] {1};
+          \node[state, accepting, label=1] (q1) [above=of q2] {3};
+          \node[state, accepting, label=3] (q3) [right=of q2] {};
+          \node[state, accepting, label=4] (q4) [right=of q3] {2};
+
+          \path[->]
+            (q0) edge[bend left] node[fill=white, anchor=center, pos=.5]
+                {n} (q1)
+              edge node[fill=white, anchor=center, pos=.5] {E} (q2)
+            (q2) edge node[fill=white, anchor=center, pos=.5] {+} (q3)
+            (q3) edge node[fill=white, anchor=center, pos=.5] {n} (q4);
+        \end{tikzpicture}
+      \end{minipage}
+
+      \begin{tabular}{||c c c c c||}
+        \hline
+        & $\vdash$ & n & + & E \\ [0.5ex]
+        \hline\hline
+        0 &  & d 1 &  & 2 \\
+        \hline
+        1 & r E $\rightarrow$ E + n & r E $\rightarrow$ E + n & r E
+          $\rightarrow$ E + n &  \\
+        \hline
+        2 & a &  & d 3 &  \\
+        \hline
+        3 &  & d 4 &  &  \\
+        \hline
+        4 & r E $\rightarrow$ E + n & r E $\rightarrow$ E + n & r E
+          $\rightarrow$ E + n &  \\ [1ex]
+        \hline
+      \end{tabular}
+    \end{center}
+
+    \par
+    Solo los terminales dictan acciones, por eso la columna de la E solo tiene
+    transiciones. Las casillas vacías en la tabla indican los errores
+    sintácticos.
+
+    \begin{center}
+      \begin{tabular}{||r l c l||}
+        \hline
+        Pila & Entrada & Estado AFD & Acción \\ [0.5ex]
+        \hline\hline
+          & n + n + n $\vdash$ & 0 & desplazar \\
+        \hline
+        n & + n + n $\vdash$ & 1 & reducir E $\rightarrow$ n \\
+        \hline
+        E & + n + n $\vdash$ & 2 & desplazar \\
+        \hline
+        E + & n + n $\vdash$ & 3 & desplazar \\
+        \hline
+        E + n & + n $\vdash$ & 4 & reducir E $\rightarrow$ E + n \\
+        \hline
+        E & + n $\vdash$ & 2 & desplazar \\
+        \hline
+        E + & n $\vdash$ & 3 & desplazar \\
+        \hline
+        E + n & $\vdash$ & 4 & reducir E $\rightarrow$ E + n \\
+        \hline
+        E & $\vdash$ & 2 & aceptar \\ [1ex]
+        \hline
+      \end{tabular}
+    \end{center}
+
+    \bigskip
+    \par
+    Estos autómatas pueden optimizarse, ahora la pila tiene siempre en la cima
+    el estado en el que está. Para que el cambio se aprecie mejor los
+    estados se marcaran en {\color{red}rojo}.
+
+    \begin{center}
+      \begin{tabular}{||r l c l||}
+        \hline
+        Pila & Entrada & Estado AFD & Acción \\ [0.5ex]
+        \hline\hline
+        {\color{red}0} & n + n + n $\vdash$ & 0 & desplazar \\
+        \hline
+        {\color{red}0} n {\color{red}1} & + n + n $\vdash$ & 1 & reducir E
+          $\rightarrow$ n \\
+        \hline
+        {\color{red}0} E {\color{red}2} & + n + n $\vdash$ & 2 & desplazar \\
+        \hline
+        {\color{red}0} E {\color{red}2} + {\color{red}3} & n + n $\vdash$ & 3 &
+          desplazar \\
+        \hline
+        {\color{red}0} E {\color{red}2} + {\color{red}3} n {\color{red}4} & + n
+          $\vdash$ & 4 & reducir E $\rightarrow$ E + n \\
+        \hline
+        {\color{red}0} E {\color{red}2} & + n $\vdash$ & 2 & desplazar \\
+        \hline
+        {\color{red}0} E {\color{red}2} + {\color{red}3} & n $\vdash$ & 3 &
+          desplazar \\
+        \hline
+        {\color{red}0} E {\color{red}2} + {\color{red}3} n {\color{red}4} &
+          $\vdash$ & 4 & reducir E $\rightarrow$ E + n \\
+        \hline
+        {\color{red}0} E {\color{red}2} & $\vdash$ & 2 & aceptar \\ [1ex]
+        \hline
+      \end{tabular}
+    \end{center}
+
+    \par
+    Para que siga funcionando las reducciones deberan desapilar {\color{blue}
+    varios elementos}.\\
+    \begin{center}
+      0 {\color{blue}n 1} $\rightarrow$ 0 $\rightarrow$ 0 E 2
+    \end{center}
+
+    \subsection{Métodos de construcción de AFDs}
+      \par
+      Concretamente queremos implementar AFDs que reconozcan prefijos viables.
+
+      \bigskip
+      \par
+      En las tablas puede haber más de una acción por celda, se denomina
+      conflicto, esto provocará que el análisis no sea determinista y el método
+      no funcionará.
+
+      \bigskip
+      \par
+      Los métodos son los siguientes, de menos a más genéricos.
+      \begin{itemize}
+        \item LR(0) $\rightarrow$ gramáticas LR(0)
+        \item SLR(1) $\rightarrow$ gramáticas SLR(1)
+        \item LALR(1) $\rightarrow$ gramáticas LALR(1)
+        \item LR(1) $\rightarrow$ gramáticas LR(1)
+      \end{itemize}
+
+      \par
+      De todos ellos el más empleado es LALR(1).
+
+      \bigskip
+      \par
+      Existen dos tipos de conflictos.
+      \begin{itemize}
+        \item Desplazamiento-reducción.\\
+          Si en una celda nos encontramos como acciones posibles:\\
+          \hspace{5mm}d X\\
+          \hspace{5mm}r A $\rightarrow$ $\alpha$
+        \item Reducción-reducción.\\
+          Si en una celda nos encontramos como acciones posibles:\\
+          \hspace{5mm}r A $\rightarrow$ $\alpha$\\
+          \hspace{5mm}r B $\rightarrow$ $\beta$
+      \end{itemize}
+
+      \par
+      Gramática LR(0), es posible determinar que acción realizar únicamente a
+      partir del prefijo viable.\\
+      \vspace{2mm}
+      \hspace{10mm}A $\rightarrow$ a\\
+      \hspace{10mm}A $\rightarrow$ b\\
+      \hspace{10mm}Prefijos viables $\equiv$ \{$\varepsilon$, A, a, b\}
+
+      \bigskip
+      \par
+      Gramática LR(1), emplea el prefijo viable y un símbolo anticipado de la
+      entrada.\\
+      \vspace{2mm}
+      \hspace{10mm}A $\rightarrow$ a\\
+      \hspace{10mm}A $\rightarrow$ a b\\
+      \hspace{10mm}Es LR(1) pero no LR(0).
+
+      \subsubsection{Método LR(0)}
+        \par
+        A $\rightarrow$ $\alpha$ $\bullet$ $\beta$, donde $\alpha$ y $\beta$ se
+        denominarán elementos LR(0).
+
+        \par
+        En el contexto de una estructura A, como la descrita previamente.
+        \begin{itemize}
+          \item Hemos "visto" $\alpha$
+          \item Es posible ver $\beta$ y, potencialmente, reducir por A
+            $\rightarrow$ $\alpha$ $\beta$
+        \end{itemize}
+
+        \begin{center}
+          \begin{tikzpicture}
+            \node[rectangle] (s) {A};
+            \node[rectangle, below=.5 of s] (bullet) {$\bullet$};
+            \node[rectangle, left=.4 of bullet] (alpha) {$\alpha$};
+            \node[rectangle, right=.4 of bullet] (beta) {$\beta$};
+
+            \path[thick]
+              (s.south) edge (alpha)
+                edge (beta);
+          \end{tikzpicture}
+        \end{center}
+
+        \par
+        Los estados del AFD LR(0) son conjuntos de elementos LR(0), cada
+        conjunto será válido para cierto prefijo viable.
+
+        \bigskip
+        Para contruirlo.
+        \begin{itemize}
+          \item Partimos de una serie de elementos iniciales, denominados
+            elementos nucleares.\\
+            $A_0$ $\rightarrow$ $\alpha_0$ $\beta_0$ ... $A_n$ $\rightarrow$
+            $\alpha_n$ $\beta_n$
+          \item Siguiendo la regla de cierre habrá otros elementos, denominados
+            elementos no nucleares.\\
+            A $\rightarrow$ $\alpha$ $\bullet$ B $\beta$ $\Rightarrow$ B
+            $\rightarrow$ $\bullet$ $\gamma$
+        \end{itemize}
+
+        \begin{center}
+          \begin{tikzpicture}
+            \node
+              [rectangle, draw=black, rectangle split,
+              rectangle split parts=2, label=Estado inicial]
+              (s)
+              {S' $\rightarrow$ $\bullet$ S \nodepart{second}...};
+
+            \node
+              [rectangle, draw=black, rectangle split,
+              rectangle split parts=2, label=Estado i, right=2 of s]
+              (si)
+              {A $\rightarrow$ $\alpha$ $\bullet$ x $\beta$};
+
+            \node
+              [rectangle, draw=black, rectangle split,
+              rectangle split parts=2, right=of si]
+              (si2)
+              {A $\rightarrow$ $\alpha$ x $\bullet$ $\beta$ \nodepart{second}...};
+
+            \path[thick, ->]
+              (si.east) edge node[fill=white, anchor=center, pos=.5] {x}
+                (si2);
+          \end{tikzpicture}
+        \end{center}
+
+        \par
+        ... serán las posibles producciones para continuar el análisis
+
+        \bigskip
+        \par
+        \textbf{e.g.}
+        \begin{center}
+          \begin{minipage}{.3\textwidth}
+            \hspace*{5mm}E' $\rightarrow$ E\\
+            \hspace*{5mm}E $\rightarrow$ E + T\\
+            \hspace*{5mm}E $\rightarrow$ T\\
+            \hspace*{5mm}T $\rightarrow$ n\\
+          \end{minipage}%
+          \begin{minipage}{.7\textwidth}
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label=0, align = center]
+                (q0)
+                {
+                  E' $\rightarrow$ $\bullet$ E
+                  \nodepart{second}
+                  E $\rightarrow$ $\bullet$ E + T\\
+                  E $\rightarrow$ $\bullet$ T\\
+                  T $\rightarrow$ $\bullet$ n
+                };
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .7cm]2},
+                right=3 of q0]
+                (q2)
+                {E $\rightarrow$ T $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .7cm]3},
+                above=of q2]
+                (q3)
+                {T $\rightarrow$ n $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 2cm]1},
+                below=of q2]
+                (q1)
+                {E' $\rightarrow$ E $\bullet$, E $\rightarrow$ E $\bullet$ + T};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.1cm]4},
+                below=of q1]
+                (q4)
+                {E $\rightarrow$ E + $\bullet$ T \nodepart{second}T
+                $\rightarrow$ $\bullet$ n};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.1cm]5},
+                below=of q4]
+                (q5)
+                {E $\rightarrow$ E + T $\bullet$};
+
+              \path[thick, ->]
+                (q0.east)
+                  edge node[fill=white, anchor=center, pos=.5] {n} (q3)
+                  edge node[fill=white, anchor=center, pos=.5] {T} (q2)
+                  edge node[fill=white, anchor=center, pos=.5] {E} (q1)
+                (q1.south)
+                  edge node[fill=white, anchor=center, pos=.5] {+} (q4)
+                (q4.south)
+                  edge node[fill=white, anchor=center, pos=.5] {T} (q5)
+                (q4.east)
+                  edge[bend right=70] node
+                  [fill=white, anchor=center, pos=.5] {n} (q3.east);
+            \end{tikzpicture}
+          \end{minipage}
+        \end{center}
+
+        \par
+        Del automata anterior podemos obtener la siguiente tabla.
+        \begin{center}
+          \begin{tabular}{||c c c c c c||}
+            \hline
+            & n & $\vdash$ & + & E & T \\ [0.5ex]
+            \hline\hline
+            0 & d 3 &  &  & 1 & 2 \\
+            \hline
+            1 &  & d 4 & a &  &  \\
+            \hline
+            2 & r E $\rightarrow$ T & r E $\rightarrow$ T & r E $\rightarrow$ T
+            &  &  \\
+            \hline
+            3 & r T $\rightarrow$ n & r T $\rightarrow$ n & r T $\rightarrow$ n
+            &  &  \\
+            \hline
+            4 & d 3 &  &  &  & 5 \\
+            \hline
+            5 & r E $\rightarrow$ E + T & r E $\rightarrow$ E + T & r E
+            $\rightarrow$ E + T &  &  \\ [1ex]
+            \hline
+          \end{tabular}
+        \end{center}
+
+        \par
+        Una gramática LR(0) es aquella para la cual el método LR(0) genera
+        tablas sin conflictos. Entendemos conflicto como una celda no definida
+        de manera unívoca.
+
+        \bigskip
+        \par
+        \textbf{e.g.} Conflicto desplazamiento-reducción
+        \begin{center}
+          \begin{minipage}{.3\textwidth}
+            \hspace*{5mm}A' $\rightarrow$ A\\
+            \hspace*{5mm}A $\rightarrow$ a\\
+            \hspace*{5mm}A $\rightarrow$ a b\\
+          \end{minipage}%
+          \begin{minipage}{.7\textwidth}
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label=0, align = center]
+                (q0)
+                {
+                  A' $\rightarrow$ $\bullet$ A
+                  \nodepart{second}
+                  A $\rightarrow$ $\bullet$ a\\
+                  A $\rightarrow$ $\bullet$ a b
+                };
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]1},
+                right=2 of q0]
+                (q1)
+                {A' $\rightarrow$ A $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.7cm]2},
+                below=of q1]
+                (q2)
+                {A $\rightarrow$ a $\bullet$, A $\rightarrow$ a $\bullet$ b};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]3},
+                right=of q2]
+                (q3)
+                {A $\rightarrow$ a b $\bullet$};
+
+              \path[thick, ->]
+                (q0.east)
+                  edge node[fill=white, anchor=center, pos=.5] {A} (q1)
+                  edge node[fill=white, anchor=center, pos=.5] {a} (q2)
+                (q2.east)
+                  edge node[fill=white, anchor=center, pos=.5] {b} (q3);
+            \end{tikzpicture}
+          \end{minipage}
+        \end{center}
+
+        \par
+        El problema se da en el estado 2 porque tiene dos posibles acciones,
+        conflicto de desplazamiento-reducción.
+
+        \begin{center}
+          \begin{tabular}{||c c c c c||}
+            \hline
+            & a & b & $\vdash$ & A \\ [0.5ex]
+            \hline\hline
+            0 & d 2 &  &  & 1 \\
+            \hline
+            1 &  &  & a &  \\
+            \hline
+            2 & r A $\rightarrow$ a & {\color{red}\shortstack{r A $\rightarrow$
+            a \\d 3}} & r A $\rightarrow$ a &  \\
+            \hline
+            3 & r A $\rightarrow$ a b & r A $\rightarrow$ a b & r A
+            $\rightarrow$ a b & \\ [1ex]
+            \hline
+          \end{tabular}
+        \end{center}
+
+        \par
+        La gramática no es LR(0).
+
+        \bigskip
+        \par
+        \textbf{e.g.} Conflicto reducción-reducción
+        \begin{center}
+          \begin{minipage}{.3\textwidth}
+            \hspace*{5mm}A' $\rightarrow$ A\\
+            \hspace*{5mm}A $\rightarrow$ B b\\
+            \hspace*{5mm}A $\rightarrow$ C c\\
+            \hspace*{5mm}B $\rightarrow$ a\\
+            \hspace*{5mm}C $\rightarrow$ a\\
+          \end{minipage}%
+          \begin{minipage}{.7\textwidth}
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label=0, align = center]
+                (q0)
+                {
+                  A' $\rightarrow$ $\bullet$ A
+                  \nodepart{second}
+                  A $\rightarrow$ $\bullet$ B b\\
+                  A $\rightarrow$ $\bullet$ C c\\
+                  B $\rightarrow$ $\bullet$ a\\
+                  C $\rightarrow$ $\bullet$ a\\
+                };
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]2},
+                above right=-.7 and 2 of q0]
+                (q2)
+                {A $\rightarrow$ B $\bullet$ b};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]1},
+                above=of q2]
+                (q1)
+                {A' $\rightarrow$ A $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]3},
+                right=of q2]
+                (q3)
+                {A $\rightarrow$ B b $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]5},
+                below=of q2]
+                (q5)
+                {A $\rightarrow$ C $\bullet$ c};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]4},
+                right=of q5]
+                (q4)
+                {A $\rightarrow$ C c $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.7cm]6},
+                below=of q5]
+                (q6)
+                {B $\rightarrow$ a $\bullet$, C $\rightarrow$ a $\bullet$};
+
+              \path[thick, ->]
+                (q0.east)
+                  edge node[fill=white, anchor=center, pos=.5] {A} (q1.west)
+                  edge node[fill=white, anchor=center, pos=.5] {B} (q2.west)
+                  edge node[fill=white, anchor=center, pos=.5] {C} (q5.west)
+                  edge node[fill=white, anchor=center, pos=.5] {a} (q6.west)
+                (q2.east)
+                  edge node[fill=white, anchor=center, pos=.5] {b} (q3)
+                (q5.east)
+                  edge node[fill=white, anchor=center, pos=.5] {c} (q4);
+            \end{tikzpicture}
+          \end{minipage}
+        \end{center}
+
+        \begin{center}
+          \begin{tabular}{||c c c c c c c c||}
+            \hline
+            & a & b & c & $\vdash$ & A & B & C \\ [0.5ex]
+            \hline\hline
+            0 & d 6 &  &  &  & 1 & 2 & 5\\
+            \hline
+            1 &  &  &  & a &  &  &  \\
+            \hline
+            2 &  & d 3 &  &  &  &  &  \\
+            \hline
+            3 & r A $\rightarrow$ B b & r A $\rightarrow$ B b & r A
+            $\rightarrow$ B b & r A $\rightarrow$ B b &  &  &  \\
+            \hline
+            4 & r A $\rightarrow$ C c & r A $\rightarrow$ C c & r A
+            $\rightarrow$ C c & r A $\rightarrow$ C c &  &  &  \\
+            \hline
+            5 &  &  & d 4 &  &  &  &  \\
+            \hline
+            6 &
+            {\color{red}\shortstack{r B $\rightarrow$ A\\r C $\rightarrow$ a}} &
+            {\color{red}\shortstack{r B $\rightarrow$ A\\r C $\rightarrow$ a}} &
+            {\color{red}\shortstack{r B $\rightarrow$ A\\r C $\rightarrow$ a}} &
+            {\color{red}\shortstack{r B $\rightarrow$ A\\r C $\rightarrow$ a}} &
+            &  &  \\
+            [1ex]
+            \hline
+          \end{tabular}
+        \end{center}
+
+      \subsubsection{Método SLR(1)}
+        \par
+        Consiste en utilizar los siguientes en prefijos viables para no realizar
+        reducciones inútiles. Al aplicarlo la tabla anterior quedaria de la
+        siguiente manera.
+
+        \begin{center}
+          \begin{tabular}{||c c c c c c c c||}
+            \hline
+            & a & b & c & $\vdash$ & A & B & C \\ [0.5ex]
+            \hline\hline
+            0 & d 6 &  &  &  & 1 & 2 & 5\\
+            \hline
+            1 &  &  &  & a &  &  &  \\
+            \hline
+            2 &  & d 3 &  &  &  &  &  \\
+            \hline
+            3 &  &  &  & r A $\rightarrow$ B b &  &  &  \\
+            \hline
+            4 &  &  &  & r A $\rightarrow$ C c &  &  &  \\
+            \hline
+            5 &  &  & d 4 &  &  &  &  \\
+            \hline
+            6 &  & r B $\rightarrow$ A & r C $\rightarrow$ a &  &  &  &  \\
+            [1ex]
+            \hline
+          \end{tabular}
+        \end{center}
+
+        \par
+        No hay conflictos por lo que la gramática es SLR(1).
+
+        \bigskip
+        \par
+        \textbf{e.g.} La siguiente gramática supone un problema incluso para
+        SLR(1), no se suelen encontrar casos de este tipo.
+        \begin{center}
+          \begin{minipage}{.3\textwidth}
+            \hspace*{5mm}A' $\rightarrow$ A\\
+            \hspace*{5mm}A $\rightarrow$ d C b\\
+            \hspace*{5mm}A $\rightarrow$ B b\\
+            \hspace*{5mm}A $\rightarrow$ C c\\
+            \hspace*{5mm}B $\rightarrow$ a\\
+            \hspace*{5mm}C $\rightarrow$ a\\
+          \end{minipage}%
+          \begin{minipage}{.7\textwidth}
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align = center]
+                (q0)
+                {
+                  A' $\rightarrow$ $\bullet$ A
+                  \nodepart{second}
+                  A $\rightarrow$ $\bullet$ B b\\
+                  A $\rightarrow$ $\bullet$ C c\\
+                  B $\rightarrow$ $\bullet$ a\\
+                  C $\rightarrow$ $\bullet$ a\\
+                };
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2,above right=-.7 and 2 of q0]
+                (q2)
+                {A $\rightarrow$ B $\bullet$ b};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, above=of q2]
+                (q1)
+                {A' $\rightarrow$ A $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, right=of q2]
+                (q3)
+                {A $\rightarrow$ B b $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, below=of q2]
+                (q5)
+                {A $\rightarrow$ C $\bullet$ c};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, right=of q5]
+                (q4)
+                {A $\rightarrow$ C c $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, below=of q5]
+                (q6)
+                {B $\rightarrow$ a $\bullet$, C $\rightarrow$ a $\bullet$};
+              
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, below=of q0]
+                (q7)
+                {A $\rightarrow$ d $\bullet$ C b \nodepart{second} C
+                $\rightarrow$ $\bullet$ a};
+              
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, below=of q7]
+                (q8)
+                {C $\rightarrow$ a $\bullet$};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, right=of q8]
+                (q9)
+                {A $\rightarrow$ d C $\bullet$ b};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, right=of q9]
+                (q10)
+                {A $\rightarrow$ d C b $\bullet$};
+
+              \path[thick, ->]
+                (q0.east)
+                  edge node[fill=white, anchor=center, pos=.5] {A} (q1.west)
+                  edge node[fill=white, anchor=center, pos=.5] {B} (q2.west)
+                  edge node[fill=white, anchor=center, pos=.5] {C} (q5.west)
+                  edge node[fill=white, anchor=center, pos=.5] {a} (q6.west)
+                (q0.south)
+                  edge node[fill=white, anchor=center, pos=.5] {d} (q7.north)
+                (q2.east)
+                  edge node[fill=white, anchor=center, pos=.5] {b} (q3)
+                (q5.east)
+                  edge node[fill=white, anchor=center, pos=.5] {c} (q4)
+                (q7.south)
+                  edge node[fill=white, anchor=center, pos=.5] {a} (q8)
+                (q7.east)
+                  edge node[fill=white, anchor=center, pos=.5] {C} (q9)
+                (q9.east)
+                  edge node[fill=white, anchor=center, pos=.5] {b} (q10);
+            \end{tikzpicture}
+          \end{minipage}
+        \end{center}
+
+        \par
+        Como hay un conflicto de reducción-reducción la gramática no es SLR(1).
+
+      \subsubsection{Método LR(1)}
+        \par
+        En este método también se indica el símbolo por el cual se aplica la
+        reducción.
+        \begin{center}
+          [A $\rightarrow$ $\alpha$ $\bullet$ $\beta$, a]
+        \end{center}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \end{document}
