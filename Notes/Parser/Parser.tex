@@ -3004,14 +3004,14 @@
                 rectangle split parts=2, below=of q5]
                 (q6)
                 {B $\rightarrow$ a $\bullet$, C $\rightarrow$ a $\bullet$};
-              
+
               \node
                 [rectangle, draw=black, rectangle split,
                 rectangle split parts=2, below=of q0]
                 (q7)
                 {A $\rightarrow$ d $\bullet$ C b \nodepart{second} C
                 $\rightarrow$ $\bullet$ a};
-              
+
               \node
                 [rectangle, draw=black, rectangle split,
                 rectangle split parts=2, below=of q7]
@@ -3061,6 +3061,602 @@
         reducción.
         \begin{center}
           [A $\rightarrow$ $\alpha$ $\bullet$ $\beta$, a]
+        \end{center}
+
+        \begin{center}
+          \begin{tikzpicture}
+            \node
+              [rectangle, draw=black, rectangle split, rectangle split parts=2]
+              (q0)
+              {[S' $\rightarrow$ $\bullet$ S, $\vdash$]};
+
+            \node
+              [rectangle, draw=black, rectangle split, rectangle split parts=2,
+              right=of q0]
+              (q1)
+              {
+                [A $\rightarrow$ $\alpha$ $\bullet$ B $\beta$, a]
+                \nodepart{second}
+                [B $\rightarrow$ $\bullet$ $\gamma$, b]
+              };
+          \end{tikzpicture}
+        \end{center}
+
+        \par
+        Se expandiran producciones en un nodo para toda producción de la forma
+        B $\rightarrow$ $\gamma$ y para todo b $\in$ PRIM(B) $\oplus$ \{a\}.
+
+        \bigskip
+        \par
+        \textbf{e.g.}
+        \begin{center}
+          \begin{tikzpicture}
+            \node
+              [rectangle, draw=black, rectangle split, rectangle split parts=2,
+              align=center]
+              (q0)
+              {
+                ...
+                \nodepart{second}
+                \par
+                [$A_0$ $\rightarrow$ $\alpha_0$ $\bullet$ x $\beta_0$, $b_0$]
+                \\\relax
+                [$A_n$ $\rightarrow$ $\alpha_n$ $\bullet$ x $\beta_n$, $b_n$]
+              };
+
+            \node
+              [rectangle, draw=black, rectangle split, rectangle split parts=2,
+              right=of q0, align=center]
+              (q1)
+              {
+                [$A_0$ $\rightarrow$ $\alpha_0$ x $\bullet$ $\beta_0$, $b_0$]
+                \\\relax
+                [$A_n$ $\rightarrow$ $\alpha_n$ x $\bullet$ $\beta_n$, $b_n$]
+                \nodepart{second}
+                ...
+              };
+
+            \path[thick, ->]
+              (q0.east)
+                edge node[fill=white, anchor=center, pos=.5] {x} (q1.west);
+          \end{tikzpicture}
+        \end{center}
+
+        \newpage
+        \par
+        \textbf{e.g.}
+        \begin{center}
+          \begin{minipage}{.3\textwidth}
+            \hspace*{5mm}A' $\rightarrow$ A\\
+            \hspace*{5mm}A $\rightarrow$ d C b\\
+            \hspace*{5mm}A $\rightarrow$ B b\\
+            \hspace*{5mm}A $\rightarrow$ C c\\
+            \hspace*{5mm}B $\rightarrow$ a\\
+            \hspace*{5mm}C $\rightarrow$ a\\
+          \end{minipage}%
+          \begin{minipage}{.7\textwidth}
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.3cm]0},
+                align=center]
+                (q0)
+                {
+                  [A' $\rightarrow$ $\bullet$ A, $\vdash$]
+                  \nodepart{second}
+                  [A $\rightarrow$ $\bullet$ d C b, $\vdash$]
+                  \\\relax
+                  [A $\rightarrow$ $\bullet$ B b, $\vdash$]
+                  \\\relax
+                  [A $\rightarrow$ $\bullet$ C c, $\vdash$]
+                  \\\relax
+                  [B $\rightarrow$ $\bullet$ a, b]
+                  \\\relax
+                  [C $\rightarrow$ $\bullet$ a, b]
+                };
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]2},
+                above right=-.7 and 2 of q0]
+                (q2)
+                {A $\rightarrow$ B $\bullet$ b};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]1},
+                above=of q2]
+                (q1)
+                {[A' $\rightarrow$ A $\bullet$, $\vdash$]};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]5},
+                right=of q2]
+                (q3)
+                {[A $\rightarrow$ B b $\bullet$, $\vdash$]};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]3},
+                below=of q2]
+                (q5)
+                {[A $\rightarrow$ C $\bullet$ c, $\vdash$]};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]6},
+                right=of q5]
+                (q4)
+                {[A $\rightarrow$ C c $\bullet$, $\vdash$]};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .8cm]4},
+                below=of q5, align=center]
+                (q6)
+                {
+                  [B $\rightarrow$ a $\bullet$, b]
+                  \\\relax
+                  [C $\rightarrow$ a $\bullet$, c]
+                };
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.4cm]8},
+                align=center, below=of q0]
+                (q8)
+                {
+                  [A' $\rightarrow$ d $\bullet$ C b, $\vdash$]
+                  \nodepart{second}
+                  [C $\rightarrow$ $\bullet$ a, b]
+                };
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.4cm]9},
+                below=of q8]
+                (q9)
+                {[A $\rightarrow$ d C $\bullet$ b, $\vdash$]};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = 1.4cm]10},
+                below=of q9]
+                (q10)
+                {[A $\rightarrow$ d C b $\bullet$, $\vdash$]};
+
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, label={[xshift = .9cm]7},
+                right=of q9, align=center]
+                (q7)
+                {[C $\rightarrow$ a $\bullet$, b]};
+
+              \path[thick, ->]
+                (q0.east)
+                  edge node[fill=white, anchor=center, pos=.5] {A} (q1.west)
+                  edge node[fill=white, anchor=center, pos=.5] {B} (q2.west)
+                  edge node[fill=white, anchor=center, pos=.5] {C} (q5.west)
+                  edge node[fill=white, anchor=center, pos=.5] {a} (q6.west)
+                (q0.south)
+                  edge node[fill=white, anchor=center, pos=.5] {d} (q8.north)
+                (q2.east)
+                  edge node[fill=white, anchor=center, pos=.5] {b} (q3)
+                (q5.east)
+                  edge node[fill=white, anchor=center, pos=.5] {c} (q4)
+                (q8.south)
+                  edge node[fill=white, anchor=center, pos=.5] {C} (q9.north)
+                (q8.east)
+                  edge node[fill=white, anchor=center, pos=.5] {a} (q7.north)
+                (q9.south)
+                  edge node[fill=white, anchor=center, pos=.5] {b} (q10.north);
+            \end{tikzpicture}
+          \end{minipage}
+        \end{center}
+
+        \begin{center}
+          \begin{tabular}{||c c c c c c c c c||}
+            \hline
+            & a & b & c & d & $\vdash$ & A & B & C \\ [0.5ex]
+            \hline\hline
+            0 & d 4 &  &  & d 8 &  & 1 & 2 & 3\\
+            \hline
+            1 &  &  &  &  & a &  &  &  \\
+            \hline
+            2 &  & d 5 &  &  &  &  &  &  \\
+            \hline
+            3 &  &  & d 6 &  &  &  &  &  \\
+            \hline
+            4 &  & r B $\rightarrow$ a & r C $\rightarrow$ a &  &  &  &  &  \\
+            \hline
+            5 &  &  &  &  & r A $\rightarrow$ B b &  &  &  \\
+            \hline
+            6 &  &  &  &  & r A $\rightarrow$ C c &  &  &  \\
+            \hline
+            7 &  & r C $\rightarrow$ a &  &  &  &  &  &  \\
+            \hline
+            8 & d 7 &  &  &  &  &  &  & 9 \\
+            \hline
+            9 &  & d 10 &  &  &  &  &  &  \\
+            \hline
+            10 &  &  &  &  & r A $\rightarrow$ d C B &  &  &  \\
+            \hline
+          \end{tabular}
+        \end{center}
+
+        \par
+        Como la tabla no tiene conflictos podemos concluir que esta gramática es
+        LR(1).
+
+        \bigskip
+        \par
+        En el ejemplo no ha ocurrido pero el número de estados podría verse
+        incrementado
+
+        \begin{center}
+          \begin{tikzpicture}
+            \node
+              [rectangle, draw=black, rectangle split,
+              rectangle split parts=2, align=center]
+              (q0)
+              {[C $\rightarrow$ a $\bullet$, b]};
+
+            \node
+              [rectangle, draw=black, rectangle split,
+              rectangle split parts=2, right=of q0, align=center]
+              (q0)
+              {[C $\rightarrow$ a $\bullet$, $\vdash$]};
+          \end{tikzpicture}
+        \end{center}
+
+        \par
+        Como puede verse ambos estados coincidirian si utilizaramos el método
+        LR(0).
+
+      \subsubsection{Método LALR(1)}
+        \par
+        Para mejorar el método anterior podemos fusionar los estados.
+
+        \begin{center}
+          \begin{tikzpicture}
+            \node
+              [rectangle, draw=black, rectangle split,
+              rectangle split parts=2, align=center]
+              (q0)
+              {
+                [C $\rightarrow$ a $\bullet$, b]
+                \\\relax
+                [C $\rightarrow$ a $\bullet$, $\vdash$]
+              };
+          \end{tikzpicture}
+        \end{center}
+
+        \par
+        Como lo único que se ha realizado ha sido dicha fusión podemos asegurar
+        que toda gramática LALR(1) es necesariamente LR(1).
+
+        \bigskip
+        \par
+        Sin embargo, al realizar dicha fusión pueden aparecer conflictos por lo
+        que no toda gramática LR(1) tiene que ser LALR(1).
+
+        \begin{itemize}
+          \item Conflicto desplazamiento-reducción.
+            \begin{center}
+              \begin{minipage}{.3\textwidth}
+                \begin{tikzpicture}
+                  \node
+                    [rectangle, draw=black, rectangle split,
+                    rectangle split parts=2, align=center]
+                    (q0)
+                    {
+                      [A $\rightarrow$ $\alpha$ $\bullet$ a $\beta$, -]
+                      \\\relax
+                      [B $\rightarrow$ $\gamma$ $\bullet$, -]
+                    };
+                  \node
+                    [rectangle, draw=black, rectangle split,
+                    rectangle split parts=2, below=of q0, align=center]
+                    (q0)
+                    {
+                      [A $\rightarrow$ $\alpha$ $\bullet$ {\color{red}a} $\beta$, -]
+                      \\\relax
+                      [B $\rightarrow$ $\gamma$ $\bullet$, {\color{red}a}]
+                    };
+                \end{tikzpicture}
+              \end{minipage}%
+              \begin{minipage}{.3\textwidth}
+                \begin{tikzpicture}
+                  \node
+                    [rectangle, draw=black, rectangle split,
+                    rectangle split parts=2, align=center]
+                    (q0)
+                    {
+                      [A $\rightarrow$ $\alpha$ $\bullet$ {\color{red}a} $\beta$, -]
+                      \\\relax
+                      [A $\rightarrow$ $\alpha$ $\bullet$ {\color{red}a} $\beta$, -]
+                      \\\relax
+                      [B $\rightarrow$ $\gamma$ $\bullet$, {\color{red}a}]
+                      \\\relax
+                      [B $\rightarrow$ $\gamma$ $\bullet$, -]
+                    };
+                \end{tikzpicture}
+              \end{minipage}
+            \end{center}
+            \par
+            No pueden aparecer conflictos NUEVOS de este tipo, pero si los habia
+            en LR(1) seguiran estando.
+          \item Conflicto reducción-reducción.
+            \par
+            Pueden aparecer conflictos nuevos de este tipo.\\\relax
+            \vspace{2mm}
+            [A $\rightarrow$ $\alpha$ $\bullet$ $\beta$, a]\\\relax
+            [A $\rightarrow$ $\alpha$ $\bullet$ $\beta$, b]\\\relax
+            [A $\rightarrow$ $\alpha$ $\bullet$ $\beta$, c]\\\relax
+            Lo podemos escribir de la siguiente forma.\\\relax
+            [A $\rightarrow$ $\alpha$ $\bullet$ $\beta$, \{a, b, c\}]
+
+            \begin{center}
+              \begin{minipage}{.3\textwidth}
+                \begin{tikzpicture}
+                  \node
+                    [rectangle, draw=black, rectangle split,
+                    rectangle split parts=2, align=center]
+                    (q0)
+                    {
+                      [A $\rightarrow$ $\alpha$ $\bullet$, $\psi_0$]
+                      \\\relax
+                      [B $\rightarrow$ $\beta$ $\bullet$, $\psi_1$]
+                    };
+                  \node
+                    [rectangle, draw=black, rectangle split,
+                    rectangle split parts=2, below=of q0, align=center]
+                    (q1)
+                    {
+                      [A $\rightarrow$ $\alpha$ $\bullet$, $\psi'_0$]
+                      \\\relax
+                      [B $\rightarrow$ $\beta$ $\bullet$, $\psi'_1$]
+                    };
+                \end{tikzpicture}
+              \end{minipage}%
+              \begin{minipage}{.8\textwidth}
+                \par
+                $\psi_0$ $\cap$ $\psi_1$ = \O\\
+                $\psi'_0$ $\cap$ $\psi'_1$ = \O\\
+                ($\psi_0$ $\cup$ $\psi'_0$) $\cap$ ($\psi_1$ $\cup$ $\psi'_1$)
+                $\neq$ \O\\
+                \vspace*{2mm}
+
+                Por tanto al fusionar pueden aparecer conflictos de este tipo.
+              \end{minipage}
+            \end{center}
+        \end{itemize}
+
+        \par
+        \textbf{e.g.}
+        \begin{center}
+          \begin{minipage}{.3\textwidth}
+            {\color{red} B $\rightarrow$ A b}\\
+            {\color{red} C $\rightarrow$ B b}\\
+            {\color{red} C $\rightarrow$ A c}\\
+            {\color{red} C $\rightarrow$ B b}\\
+            A $\rightarrow$ a\\
+            B $\rightarrow$ a
+          \end{minipage}%
+          \begin{minipage}{.8\textwidth}
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center]
+                (q0)
+                {
+                  [A $\rightarrow$ a $\bullet$, b]
+                  \\\relax
+                  [B $\rightarrow$ a $\bullet$, c]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, right=of q0, align=center]
+                (q1)
+                {
+                  [A $\rightarrow$ a $\bullet$, c]
+                  \\\relax
+                  [B $\rightarrow$ a $\bullet$, b]
+                };
+            \end{tikzpicture}
+
+            \par
+            Podemos fusionar ambos estados dando lugar al siguiente.
+            \vspace*{2mm}
+
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center]
+                (q0)
+                {
+                  [A $\rightarrow$ a $\bullet$, {\color{red}\{b, c\}}]
+                  \\\relax
+                  [B $\rightarrow$ a $\bullet$, {\color{red}\{b, c\}}]
+                };
+            \end{tikzpicture}
+
+            \par
+            Al fusionarlos se han generado conflictos, probando así que no toda
+            gramática LR(1) es LALR(1).
+          \end{minipage}
+        \end{center}
+
+        \par
+        TODO: Pasar automata ejemplo grande.
+
+        \newpage
+        \par
+        \textbf{Construcción directa del autómata LALR(1)}\\
+        $\#_{n,m}$ $\equiv$ preanálisis del elemento m del estado n.
+        \begin{center}
+          \begin{minipage}{.3\textwidth}
+            \par
+            L' $\rightarrow$ L \\
+            L $\rightarrow$ [ $E_s$ ] \\
+            $E_s$ $\rightarrow$ $LE_s$ \\
+            $E_s$ $\rightarrow$ $\varepsilon$ \\
+            $LE_s$ $\rightarrow$ $LE_s$ , E \\
+            $LE_s$ $\rightarrow$ E \\
+            E $\rightarrow$ a \\
+            E $\rightarrow$ L
+          \end{minipage}%
+          \begin{minipage}{.8\textwidth}
+            \begin{tikzpicture}
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]0}]
+                (q0)
+                {
+                  0 [L' $\rightarrow$ $\bullet$ L, $\vdash$]
+                  \nodepart{second}
+                  1 [L $\rightarrow$ $\bullet$ [ $E_s$ ], $\#_{0,0}$]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]1}, right=of q0]
+                (q1)
+                {
+                  0 [L' $\rightarrow$ L $\bullet$, $\#_{0,0}$]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]2}, below=of q0]
+                (q2)
+                {
+                  0 [L $\rightarrow$ [ $\bullet$ $E_s$ ],
+                  \{$\#_{0,0}$, $\#_{2,7}$, $\#_{9,3}$\}]
+                  \nodepart{second}
+                  1 [$E_s$ $\rightarrow$ $\bullet$ $LE_s$, \{]\}]
+                  \\\relax
+                  2 [$E_s$ $\rightarrow$ $\bullet$, \{]\}]
+                  \\\relax
+                  3 [$LE_s$ $\rightarrow$ $\bullet$ $LE_s$ , E, \{',', $\#_{2,1}$\}]
+                  \\\relax
+                  4 [$LE_s$ $\rightarrow$ $\bullet$ E, \{',', $\#_{2,1}$\}]
+                  \\\relax
+                  5 [E $\rightarrow$ $\bullet$ a, \{$\#_{2,4}$\}]
+                  \\\relax
+                  6 [E $\rightarrow$ $\bullet$ L, \{$\#_{2,4}$\}]
+                  \\\relax
+                  7 [L $\rightarrow$ $\bullet$ [ $E_s$ ], \{$\#_{2,6}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]3}, above right= -1.2 and 1 of q2]
+                (q3)
+                {
+                  0 [L $\rightarrow$ [ $E_s$ $\bullet$ ], \{$\#_{2,0}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]4}, below=of q3]
+                (q4)
+                {
+                  0 [L $\rightarrow$ [ $E_s$ ] $\bullet$, \{$\#_{3,0}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]5}, below=of q2]
+                (q5)
+                {
+                  0 [$E_s$ $\rightarrow$ $LE_s$ $\bullet$, \{$\#_{2,1}$\}]
+                  \\\relax
+                  1 [$LE_s$ $\rightarrow$ $LE_s$ $\bullet$ , E , \{$\#_{2,3}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]6}, right=of q5]
+                (q6)
+                {
+                  0 [$LE_s$ $\rightarrow$ E $\bullet$, \{$\#_{2,4}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]7}, below=of q5]
+                (q7)
+                {
+                  0 [E $\rightarrow$ a $\bullet$, \{$\#_{2,5}$, $\#_{9,1}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]8}, right=of q7]
+                (q8)
+                {
+                  0 [E $\rightarrow$ L $\bullet$, \{$\#_{2,6}$, $\#_{9,2}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]9}, below=of q7]
+                (q9)
+                {
+                  0 [$LE_s$ $\rightarrow$ $LE_s$ , $\bullet$ E, \{$\#_{5,1}$\}]
+                  \nodepart{second}
+                  1 [E $\rightarrow$ $\bullet$ a, \{$\#_{9,0}$\}]
+                  \\\relax
+                  2 [E $\rightarrow$ $\bullet$ L, \{$\#_{9,0}$\}]
+                  \\\relax
+                  3 [L $\rightarrow$ $\bullet$ [ $E_s$ ], \{$\#_{9,2}$\}]
+                };
+              \node
+                [rectangle, draw=black, rectangle split,
+                rectangle split parts=2, align=center,
+                label={[xshift=.8cm]10}, right=of q9]
+                (q10)
+                {
+                  0 [$LE_s$ $\rightarrow$ $LE_s$ , E $\bullet$, \{$\#_{9,0}$\}]
+                };
+            \end{tikzpicture}
+          \end{minipage}
+          \vspace*{2mm}
+
+          \begin{minipage}{.5\textwidth}
+            \begin{tikzpicture}[shorten >= 1pt, on grid, auto]
+              \node[circle] (0) {0};
+              \node[circle] (2) [below=of 0] {2};
+              \node[circle] (1) [left=of 2] {1};
+              \node[circle] (3) [right=of 2] {3};
+              \node[circle] (4) [right=of 3] {4};
+              \node[circle] (8) [below left=1 and .5 of 2] {8};
+              \node[circle] (9) [below left= .5 and  of 8] {9};
+              \node[circle] (10) [below left=.5 and 1 of 9] {10};
+              \node[circle] (7) [below right=1 and .5 of 2] {7};
+              \node[circle] (6) [below right=.5 and 1 of 7] {6};
+              \node[circle] (5) [below right=.5 and 1 of 6] {5};
+
+              \path[->]
+                (0)
+                  edge node[fill=white, anchor=center, pos=.5] {\tiny L} (1)
+                (1)
+                  edge node[fill=white, anchor=center, pos=.5] {\tiny [} (2)
+                (2)
+                  edge node[fill=white, anchor=center, pos=.5] {\tiny $E_s$} (3)
+                  edge node[fill=white, anchor=center, pos=.5] {\tiny } ()
+                  edge node[fill=white, anchor=center, pos=.5] {\tiny } ()
+                (3)
+                  edge node[fill=white, anchor=center, pos=.5] {\tiny ]} (4);
+            \end{tikzpicture}
+          \end{minipage}%
+          \begin{minipage}{.5\textwidth}
+
+          \end{minipage}
+
         \end{center}
 
 

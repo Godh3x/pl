@@ -1,4 +1,4 @@
-package lexer_jlex;
+package lexer;
 
 import java_cup.runtime.Symbol;
 
@@ -29,7 +29,7 @@ public class LexicalItem extends Symbol {
    *
    * @return
    */
-  public Lexicon getType() {
+  public int getType() {
     return this.sym;
   }
 
@@ -56,7 +56,7 @@ public class LexicalItem extends Symbol {
    *
    * @return string representation of the invoking item
    */
-  public abstract String toString() {
-    this.getLexeme();
+  public String toString() {
+    return this.getLexeme();
   }
 }

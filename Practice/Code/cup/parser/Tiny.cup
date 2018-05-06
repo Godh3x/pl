@@ -1,8 +1,8 @@
-package parser_cup;
+package parser;
 
 import java_cup.runtime.*;
-import lexer_jlex.TinyLexer;
-import lexer_jlex.LexicalItem;
+import lexer.TinyLexer;
+import lexer.LexicalItem;
 import errors.ErrorManager;
 
 scan with {: return getScanner().next_token(); :};

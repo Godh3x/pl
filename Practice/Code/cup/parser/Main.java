@@ -16,7 +16,7 @@ public class Main {
 		Reader input = new InputStreamReader(new FileInputStream("input.txt"));
 		TinyLexer lexer = new TinyLexer(input);
 		TinyParser parser = new TinyParser(lexer);
-		//asint.setScanner(alex);
+		parser.setScanner(lexer);
 		parser.parse();
 	}
 }

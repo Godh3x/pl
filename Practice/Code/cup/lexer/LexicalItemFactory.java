@@ -1,4 +1,4 @@
-package lexer_jlex;
+package lexer;
 
 import parser.Lexicon;
 import errors.ErrorManager;
