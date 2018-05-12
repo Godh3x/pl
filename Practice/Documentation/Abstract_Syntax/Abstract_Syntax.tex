@@ -1,0 +1,194 @@
+\providecommand{\main}{..}
+\documentclass[\main/MemoriaPL.tex]{subfiles}
+
+% !TEX root = ../MemoriaPL.tex
+
+\begin{document}
+  \section{Funciones constructoras}
+    \par
+    El primer paso para poder generar las funciones constructoras es simplificar
+    la gramática incontextual generada en la fase 2.
+
+    \bigskip
+    \par
+    Prog $\rightarrow$ LDec \underline{SPROG} LIns\\
+    LDec $\rightarrow$ LDec \underline{EOL} \underline{NUM} \underline{ID}\\
+    \hspace{13mm}$\mid$ LDec \underline{EOL} \underline{BOOL} \underline{ID}\\
+    \hspace{13mm}$\mid$ \underline{NUM} \underline{ID}\\
+    \hspace{13mm}$\mid$ \underline{BOOL} \underline{ID}\\
+    LIns $\rightarrow$ LIns \underline{EOL} \underline{ID} \underline{IS} Exp\\
+    \hspace{12mm}$\mid$ \underline{ID} \underline{IS} Exp\\
+    Exp $\rightarrow$ Exp \underline{PLUS} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{MINUS} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{AND} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{OR} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{EQ} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{GT} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{GEQ} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{LT} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{LEQ} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{NEQ} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{MUL} Exp\\
+    \hspace{11mm}$\mid$ Exp \underline{DIV} Exp\\
+    \hspace{11mm}$\mid$ \underline{MINUS} Exp\\
+    \hspace{11mm}$\mid$ \underline{NOT} Exp\\
+    \hspace{11mm}$\mid$ \underline{LREAL}\\
+    \hspace{11mm}$\mid$ \underline{TRUE}\\
+    \hspace{11mm}$\mid$ \underline{FALSE}\\
+    \hspace{11mm}$\mid$ \underline{POP} Exp \underline{PCL}\\
+
+    \bigskip
+    \par
+    Por cada una de las reglas de esta gramática simplificada generaremos una
+    función constructora.
+
+    \begin{itemize}
+      \item Prog $\rightarrow$ LDec \underline{SPROG} LIns\\
+        prog: LDec x LIns $\rightarrow$ Prog
+      \item LDec $\rightarrow$ LDec \underline{EOL} \underline{NUM}
+        \underline{ID}\\
+        ldecNum: LDec x String $\rightarrow$ LDec
+      \item LDec $\rightarrow$ LDec \underline{EOL} \underline{BOOL}
+        \underline{ID}\\
+        ldecBool: LDec x String $\rightarrow$ LDec
+      \item LDec $\rightarrow$ \underline{NUM} \underline{ID}\\
+        decNum: String $\rightarrow$ LDec
+      \item LDec $\rightarrow$ \underline{BOOL} \underline{ID}\\
+        decBool: String $\rightarrow$ LDec
+      \item LIns $\rightarrow$ LIns \underline{EOL} \underline{ID}
+        \underline{IS} Exp\\
+        lins: LIns x String x Exp $\rightarrow$ LIns
+      \item LIns $\rightarrow$ \underline{ID} \underline{IS} Exp\\
+        ins: String x Exp $\rightarrow$ LIns
+      \item Exp $\rightarrow$ Exp \underline{PLUS} Exp\\
+        plus: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{MINUS} Exp\\
+        minus: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{AND} Exp\\
+        and: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{OR} Exp\\
+        or: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{EQ} Exp\\
+        eq: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{GT} Exp\\
+        gt: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{GEQ} Exp\\
+        geq: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{LT} Exp\\
+        lt: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{LEQ} Exp\\
+        leq: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{NEQ} Exp\\
+        neq: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{MUL} Exp\\
+        mul: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ Exp \underline{DIV} Exp\\
+        div: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ \underline{MINUS} Exp\\
+        sign: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ \underline{NOT} Exp\\
+        not: Exp x Exp $\rightarrow$ Exp
+      \item Exp $\rightarrow$ \underline{LREAL}\\
+        num: String $\rightarrow$ Exp
+      \item Exp $\rightarrow$ \underline{TRUE}\\
+        true: String $\rightarrow$ Exp
+      \item Exp $\rightarrow$ \underline{FALSE}\\
+        false: String $\rightarrow$ Exp
+    \end{itemize}
+
+  \section{Diagrama de clases}
+    \begin{tikzpicture}
+      \node[rectangle, draw=black] (prog) {Prog};
+
+      \node[rectangle, draw=black, above right=3 and .5of prog] (ldecs) {LDecs};
+
+      \node[rectangle, draw=black, above right=2 and .5 of ldecs] (ldec) {ldec};
+
+      \node[rectangle, draw=black, above right=.4 of ldec] (ldecb) {ldecBool};
+      \node[rectangle, draw=black, below right=.4 of ldec] (ldecn) {ldecNum};
+
+      \node[rectangle, draw=black, below right=2 and .5 of ldecs] (dec) {dec};
+
+      \node[rectangle, draw=black, above right=.4 of dec] (decb) {decBool};
+      \node[rectangle, draw=black, below right=.4 of dec] (decn) {decNum};
+
+      \node[rectangle, draw=black, below right=3 and .5 of prog] (Lins) {LIns};
+
+      \node[rectangle, draw=black, above right=2 and .5 of Lins] (lins) {lins};
+
+      \node[rectangle, draw=black, below right=2 and .5 of Lins] (ins) {ins};
+
+      \node[rectangle, draw=black, right=6 of Lins] (exp) {Exp};
+
+      \node[rectangle, draw=black, above right=5 and 2 of exp] (expb) {ExpBin};
+
+      \node[rectangle, draw=black, below right=5 and 3 of expb] (neq) {NEQ};
+      \node[rectangle, draw=black, above=.5 of neq] (leq) {LEQ};
+      \node[rectangle, draw=black, above=.5 of leq] (lt) {LT};
+      \node[rectangle, draw=black, above=.5 of lt] (geq) {GEQ};
+      \node[rectangle, draw=black, above=.5 of geq] (gt) {GT};
+      \node[rectangle, draw=black, above=.5 of gt] (eq) {EQ};
+      \node[rectangle, draw=black, above=.5 of eq] (and) {AND};
+      \node[rectangle, draw=black, above=.5 of and] (or) {OR};
+      \node[rectangle, draw=black, above=.5 of or] (plus) {PLUS};
+      \node[rectangle, draw=black, above=.5 of plus] (minus) {MINUS};
+      \node[rectangle, draw=black, above=.5 of minus] (mul) {MUL};
+      \node[rectangle, draw=black, above=.5 of mul] (div) {DIV};
+
+      \node[rectangle, draw=black, below right=3 and 2 of exp] (expu) {ExpUn};
+
+      \node[rectangle, draw=black, above right=.5 and 1 of expu] (sign) {SIGN};
+      \node[rectangle, draw=black, below right=.5 and 1 of expu] (not) {NOT};
+
+      \node[rectangle, draw=black, below =6 of exp] (true) {TRUE};
+      \node[rectangle, draw=black, left =.5 of true] (id) {ID};
+      \node[rectangle, draw=black, left =.5 of id] (lreal) {LREAL};
+      \node[rectangle, draw=black, right =.5 of true] (false) {FALSE};
+
+
+      \path[->]
+        (prog)
+          edge (ldecs)
+          edge (Lins)
+        (lins) edge node[fill=white, anchor=center] {+} (exp)
+        (ins) edge (exp)
+        (expb.west) edge node[fill=white, anchor=center] {2} (exp)
+        (expu.west) edge (exp)
+        (decb) edge (exp)
+        (decn) edge (exp)
+        (ldecb) edge (exp)
+        (ldecn) edge (exp);
+
+      \path[>= open triangle 60, ->]
+        (ldec) edge (ldecs)
+        (dec) edge (ldecs)
+        (lins) edge (Lins)
+        (ins) edge (Lins)
+        (ldecb) edge (ldec)
+        (ldecn) edge (ldec)
+        (decb) edge (dec)
+        (decn) edge (dec)
+        (expb) edge (exp.east)
+        (expu) edge (exp.east)
+        (sign) edge (expu)
+        (not) edge (expu)
+        (true) edge (exp)
+        (false) edge (exp)
+        (id) edge (exp)
+        (lreal) edge (exp)
+        (div) edge (expb)
+        (mul) edge (expb)
+        (minus) edge (expb)
+        (plus) edge (expb)
+        (or) edge (expb)
+        (and) edge (expb)
+        (eq) edge (expb)
+        (gt) edge (expb)
+        (geq) edge (expb)
+        (lt) edge (expb)
+        (leq) edge (expb)
+        (neq) edge (expb);
+    \end{tikzpicture}
+
+  \section{Gramática de atributos}
+\end{document}
