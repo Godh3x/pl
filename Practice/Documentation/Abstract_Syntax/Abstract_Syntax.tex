@@ -191,4 +191,202 @@
     \end{tikzpicture}
 
   \section{Gramática de atributos}
+    S $\rightarrow$ Prog \underline{EOF}\\
+    \hspace{5mm}S.a = Prog.a\\
+    Prog $\rightarrow$ LDec \underline{SPROG} LIns\\
+    \hspace{5mm}Prog.a = prog(LDec.a, LIns.a)\\
+    LDec $\rightarrow$ LDec \underline{EOL} Dec\\
+    \hspace{5mm}$LDec_0$.a = ldec($LDec_1$.a, Dec.a)\\
+    LDec $\rightarrow$ Dec\\
+    \hspace{5mm}LDec.a = Dec.a\\
+    LIns $\rightarrow$ LIns \underline{EOL} Ins\\
+    \hspace{5mm}$LIns_0$.a = lins($LIns_1$.a, Ins.id, Ins.exp)\\
+    LIns $\rightarrow$ Ins\\
+    \hspace{5mm}LIns.a = ins(Ins.id, Ins.exp)\\
+    Dec $\rightarrow$ \underline{NUM} \underline{ID}\\
+    \hspace{5mm}Dec.a = decNum(ID.lex)\\
+    Dec $\rightarrow$ \underline{BOOL} \underline{ID}\\
+    \hspace{5mm}Dec.a = decBool(ID.lex)\\
+    Ins $\rightarrow$ \underline{ID} \underline{IS} Exp0\\
+    \hspace{5mm}Ins.id = ID.lex\\
+    \hspace{5mm}Ins.exp = Exp0.exp\\
+    Exp0 $\rightarrow$ Exp0 Op0 Exp1\\
+    \hspace*{5mm}$Exp0_0$.a = mkexpb(Op0.op, $Exp0_1$.a, Exp1.a)\\
+    Exp0 $\rightarrow$ Exp1\\
+    \hspace*{5mm}Exp0.a = Exp1.a\\
+    Exp1 $\rightarrow$ Exp2 \underline{AND} Exp1\\
+    \hspace*{5mm}$Exp1_0$.a = mkexpb('and', Exp2.a, $Exp1_1$.a)\\
+    Exp1 $\rightarrow$ Exp2 \underline{OR} Exp2\\
+    \hspace*{5mm}Exp1.a = mkexpb('or', $Exp2_0$.a, $Exp2_1$.a)\\
+    Exp1 $\rightarrow$ Exp2\\
+    \hspace*{5mm}Exp1.a = Exp2.a\\
+    Exp2 $\rightarrow$ Exp3 Op2 Exp3\\
+    \hspace*{5mm}Exp2.a = mkexpb(Op2.op, $Exp3_0$.a, $Exp3_1$.a)\\
+    Exp2 $\rightarrow$ Exp3\\
+    \hspace*{5mm}Exp2.a = Exp3.a\\
+    Exp3 $\rightarrow$ Exp3 Op3 Exp4\\
+    \hspace*{5mm}$Exp3_0$.a = mkexpb(Op3.a, $Exp3_1$.a, Exp4.a)\\
+    Exp3 $\rightarrow$ Exp4\\
+    \hspace*{5mm}Exp3.a = Exp4.a\\
+    Exp4 $\rightarrow$ \underline{MINUS} Exp4\\
+    \hspace*{5mm}$Exp4_0$.a = mkexpu('-', $Exp4_1$.a)\\
+    Exp4 $\rightarrow$ \underline{NOT} Exp5\\
+    \hspace*{5mm}Exp4.a = mkexpu('not', Exp5.a)\\
+    Exp4 $\rightarrow$ Exp5\\
+    \hspace*{5mm}Exp4.a = Exp5.a\\
+    Exp5 $\rightarrow$ \underline{LREAL}\\
+    \hspace*{5mm}Exp5.a = num(LREAL.lex)\\
+    Exp5 $\rightarrow$ \underline{TRUE}\\
+    \hspace*{5mm}Exp5.a = true(TRUE.lex)\\
+    Exp5 $\rightarrow$ \underline{FALSE}\\
+    \hspace*{5mm}Exp5.a = false(FALSE.lex)\\
+    Exp5 $\rightarrow$ \underline{POP} Exp0 \underline{PCL}\\
+    \hspace*{5mm}Exp5.a = Exp0.a\\
+    Op0 $\rightarrow$ \underline{PLUS}\\
+    \hspace*{5mm}Op0.op = '+'\\
+    Op0 $\rightarrow$ \underline{MINUS}\\
+    \hspace*{5mm}Op0.op = '-'\\
+    Op2 $\rightarrow$ \underline{EQ}\\
+    \hspace*{5mm}Op2.op = '=='\\
+    Op2 $\rightarrow$ \underline{GT}\\
+    \hspace*{5mm}Op2.op = '$>$'\\
+    Op2 $\rightarrow$ \underline{GEQ}\\
+    \hspace*{5mm}Op2.op = '$>$='\\
+    Op2 $\rightarrow$ \underline{LT}\\
+    \hspace*{5mm}Op2.op = '$<$'\\
+    Op2 $\rightarrow$ \underline{LEQ}\\
+    \hspace*{5mm}Op2.op = '$<$='\\
+    Op2 $\rightarrow$ \underline{NEQ}\\
+    \hspace*{5mm}Op2.op = '!='\\
+    Op3 $\rightarrow$ \underline{MUL}\\
+    \hspace*{5mm}Op3.op = '*'\\
+    Op3 $\rightarrow$ \underline{DIV}\\
+    \hspace*{5mm}Op3.op = '/'\\
+
+    \bigskip
+    \par
+    Las funciones mkexpb y mkexpu son las encargadas de construir las expresiones
+    apropiadas para operadores binarios y unarios, respectivamente.\\
+    \vspace{2mm}
+    \textbf{fun} mkexpb (op, opd1, opd2) \{\\
+    \hspace{5mm}switch(op) \{\\
+    \hspace{10mm}'+': return plus(opd1, opd2)\\
+    \hspace{10mm}'-': return minus(opd1, opd2)\\
+    \hspace{10mm}'*': return mul(opd1, opd2)\\
+    \hspace{10mm}'/': return div(opd1, opd2)\\
+    \hspace{10mm}'and': return and(opd1, opd2)\\
+    \hspace{10mm}'or': return or(opd1, opd2)\\
+    \hspace{10mm}'==': return eq(opd1, opd2)\\
+    \hspace{10mm}'$>$': return gt(opd1, opd2)\\
+    \hspace{10mm}'$>$=': return geq(opd1, opd2)\\
+    \hspace{10mm}'$<$': return lt(opd1, opd2)\\
+    \hspace{10mm}'$<$=': return leq(opd1, opd2)\\
+    \hspace{10mm}'!=': return neq(opd1, opd2)\\
+    \hspace{5mm}\}\\
+    \}\\
+    \vspace{2mm}
+    \textbf{fun} mkexpu (op, opd) \{\\
+    \hspace{5mm}switch(op) \{\\
+    \hspace{10mm}'-': return sign(opd)\\
+    \hspace{10mm}'not': return not(opd)\\
+    \hspace{5mm}\}\\
+    \}\\
+
+  \section{Acondicionamiento para implementación descendente}
+    S $\rightarrow$ Prog \underline{EOF}\\
+    \hspace{5mm}S.a = Prog.a\\
+    Prog $\rightarrow$ SDec \underline{SPROG} SIns\\
+    \hspace{5mm}Prog.a = prog(LDec.a, LIns.a)\\
+    SDec $\rightarrow$ Dec LDec\\
+    \hspace{5mm}LDec.ah = Dec.a\\
+    \hspace{5mm}SDec.a = LDec.a\\
+    LDec $\rightarrow$ \underline{EOL} Dec LDec\\
+    \hspace{5mm}$LDec_1$.a = ldec($LDec_1$.ah, Dec.a)\\
+    \hspace{5mm}$LDec_0$.a = $LDec_1$.a\\
+    LDec $\rightarrow$ $\varepsilon$\\
+    \hspace{5mm}LDec.a = LDec.ah\\
+    SIns $\rightarrow$ Ins LIns\\
+    \hspace{5mm}LIns.ah = ins(Ins.id, Ins.exp)\\
+    \hspace{5mm}SIns.a = LIns.a\\
+    LIns $\rightarrow$ \underline{EOL} Ins LIns\\
+    \hspace{5mm}$LIns_1$.a = lins($LIns_1$.ah, Ins.id, Ins.exp)\\
+    \hspace{5mm}$LIns_0$.a = $LIns_1$.a\\
+    LIns $\rightarrow$ $\varepsilon$\\
+    \hspace{5mm}LIns.a = LIns.ah\\
+    Dec $\rightarrow$ \underline{NUM} \underline{ID}\\
+    \hspace{5mm}Dec.a = decNum(ID.lex)\\
+    Dec $\rightarrow$ \underline{BOOL} \underline{ID}\\
+    \hspace{5mm}Dec.a = decBool(ID.lex)\\
+    Ins $\rightarrow$ \underline{ID} \underline{IS} Exp0\\
+    \hspace{5mm}Ins.id = ID.lex\\
+    \hspace{5mm}Ins.exp = Exp0.exp\\
+    Exp0 $\rightarrow$ Exp1 R0\\
+    \hspace{5mm}R0.ah = Exp1.a\\
+    \hspace{5mm}Exp0.a = R0.a\\
+    R0 $\rightarrow$ Op0 Exp1 R0\\
+    \hspace{5mm}$R0_1$.ah = mkexpb(Op0.op, $R0_0$.ah, Exp1.a)\\
+    \hspace{5mm}$R0_0$.a = $R0_1$.a\\
+    R0 $\rightarrow$ $\varepsilon$\\
+    \hspace{5mm}R0.a = R0.ah\\
+    Exp1 $\rightarrow$ Exp2 R1\\
+    \hspace{5mm}R1.ah = Exp2.a\\
+    \hspace{5mm}Exp1.a = R1.a\\
+    R1 $\rightarrow$ \underline{AND} Exp2 R1\\
+    \hspace{5mm}$R1_1$.ah = mkexpb('and', $R1_0$.ah, Exp2.a)\\
+    \hspace{5mm}$R1_0$.a = $R1_1$.a\\
+    R1 $\rightarrow$ \underline{OR} Exp2\\
+    \hspace{5mm}R1.a = mkexpb('or', R1.ah, Exp2.a)\\
+    R1 $\rightarrow$ $\varepsilon$\\
+    \hspace{5mm}R1.a = R1.ah\\
+    Exp2 $\rightarrow$ Exp3 R2\\
+    \hspace{5mm}R2.ah = Exp3.a\\
+    \hspace{5mm}Exp2.a = R2.a\\
+    R2 $\rightarrow$ Op2 Exp3 R2\\
+    \hspace{5mm}$R2_1$.ah = mkexpb(Op2.op, $R2_0$.ah, Exp3.a)\\
+    \hspace{5mm}$R2_0$.a = $R2_1$.a\\
+    R2 $\rightarrow$ $\varepsilon$\\
+    \hspace{5mm}R2.a = R2.ah\\
+    Exp3 $\rightarrow$ Exp4 R3\\
+    \hspace{5mm}R3.ah = Exp4.a\\
+    \hspace{5mm}Exp3.a = R3.a\\
+    R3 $\rightarrow$ Op3 Exp4 R3\\
+    \hspace{5mm}$R3_1$.ah = mkexpb(Op3.op, $R3_0$.ah, Exp4.a)\\
+    \hspace{5mm}$R3_0$.a = $R3_1$.a\\
+    R3 $\rightarrow$ $\varepsilon$\\
+    \hspace{5mm}R3.a = R3.ah\\
+    Exp4 $\rightarrow$ \underline{MINUS} Exp4\\
+    \hspace{5mm}$Exp4_0$.a = mkexpu('-', $Exp4_1$.a)\\
+    Exp4 $\rightarrow$ \underline{NOT} Exp5\\
+    \hspace{5mm}Exp4.a = mkexpu('not', Exp5.a)\\
+    Exp4 $\rightarrow$ Exp5\\
+    \hspace{5mm}Exp4.a = Exp5.a\\
+    Exp5 $\rightarrow$ \underline{LREAL}\\
+    \hspace*{5mm}Exp5.a = num(LREAL.lex)\\
+    Exp5 $\rightarrow$ \underline{TRUE}\\
+    \hspace*{5mm}Exp5.a = true(TRUE.lex)\\
+    Exp5 $\rightarrow$ \underline{FALSE}\\
+    \hspace*{5mm}Exp5.a = false(FALSE.lex)\\
+    Exp5 $\rightarrow$ \underline{POP} Exp0 \underline{PCL}\\
+    \hspace*{5mm}Exp5.a = Exp0.a\\
+    Op0 $\rightarrow$ \underline{PLUS}\\
+    \hspace*{5mm}Op0.op = '+'\\
+    Op0 $\rightarrow$ \underline{MINUS}\\
+    \hspace*{5mm}Op0.op = '-'\\
+    Op2 $\rightarrow$ \underline{EQ}\\
+    \hspace*{5mm}Op2.op = '=='\\
+    Op2 $\rightarrow$ \underline{GT}\\
+    \hspace*{5mm}Op2.op = '$>$'\\
+    Op2 $\rightarrow$ \underline{GEQ}\\
+    \hspace*{5mm}Op2.op = '$>$='\\
+    Op2 $\rightarrow$ \underline{LT}\\
+    \hspace*{5mm}Op2.op = '$<$'\\
+    Op2 $\rightarrow$ \underline{LEQ}\\
+    \hspace*{5mm}Op2.op = '$<$='\\
+    Op2 $\rightarrow$ \underline{NEQ}\\
+    \hspace*{5mm}Op2.op = '!='\\
+    Op3 $\rightarrow$ \underline{MUL}\\
+    \hspace*{5mm}Op3.op = '*'\\
+    Op3 $\rightarrow$ \underline{DIV}\\
+    \hspace*{5mm}Op3.op = '/'\\
+
 \end{document}
