@@ -301,7 +301,7 @@
     \hspace{5mm}LDec.ah = Dec.a\\
     \hspace{5mm}SDec.a = LDec.a\\
     LDec $\rightarrow$ \underline{EOL} Dec LDec\\
-    \hspace{5mm}$LDec_1$.a = ldec($LDec_1$.ah, Dec.a)\\
+    \hspace{5mm}$LDec_1$.ah = ldec($LDec_0$.ah, Dec.a)\\
     \hspace{5mm}$LDec_0$.a = $LDec_1$.a\\
     LDec $\rightarrow$ $\varepsilon$\\
     \hspace{5mm}LDec.a = LDec.ah\\
@@ -309,7 +309,7 @@
     \hspace{5mm}LIns.ah = ins(Ins.id, Ins.exp)\\
     \hspace{5mm}SIns.a = LIns.a\\
     LIns $\rightarrow$ \underline{EOL} Ins LIns\\
-    \hspace{5mm}$LIns_1$.a = lins($LIns_1$.ah, Ins.id, Ins.exp)\\
+    \hspace{5mm}$LIns_1$.ah = lins($LIns_0$.ah, Ins.id, Ins.exp)\\
     \hspace{5mm}$LIns_0$.a = $LIns_1$.a\\
     LIns $\rightarrow$ $\varepsilon$\\
     \hspace{5mm}LIns.a = LIns.ah\\
