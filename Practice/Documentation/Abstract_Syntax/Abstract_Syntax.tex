@@ -209,7 +209,7 @@
     \hspace{5mm}Dec.a = decBool(ID.lex)\\
     Ins $\rightarrow$ \underline{ID} \underline{IS} Exp0\\
     \hspace{5mm}Ins.id = ID.lex\\
-    \hspace{5mm}Ins.exp = Exp0.exp\\
+    \hspace{5mm}Ins.exp = Exp0.a\\
     Exp0 $\rightarrow$ Exp0 Op0 Exp1\\
     \hspace*{5mm}$Exp0_0$.a = mkexpb(Op0.op, $Exp0_1$.a, Exp1.a)\\
     Exp0 $\rightarrow$ Exp1\\
@@ -319,7 +319,7 @@
     \hspace{5mm}Dec.a = decBool(ID.lex)\\
     Ins $\rightarrow$ \underline{ID} \underline{IS} Exp0\\
     \hspace{5mm}Ins.id = ID.lex\\
-    \hspace{5mm}Ins.exp = Exp0.exp\\
+    \hspace{5mm}Ins.exp = Exp0.a\\
     Exp0 $\rightarrow$ Exp1 R0\\
     \hspace{5mm}R0.ah = Exp1.a\\
     \hspace{5mm}Exp0.a = R0.a\\
