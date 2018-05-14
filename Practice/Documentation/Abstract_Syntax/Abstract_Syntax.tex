@@ -109,9 +109,6 @@
 
       \node[rectangle, draw=black, below right=2 and .5 of ldecs] (dec) {dec};
 
-      \node[rectangle, draw=black, above right=.4 of dec] (decb) {decBool};
-      \node[rectangle, draw=black, below right=.4 of dec] (decn) {decNum};
-
       \node[rectangle, draw=black, below right=3 and .5 of prog] (Lins) {LIns};
 
       \node[rectangle, draw=black, above right=2 and .5 of Lins] (lins) {lins};
@@ -154,20 +151,14 @@
         (ins) edge (exp)
         (expb.west) edge node[fill=white, anchor=center] {2} (exp)
         (expu.west) edge (exp)
-        (decb) edge (exp)
-        (decn) edge (exp)
-        (ldecb) edge (exp)
-        (ldecn) edge (exp);
+        (dec) edge (exp)
+        (ldec) edge (exp);
 
       \path[>= open triangle 60, ->]
         (ldec) edge (ldecs)
         (dec) edge (ldecs)
         (lins) edge (Lins)
         (ins) edge (Lins)
-        (ldecb) edge (ldec)
-        (ldecn) edge (ldec)
-        (decb) edge (dec)
-        (decn) edge (dec)
         (expb) edge (exp.east)
         (expu) edge (exp.east)
         (sign) edge (expu)
