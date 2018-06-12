@@ -47,17 +47,17 @@
         prog: LDec x LIns $\rightarrow$ Prog
       \item LDec $\rightarrow$ LDec \underline{EOL} \underline{NUM}
         \underline{ID}\\
-        ldec: LDec x String x String $\rightarrow$ LDec
+        ldec: LDec x LDec $\rightarrow$ LDec
       \item LDec $\rightarrow$ LDec \underline{EOL} \underline{BOOL}
         \underline{ID}\\
-        ldec: LDec x String x String $\rightarrow$ LDec
+        ldec: LDec x LDec $\rightarrow$ LDec
       \item LDec $\rightarrow$ \underline{NUM} \underline{ID}\\
         dec: String x String $\rightarrow$ LDec
       \item LDec $\rightarrow$ \underline{BOOL} \underline{ID}\\
         dec: String x String $\rightarrow$ LDec
       \item LIns $\rightarrow$ LIns \underline{EOL} \underline{ID}
         \underline{IS} Exp\\
-        lins: LIns x String x Exp $\rightarrow$ LIns
+        lins: LIns x LIns $\rightarrow$ LIns
       \item LIns $\rightarrow$ \underline{ID} \underline{IS} Exp\\
         ins: String x Exp $\rightarrow$ LIns
       \item Exp $\rightarrow$ Exp \underline{PLUS} Exp\\
@@ -184,22 +184,19 @@
     Prog $\rightarrow$ LDec \underline{SPROG} LIns\\
     \hspace{5mm}Prog.a = prog(LDec.a, LIns.a)\\
     LDec $\rightarrow$ LDec \underline{EOL} Dec\\
-    \hspace{5mm}$LDec_0$.a = ldec($LDec_1$.a, Dec.ty, Dec.id)\\
+    \hspace{5mm}$LDec_0$.a = ldec($LDec_1$.a, Dec.a)\\
     LDec $\rightarrow$ Dec\\
-    \hspace{5mm}LDec.a = dec(Dec.ty, Dec.id)\\
+    \hspace{5mm}LDec.a = Dec.a\\
     LIns $\rightarrow$ LIns \underline{EOL} Ins\\
-    \hspace{5mm}$LIns_0$.a = lins($LIns_1$.a, Ins.id, Ins.exp)\\
+    \hspace{5mm}$LIns_0$.a = lins($LIns_1$.a, Ins.a)\\
     LIns $\rightarrow$ Ins\\
-    \hspace{5mm}LIns.a = ins(Ins.id, Ins.exp)\\
+    \hspace{5mm}LIns.a = Ins.a\\
     Dec $\rightarrow$ \underline{NUM} \underline{ID}\\
-    \hspace{5mm}Dec.ty = NUM.lex\\
-    \hspace{5mm}Dec.id = ID.lex\\
+    \hspace{5mm}Dec.a = dec(NUM.lex, ID.lex)\\
     Dec $\rightarrow$ \underline{BOOL} \underline{ID}\\
-    \hspace{5mm}Dec.ty = BOOL.lex\\
-    \hspace{5mm}Dec.id = ID.lex\\
+    \hspace{5mm}Dec.a = dec(BOOL.lex, ID.lex)\\
     Ins $\rightarrow$ \underline{ID} \underline{IS} Exp0\\
-    \hspace{5mm}Ins.id = ID.lex\\
-    \hspace{5mm}Ins.exp = Exp0.a\\
+    \hspace{5mm}Ins.id = ins(ID.lex, Exp0.a)\\
     Exp0 $\rightarrow$ Exp0 Op0 Exp1\\
     \hspace*{5mm}$Exp0_0$.a = mkexpb(Op0.op, $Exp0_1$.a, Exp1.a)\\
     Exp0 $\rightarrow$ Exp1\\
@@ -288,30 +285,27 @@
     Prog $\rightarrow$ SDec \underline{SPROG} SIns\\
     \hspace{5mm}Prog.a = prog(LDec.a, LIns.a)\\
     SDec $\rightarrow$ Dec LDec\\
-    \hspace{5mm}LDec.ah = dec(Dec.ty, Dec.id)\\
+    \hspace{5mm}LDec.ah = Dec.a\\
     \hspace{5mm}SDec.a = LDec.a\\
     LDec $\rightarrow$ \underline{EOL} Dec LDec\\
-    \hspace{5mm}$LDec_1$.ah = ldec($LDec_0$.ah, Dec.ty, Dec.id)\\
+    \hspace{5mm}$LDec_1$.ah = ldec($LDec_0$.ah, Dec.a)\\
     \hspace{5mm}$LDec_0$.a = $LDec_1$.a\\
     LDec $\rightarrow$ $\varepsilon$\\
     \hspace{5mm}LDec.a = LDec.ah\\
     SIns $\rightarrow$ Ins LIns\\
-    \hspace{5mm}LIns.ah = ins(Ins.id, Ins.exp)\\
+    \hspace{5mm}LIns.ah = Ins.a\\
     \hspace{5mm}SIns.a = LIns.a\\
     LIns $\rightarrow$ \underline{EOL} Ins LIns\\
-    \hspace{5mm}$LIns_1$.ah = lins($LIns_0$.ah, Ins.id, Ins.exp)\\
+    \hspace{5mm}$LIns_1$.ah = lins($LIns_0$.ah, Ins.a)\\
     \hspace{5mm}$LIns_0$.a = $LIns_1$.a\\
     LIns $\rightarrow$ $\varepsilon$\\
     \hspace{5mm}LIns.a = LIns.ah\\
     Dec $\rightarrow$ \underline{NUM} \underline{ID}\\
-    \hspace{5mm}Dec.ty = NUM.lex\\
-    \hspace{5mm}Dec.id = ID.lex\\
+    \hspace{5mm}Dec.a = dec(NUM.lex, ID.lex)\\
     Dec $\rightarrow$ \underline{BOOL} \underline{ID}\\
-    \hspace{5mm}Dec.ty = BOOL.lex\\
-    \hspace{5mm}Dec.id = ID.lex\\
+    \hspace{5mm}Dec.a = dec(BOOL.lex, ID.lex)\\
     Ins $\rightarrow$ \underline{ID} \underline{IS} Exp0\\
-    \hspace{5mm}Ins.id = ID.lex\\
-    \hspace{5mm}Ins.exp = Exp0.a\\
+    \hspace{5mm}Ins.a = ins(ID.lex, Exp0.a)\\
     Exp0 $\rightarrow$ Exp1 R0\\
     \hspace{5mm}R0.ah = Exp1.a\\
     \hspace{5mm}Exp0.a = R0.a\\
