@@ -1,0 +1,101 @@
+package constructorAst;
+
+import java_cup.runtime.*;
+import lexer.TinyLexer;
+import lexer.LexicalItem;
+import errors.ErrorManager;
+import ast.E;
+import ast.ASExp;
+
+scan with {: return getScanner().next_token(); :};
+action code {:
+   private ASExp as = new ASExp();
+:};
+parser code {:
+   private ErrorManager error;
+   public void syntax_error(Symbol item) {
+     error.parser((LexicalItem)item);
+   }
+:};
+init with {:
+   error = new ErrorManager();
+   TinyLexer lexer = (TinyLexer)getScanner();
+   lexer.setErrorManager(error);
+:};
+
+
+terminal SPROG, EOL, NUM, ID, BOOL, IS, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,
+    NOT, PLUS, MINUS, MUL, DIV, LREAL, TRUE, FALSE, POP, PCL;
+
+non terminal S, Prog, LDec, Dec, LIns, Ins, Exp0, Exp1, Exp2, Exp3, Exp4, Exp5,
+    Op0, Op2, Op3, TIns, TDec;
+
+S ::= Prog ;
+Prog ::= LDec: aLDEC SPROG LIns: aLINS
+    {: RESULT=prog(aLDEC, aLINS) :};
+LDec ::= LDec: aLDEC EOL Dec: DEC
+    {: RESULT=ldec(aLDEC, DEC.ty, DEC.id) :};
+LDec ::= Dec: DEC
+    {: RESULT=dec(DEC.ty, DEC.id) :};
+LIns ::= LIns: aLINS EOL Ins: INS;
+    {: RESULT=lins(aLINS, INS.id, INS.exp) :};
+LIns ::= Ins: INS
+    {: RESULT=ins(INS.id, INS.exp) :};
+Dec ::= NUM: lexNUM ID: lexID
+    {: RESULT=new TDec(); RESULT.ty = lexNUM; RESULT.id = lexID; :};
+Dec ::= BOOL: lexBOOL ID: lexID
+    {: RESULT=new TDec(); RESULT.ty = lexBOOL; RESULT.id = lexID; :};
+Ins ::= ID: lexID IS Exp0: aEXP0
+    {: RESULT=new TIns(); RESULT.id = lexID; RESULT.exp = aEXP0; :};
+Exp0 ::= Exp0: aEXP0 Op0: lexOP0 Exp1: aEXP1
+    {: RESULT=as.mkexpb(lexOP0, aEXP0, aEXP1); :};
+Exp0 ::= Exp1: aEXP1
+    {: RESULT=aEXP1; :};
+Exp1 ::= Exp2: aEXP2 AND: lexAND Exp1: aEXP1
+    {: RESULT=as.mkexpb(lexAND, aEXP2, aEXP1); :};
+Exp1 ::= Exp2: aEXP20 OR: lexOR Exp2: aEXP21
+    {: RESULT=as.mkexpb(lexOR, aEXP20, aEXP21); :};
+Exp1 ::= Exp2 : aEXP2
+    {: RESULT=aEXP2; :};
+Exp2 ::= Exp3: aEXP30 Op2_ lexOP2 Exp3: aEXP31
+    {: RESULT=as.mkexpb(lexOP2, aEXP30, aEXP31); :};
+Exp2 ::= Exp3: aEXP3
+    {: RESULT=aEXP3; :};
+Exp3 ::= Exp3: aEXP3 Op3: lexOP3 Exp4: aEXP4
+    {: RESULT=as.mkexpb(lexOP3, aEXP3, aEXP4); :};
+Exp3 ::= Exp4: aEXP4
+    {: RESULT=aEXP4; :};
+Exp4 ::= MINUS: lexMINUS Exp4: aEXP4
+    {: RESULT=as.mkexpu(lexMINUS, aEXP4); :};
+Exp4 ::= NOT: lexNOT Exp5: aEXP5
+    {: RESULT=as.mkexpu(lexNOT, aEXP5); :};
+Exp4 ::= Exp5: aEXP5
+    {: RESULT=aEXP5; :};
+Exp5 ::= LREAL: lexLREAL
+    {: RESULT=as.num(lexLREAL); :};
+Exp5 ::= TRUE: lexTRUE ;
+    {: RESULT=as.true(lexTRUE); :};
+Exp5 ::= FALSE: lexFALSE
+    {: RESULT=as.false(lexFALSE); :};
+Exp5 ::= POP Exp0: aEXP0 PCL
+    {: RESULT=aEXP0; :};
+Op0 ::= PLUS: lexPLUS
+    {: RESULT=lexPlus; :};
+Op0 ::= MINUS: lexMINUS
+    {: RESULT=lexPlus; :};
+Op2 ::= EQ: lexEQ
+    {: RESULT=lexEQ; :};
+Op2 ::= GT: lexGT
+    {: RESULT=lexGT; :};
+Op2 ::= GEQ: lexGEQ
+    {: RESULT=lexGEQ; :};
+Op2 ::= LT: lexLT
+    {: RESULT=lexLT; :};
+Op2 ::= LEQ: lexLEQ
+    {: RESULT=lexLEQ; :};
+Op2 ::= NEQ: lexNEQ
+    {: RESULT=lexNEQ; :};
+Op3 ::= MUL: lexMUL
+    {: RESULT=lexMUL; :};
+Op3 ::= DIV: lexDIV
+    {: RESULT=lexDIV; :};
