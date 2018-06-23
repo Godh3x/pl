@@ -47,4 +47,12 @@ public class ASExp {
   public E num(String num) {return new Num(num);}
   public E true(String b) {return new True(b);}
   public E false(String b) {return new False(b);}
+  /* Instructions */
+  public LIns ins(String id, E exp) {return new LIns(id, exp)};
+  public LIns lins(LIns list, String id, E exp) {return new LIns(list, id, exp)};
+  /* Declarations */
+  public LDec ins(String ty, String id) {return new LDec(ty, id)};
+  public LDec lins(LIns list, String ty, String id) {return new LDec(list, ty, id)};
+  /* Program */
+  public Prog prog(LDec ldec, LIns lins) {return new Prog(ldec, lins)};
 }

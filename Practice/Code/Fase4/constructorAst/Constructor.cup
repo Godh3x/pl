@@ -30,17 +30,18 @@ terminal SPROG, EOL, NUM, ID, BOOL, IS, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,
 non terminal S, Prog, LDec, Dec, LIns, Ins, Exp0, Exp1, Exp2, Exp3, Exp4, Exp5,
     Op0, Op2, Op3, TIns, TDec;
 
-S ::= Prog ;
+S ::= Prog: aPROG
+    {: RESULT=aPROG :};
 Prog ::= LDec: aLDEC SPROG LIns: aLINS
-    {: RESULT=prog(aLDEC, aLINS) :};
+    {: RESULT=as.prog(aLDEC, aLINS) :};
 LDec ::= LDec: aLDEC EOL Dec: DEC
-    {: RESULT=ldec(aLDEC, DEC.ty, DEC.id) :};
+    {: RESULT=as.ldec(aLDEC, DEC.ty, DEC.id) :};
 LDec ::= Dec: DEC
-    {: RESULT=dec(DEC.ty, DEC.id) :};
+    {: RESULT=as.dec(DEC.ty, DEC.id) :};
 LIns ::= LIns: aLINS EOL Ins: INS;
-    {: RESULT=lins(aLINS, INS.id, INS.exp) :};
+    {: RESULT=as.lins(aLINS, INS.id, INS.exp) :};
 LIns ::= Ins: INS
-    {: RESULT=ins(INS.id, INS.exp) :};
+    {: RESULT=as.ins(INS.id, INS.exp) :};
 Dec ::= NUM: lexNUM ID: lexID
     {: RESULT=new TDec(); RESULT.ty = lexNUM; RESULT.id = lexID; :};
 Dec ::= BOOL: lexBOOL ID: lexID
