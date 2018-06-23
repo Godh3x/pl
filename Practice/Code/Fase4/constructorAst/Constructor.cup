@@ -28,20 +28,20 @@ terminal SPROG, EOL, NUM, ID, BOOL, IS, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,
     NOT, PLUS, MINUS, MUL, DIV, LREAL, TRUE, FALSE, POP, PCL;
 
 non terminal S, Prog, LDec, Dec, LIns, Ins, Exp0, Exp1, Exp2, Exp3, Exp4, Exp5,
-    Op0, Op2, Op3, TIns, TDec;
+    Op0, Op2, Op3;
 
 S ::= Prog: aPROG
     {: RESULT=aPROG :};
 Prog ::= LDec: aLDEC SPROG LIns: aLINS
-    {: RESULT=as.prog(aLDEC, aLINS) :};
-LDec ::= LDec: aLDEC EOL Dec: DEC
-    {: RESULT=as.ldec(aLDEC, DEC.ty, DEC.id) :};
-LDec ::= Dec: DEC
-    {: RESULT=as.dec(DEC.ty, DEC.id) :};
-LIns ::= LIns: aLINS EOL Ins: INS;
-    {: RESULT=as.lins(aLINS, INS.id, INS.exp) :};
-LIns ::= Ins: INS
-    {: RESULT=as.ins(INS.id, INS.exp) :};
+    {: RESULT=as.prog(aLDEC, aLINS); :};
+LDec ::= LDec: aLDEC EOL Dec: tDEC
+    {: RESULT=as.ldec(aLDEC, tDEC.ty, tDEC.id); :};
+LDec ::= Dec: tDEC
+    {: RESULT=as.dec(tDEC.ty, tDEC.id); :};
+LIns ::= LIns: aLINS EOL Ins: tINS
+    {: RESULT=as.lins(aLINS, tINS.id, tINS.exp); :};
+LIns ::= Ins: tINS
+    {: RESULT=as.ins(tINS.id, tINS.exp) :};
 Dec ::= NUM: lexNUM ID: lexID
     {: RESULT=new TDec(); RESULT.ty = lexNUM; RESULT.id = lexID; :};
 Dec ::= BOOL: lexBOOL ID: lexID
@@ -58,7 +58,7 @@ Exp1 ::= Exp2: aEXP20 OR: lexOR Exp2: aEXP21
     {: RESULT=as.mkexpb(lexOR, aEXP20, aEXP21); :};
 Exp1 ::= Exp2 : aEXP2
     {: RESULT=aEXP2; :};
-Exp2 ::= Exp3: aEXP30 Op2_ lexOP2 Exp3: aEXP31
+Exp2 ::= Exp3: aEXP30 Op2: lexOP2 Exp3: aEXP31
     {: RESULT=as.mkexpb(lexOP2, aEXP30, aEXP31); :};
 Exp2 ::= Exp3: aEXP3
     {: RESULT=aEXP3; :};
@@ -74,7 +74,7 @@ Exp4 ::= Exp5: aEXP5
     {: RESULT=aEXP5; :};
 Exp5 ::= LREAL: lexLREAL
     {: RESULT=as.num(lexLREAL); :};
-Exp5 ::= TRUE: lexTRUE ;
+Exp5 ::= TRUE: lexTRUE
     {: RESULT=as.true(lexTRUE); :};
 Exp5 ::= FALSE: lexFALSE
     {: RESULT=as.false(lexFALSE); :};
