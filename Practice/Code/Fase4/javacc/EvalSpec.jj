@@ -103,59 +103,59 @@ PARSER_END(Eval)
   LDs SDec() : {TLDs dec; LDs aLDec;} {
       dec=Dec()
       aLDec=LDec(as.dec(dec.type, dec.id))
-      {return aLDEC;}
+      {return aLDec;}
     }
-  LDs LDec(ahLDec0) : {TLDs dec; LDS aLDec1} {
+  LDs LDec(LDs ahLDec0) : {TLDs dec; LDs aLDec1;} {
       ";"
       dec=Dec()
-      aLDec1=LDec(as.ldec(ahLDec0, d.type, d.id))
+      aLDec1=LDec(as.ldec(ahLDec0, dec.type, dec.id))
       {return aLDec1;} |
       {return ahLDec0;}
     }
-  LIs SIns() : {TLIs ins; LIs aLIns} {
+  LIs SIns() : {TLIs ins; LIs aLIns;} {
       ins=Ins()
       aLIns=LIns(as.ins(ins.id, ins.exp))
-      {return aLIns1;}
+      {return aLIns;}
     }
-  LIs LIns(ahLIns0) : {TLIs ins; LIs aLIns1} {
+  LIs LIns(LIs ahLIns0) : {TLIs ins; LIs aLIns1;} {
       ";"
       ins=Ins()
-      aLIns1=LIns(as.lins(ahLIns0, ins.id, ins.exp));
+      aLIns1=LIns(as.lins(ahLIns0, ins.id, ins.exp))
       {return aLIns1;} |
       {return ahLIns0;}
     }
-  TLDs Dec() : {Token type; Token id;} {
+  TLDs Dec() : {Token type; Token iden;} {
       type=<num>
-      id=<id>
-      {return new TLDs(type.image, id.image);} |
+      iden=<id>
+      {return new TLDs(type.image, iden.image);} |
       type=<bool>
-      id=<id>
-      {return new TLDs(type.image, id.image);}
+      iden=<id>
+      {return new TLDs(type.image, iden.image);}
     }
-  TLIs Ins() : {Token id; E exp;} {
-      id=<id>
+  TLIs Ins() : {Token iden; E exp;} {
+      iden=<id>
       "="
       exp=E0()
-      {return new TLIs(id.image, exp)}
+      {return new TLIs(iden.image, exp);}
     }
-  void E0() : {E aE1; E aR0;} {
+  E E0() : {E aE1; E aR0;} {
       aE1=E1()
       aR0=R0(aE1)
       {return aR0;}
     }
-  void R0(E ahR0) : {int op; E aE1; R aR0;} {
+  E R0(E ahR0) : {int op; E aE1; E aR0;} {
       op=Op0()
       aE1=E1()
       aR0=R0(mkexpb(op, ahR0, aE1))
       {return aR0;} |
       {return ahR0;}
     }
-  void E1() : {E aE2; E aR1;} {
+  E E1() : {E aE2; E aR1;} {
       aE2=E2()
-      aR1=R1(aE2);
+      aR1=R1(aE2)
       {return aR1;}
     }
-  void R1(E ahR1) : {int op; E aE2; E aR1;} {
+  E R1(E ahR1) : {int op; E aE2; E aR1;} {
       op=And()
       aE2=E2()
       aR1=R1(mkexpb(op, ahR1, aE2))
@@ -166,31 +166,31 @@ PARSER_END(Eval)
       {return aR1;} |
       {return ahR1;}
     }
-  void E2() : {E aE3; E aR2;} {
+  E E2() : {E aE3; E aR2;} {
       aE3=E3()
       aR2=R2(aE3)
       {return aR2;}
     }
-  void R2(E ahR2) : {int op; E aE3; E aR2;} {
+  E R2(E ahR2) : {int op; E aE3; E aR2;} {
       op=Op2()
       aE3=E3()
       aR2=R2(mkexpb(op, ahR2, aE3))
       {return aR2;} |
       {return ahR2;}
     }
-  void E3() : {E aE4; E aR3;} {
+  E E3() : {E aE4; E aR3;} {
       aE4=E4()
       aR3=R3(aE4)
       {return aR3;}
     }
-  void R3(ahR3) : {int op; E aE4; E aR3;} {
+  E R3(E ahR3) : {int op; E aE4; E aR3;} {
       op=Op3()
       aE4=E4()
       aR3=R3(mkexpb(op, ahR3, aE4))
       {return aR3;} |
       {return ahR3;}
     }
-  void E4() : {int op; E aExp;} {
+  E E4() : {int op; E aExp;} {
       op=Sign()
       aExp=E4()
       {return mkexpu(op, aExp);} |
@@ -198,15 +198,15 @@ PARSER_END(Eval)
       aExp=E5()
       {return mkexpu(op, aExp);} |
       aExp=E5()
-      {return aExp5;}
+      {return aExp;}
     }
-  void E5() : {Token tok; E aE0;} {
+  E E5() : {Token tok; E aE0;} {
       tok=<lent>
-      {return as.num(tok);} |
+      {return as.num(tok.image);} |
       tok=<ldec>
-      {return as.num(tok);} |
+      {return as.num(tok.image);} |
       tok=<lexp>
-      {return as.num(tok);} |
+      {return as.num(tok.image);} |
       <t>
       {return as.true_f();} |
       <f>
@@ -216,13 +216,13 @@ PARSER_END(Eval)
       ")"
       {return aE0;}
     }
-  void Op0() : {} {
+  int Op0() : {} {
       "+"
       {return PLUS;} |
       "-"
       {return MINUS;}
     }
-  void Op2() : {} {
+  int Op2() : {} {
       "=="
       {return EQ;} |
       ">"
@@ -236,7 +236,7 @@ PARSER_END(Eval)
       "!="
       {return NEQ;}
     }
-  void Op3() : {} {
+  int Op3() : {} {
       "*"
       {return MUL;} |
       "/"

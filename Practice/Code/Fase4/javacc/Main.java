@@ -1,4 +1,4 @@
-package parser_javacc;
+package javacc;
 
 import java.io.FileReader;
 
@@ -15,6 +15,6 @@ public class Main {
    */
   public static void main(String[] args) throws Exception {
     Eval e = new Eval(new FileReader(args[0]));
-    System.out.println(e.Sp());
+    System.out.println(e.S());
   }
 }
