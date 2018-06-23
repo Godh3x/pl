@@ -1,4 +1,4 @@
-package constructorast;
+package cup;
 
 import java_cup.runtime.*;
 import lexer.TinyLexer;
@@ -31,10 +31,9 @@ terminal SPROG, EOL, IS, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,
     NOT, PLUS, MINUS, MUL, DIV, POP, PCL;
 terminal String LREAL, TRUE, FALSE, ID, NUM, BOOL;
 
-non terminal tDEC, tINS;
 non terminal Prog S, Prog;
-non terminal LDs LDec, Dec;
-non terminal LIs LIns, Ins;
+non terminal LDs LDec;
+non terminal LIs LIns;
 non terminal E Exp0, Exp1, Exp2, Exp3, Exp4, Exp5;
 
 S ::= Prog: aPROG

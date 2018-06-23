@@ -1,0 +1,2 @@
+rm -ErrorAction SilentlyContinue cup/ConstructorAst.java ; rm -ErrorAction SilentlyContinue cup/Lexicon.java ; java -cp cup/cup.jar java_cup.Main -parser ConstructorAst -symbols Lexicon -nopositions cup/Constructor.cup ; Move-Item -Path "Lexicon.java" -Destination "cup/" ; Move-Item -Path "ConstructorAst.java" -Destination "cup/"
+rm -ErrorAction SilentlyContinue -recurse temp ; javac -d temp -cp ".;./cup/cup.jar" ./lexer/*.java ; javac -d temp -cp ".;./cup/cup.jar" ./cup/*.java ; java -cp "temp;cup/cup.jar" cup.Main

@@ -1,6 +1,6 @@
 package lexer;
 
-import constructorast.Lexicon;
+import cup.Lexicon;
 import errors.ErrorManager;
 
 /**

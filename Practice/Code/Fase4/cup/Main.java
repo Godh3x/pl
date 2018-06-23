@@ -1,4 +1,4 @@
-package constructorast;
+package cup;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
