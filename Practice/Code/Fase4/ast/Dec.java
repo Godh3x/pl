@@ -1,6 +1,6 @@
 package ast;
 
-public class Dec extends E {
+public class Dec extends LDs {
   private String ty;
   private String id;
 
@@ -9,10 +9,10 @@ public class Dec extends E {
     this.id = id;
   }
 
-  public String id() { return this.id; }
-  public String ty() { return this.ty; }
-  public TypeE type() { return TypeE.DEC; }
+  public String ty() {return ty;}
+  public String id() {return id;}
+  public TypeE type() {return TypeE.DEC;}
   public String toString() {
-    return "dec{"+id().toString()+","+ty().toString()+"}";
+    return ty().toString() + " " + id().toString();
   }
 }

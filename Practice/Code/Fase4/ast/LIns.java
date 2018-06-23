@@ -1,29 +1,20 @@
 package ast;
 
-public class LIns {
-  private LIns list;
-  private String ty;
+public class LIns extends LIs {
+  private String id;
   private E exp;
-
-  public LIns(String id, E exp) {
+  private LIs list;
+  public LIns(LIs list,String id, E exp) {
+    this.list = list;
     this.id = id;
     this.exp = exp;
   }
-  public LIns(LIns list, String id, E exp) {
-    this(id, exp);
-    this.list = list;
-  }
 
-  public String list() { return this.list; }
-  public String id() { return this.id; }
-  public String exp() { return this.exp; }
-  public TypeE type() { return TypeE.LINS; }
+  public LIs lis() {return list;}
+  public String id() {return id;}
+  public E exp() {return exp;}
+  public TypeE type() {return TypeE.LINS;}
   public String toString() {
-    if (this.list) {
-      return "lins{"+list().toString()+","+id().toString()+","+exp().toString()+"}";
-    }
-    else {
-      return "lins{"+id().toString()+","+exp().toString()+"}";
-    }
+    return "lins{"+lis().toString() + " ; " + id().toString() + " = " + exp().toString()+"}";
   }
 }

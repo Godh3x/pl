@@ -1,10 +1,13 @@
-package constructorAst;
+package constructorast;
 
 import java_cup.runtime.*;
 import lexer.TinyLexer;
 import lexer.LexicalItem;
 import errors.ErrorManager;
 import ast.E;
+import ast.LDs;
+import ast.LIs;
+import ast.Prog;
 import ast.ASExp;
 
 scan with {: return getScanner().next_token(); :};
@@ -24,79 +27,75 @@ init with {:
 :};
 
 
-terminal SPROG, EOL, NUM, ID, BOOL, IS, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,
-    NOT, PLUS, MINUS, MUL, DIV, LREAL, TRUE, FALSE, POP, PCL;
+terminal SPROG, EOL, IS, EQ, GT, GEQ, LT, LEQ, NEQ, AND, OR,
+    NOT, PLUS, MINUS, MUL, DIV, POP, PCL;
+terminal String LREAL, TRUE, FALSE, ID, NUM, BOOL;
 
-non terminal S, Prog, LDec, Dec, LIns, Ins, Exp0, Exp1, Exp2, Exp3, Exp4, Exp5,
-    Op0, Op2, Op3;
+non terminal tDEC, tINS;
+non terminal Prog S, Prog;
+non terminal LDs LDec, Dec;
+non terminal LIs LIns, Ins;
+non terminal E Exp0, Exp1, Exp2, Exp3, Exp4, Exp5;
 
 S ::= Prog: aPROG
-    {: RESULT=aPROG :};
+    {: RESULT=aPROG; :};
 Prog ::= LDec: aLDEC SPROG LIns: aLINS
     {: RESULT=as.prog(aLDEC, aLINS); :};
-LDec ::= LDec: aLDEC EOL Dec: tDEC
-    {: RESULT=as.ldec(aLDEC, tDEC.ty, tDEC.id); :};
-LDec ::= Dec: tDEC
-    {: RESULT=as.dec(tDEC.ty, tDEC.id); :};
-LIns ::= LIns: aLINS EOL Ins: tINS
-    {: RESULT=as.lins(aLINS, tINS.id, tINS.exp); :};
-LIns ::= Ins: tINS
-    {: RESULT=as.ins(tINS.id, tINS.exp) :};
-Dec ::= NUM: lexNUM ID: lexID
-    {: RESULT=new TDec(); RESULT.ty = lexNUM; RESULT.id = lexID; :};
-Dec ::= BOOL: lexBOOL ID: lexID
-    {: RESULT=new TDec(); RESULT.ty = lexBOOL; RESULT.id = lexID; :};
-Ins ::= ID: lexID IS Exp0: aEXP0
-    {: RESULT=new TIns(); RESULT.id = lexID; RESULT.exp = aEXP0; :};
-Exp0 ::= Exp0: aEXP0 Op0: lexOP0 Exp1: aEXP1
-    {: RESULT=as.mkexpb(lexOP0, aEXP0, aEXP1); :};
+LDec ::= LDec: aLDEC EOL NUM: lexNUM ID: lexID
+    {: RESULT=as.ldec(aLDEC, lexNUM, lexID); :};
+LDec ::= LDec: aLDEC EOL BOOL: lexBOOL ID: lexID
+    {: RESULT=as.ldec(aLDEC, lexBOOL, lexID); :};
+LDec ::= NUM: lexNUM ID: lexID
+    {: RESULT=as.dec(lexNUM, lexID); :};
+LDec ::= BOOL: lexBOOL ID: lexID
+    {: RESULT=as.dec(lexBOOL, lexID); :};
+LIns ::= LIns: aLINS EOL ID: lexID IS Exp0: aEXP0
+    {: RESULT=as.lins(aLINS, lexID, aEXP0); :};
+LIns ::= ID: lexID IS Exp0: aEXP0
+    {: RESULT=as.ins(lexID, aEXP0); :};
+Exp0 ::= Exp0: aEXP0 MINUS Exp1: aEXP1
+    {: RESULT=as.minus(aEXP0, aEXP1); :};
+Exp0 ::= Exp0: aEXP0 PLUS Exp1: aEXP1
+    {: RESULT=as.plus(aEXP0, aEXP1); :};
 Exp0 ::= Exp1: aEXP1
     {: RESULT=aEXP1; :};
 Exp1 ::= Exp2: aEXP2 AND: lexAND Exp1: aEXP1
-    {: RESULT=as.mkexpb(lexAND, aEXP2, aEXP1); :};
+    {: RESULT=as.and(aEXP2, aEXP1); :};
 Exp1 ::= Exp2: aEXP20 OR: lexOR Exp2: aEXP21
-    {: RESULT=as.mkexpb(lexOR, aEXP20, aEXP21); :};
+    {: RESULT=as.or(aEXP20, aEXP21); :};
 Exp1 ::= Exp2 : aEXP2
     {: RESULT=aEXP2; :};
-Exp2 ::= Exp3: aEXP30 Op2: lexOP2 Exp3: aEXP31
-    {: RESULT=as.mkexpb(lexOP2, aEXP30, aEXP31); :};
+Exp2 ::= Exp3: aEXP30 EQ Exp3: aEXP31
+    {: RESULT=as.eq(aEXP30, aEXP31); :};
+Exp2 ::= Exp3: aEXP30 GT Exp3: aEXP31
+    {: RESULT=as.gt(aEXP30, aEXP31); :};
+Exp2 ::= Exp3: aEXP30 GEQ Exp3: aEXP31
+    {: RESULT=as.geq(aEXP30, aEXP31); :};
+Exp2 ::= Exp3: aEXP30 LT Exp3: aEXP31
+    {: RESULT=as.lt(aEXP30, aEXP31); :};
+Exp2 ::= Exp3: aEXP30 LEQ Exp3: aEXP31
+    {: RESULT=as.leq(aEXP30, aEXP31); :};
+Exp2 ::= Exp3: aEXP30 NEQ Exp3: aEXP31
+    {: RESULT=as.neq(aEXP30, aEXP31); :};
 Exp2 ::= Exp3: aEXP3
     {: RESULT=aEXP3; :};
-Exp3 ::= Exp3: aEXP3 Op3: lexOP3 Exp4: aEXP4
-    {: RESULT=as.mkexpb(lexOP3, aEXP3, aEXP4); :};
+Exp3 ::= Exp3: aEXP3 MUL Exp4: aEXP4
+    {: RESULT=as.mul(aEXP3, aEXP4); :};
+Exp3 ::= Exp3: aEXP3 DIV Exp4: aEXP4
+    {: RESULT=as.div(aEXP3, aEXP4); :};
 Exp3 ::= Exp4: aEXP4
     {: RESULT=aEXP4; :};
-Exp4 ::= MINUS: lexMINUS Exp4: aEXP4
-    {: RESULT=as.mkexpu(lexMINUS, aEXP4); :};
-Exp4 ::= NOT: lexNOT Exp5: aEXP5
-    {: RESULT=as.mkexpu(lexNOT, aEXP5); :};
+Exp4 ::= MINUS Exp4: aEXP4
+    {: RESULT=as.sign(aEXP4); :};
+Exp4 ::= NOT Exp5: aEXP5
+    {: RESULT=as.not(aEXP5); :};
 Exp4 ::= Exp5: aEXP5
     {: RESULT=aEXP5; :};
 Exp5 ::= LREAL: lexLREAL
     {: RESULT=as.num(lexLREAL); :};
-Exp5 ::= TRUE: lexTRUE
-    {: RESULT=as.true(lexTRUE); :};
-Exp5 ::= FALSE: lexFALSE
-    {: RESULT=as.false(lexFALSE); :};
+Exp5 ::= TRUE
+    {: RESULT=as.true_f(); :};
+Exp5 ::= FALSE
+    {: RESULT=as.false_f(); :};
 Exp5 ::= POP Exp0: aEXP0 PCL
     {: RESULT=aEXP0; :};
-Op0 ::= PLUS: lexPLUS
-    {: RESULT=lexPlus; :};
-Op0 ::= MINUS: lexMINUS
-    {: RESULT=lexPlus; :};
-Op2 ::= EQ: lexEQ
-    {: RESULT=lexEQ; :};
-Op2 ::= GT: lexGT
-    {: RESULT=lexGT; :};
-Op2 ::= GEQ: lexGEQ
-    {: RESULT=lexGEQ; :};
-Op2 ::= LT: lexLT
-    {: RESULT=lexLT; :};
-Op2 ::= LEQ: lexLEQ
-    {: RESULT=lexLEQ; :};
-Op2 ::= NEQ: lexNEQ
-    {: RESULT=lexNEQ; :};
-Op3 ::= MUL: lexMUL
-    {: RESULT=lexMUL; :};
-Op3 ::= DIV: lexDIV
-    {: RESULT=lexDIV; :};

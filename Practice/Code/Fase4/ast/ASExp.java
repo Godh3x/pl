@@ -1,58 +1,32 @@
 package ast;
 
 public class ASExp {
-  /* Binary Ops */
-  public E mkexpb(String op, E opnd1, E opnd2) {
-    switch(op) {
-      case '+':
-        return new Plus(opnd1,opnd2);
-      case '-':
-        return new Minus(opnd1,opnd2);
-      case '*':
-        return new Mul(opnd1,opnd2);
-      case '/':
-        return new Div(opnd1,opnd2);
-      case 'and':
-        return new And(opnd1,opnd2);
-      case 'or':
-        return new Or(opnd1,opnd2);
-      case '==':
-        return new Eq(opnd1,opnd2);
-      case '>':
-        return new Gt(opnd1,opnd2);
-      case '>=':
-        return new Gte(opnd1,opnd2);
-      case '<':
-        return new Lt(opnd1,opnd2);
-      case '<=':
-        return new Lte(opnd1,opnd2);
-      case '!=':
-        return new Neq(opnd1,opnd2);
-      default:
-        throw new IllegalArgumentException("Invalid binary operation: " + op);
-    }
+  public E plus(E opnd1, E opnd2) {return new Plus(opnd1,opnd2);}
+  public E minus(E opnd1, E opnd2) {return new Minus(opnd1,opnd2);}
+  public E mul(E opnd1, E opnd2) {return new Mul(opnd1,opnd2);}
+  public E div(E opnd1, E opnd2) {return new Div(opnd1,opnd2);}
+  public E eq(E opnd1, E opnd2) {return new Eq(opnd1,opnd2);}
+  public E gt(E opnd1, E opnd2) {return new Gt(opnd1,opnd2);}
+  public E geq(E opnd1, E opnd2) {return new Geq(opnd1,opnd2);}
+  public E lt(E opnd1, E opnd2) {return new Lt(opnd1,opnd2);}
+  public E leq(E opnd1, E opnd2) {return new Leq(opnd1,opnd2);}
+  public E and(E opnd1, E opnd2) {return new And(opnd1,opnd2);}
+  public E or(E opnd1, E opnd2) {return new Or(opnd1,opnd2);}
+  public E neq(E opnd1, E opnd2) {return new Neq(opnd1,opnd2);}
+  public E sign(E opnd1) {return new Sign(opnd1);}
+  public E not(E opnd1) {return new Not(opnd1);}
+  public E num(String n) {return new Num(n);}
+  public E true_f() {return new True();}
+  public E false_f() {return new False();}
+  public LIs lins(LIs list, String id, E exp) {
+    return new LIns(list, id, exp);
   }
-  /* Unary Ops */
-  public E mkexpu(String op, E opnd) {
-    switch (op) {
-      case '-':
-        return new Sign(opnd1);
-      case 'not':
-        return new Not(opnd1);
-      default:
-        throw new IllegalArgumentException("Invalid unary operation: " + op);
-    }
+  public LIs ins(String id, E exp) {return new Ins(id, exp);}
+  public LDs ldec(LDs list, String ty, String id) {
+    return new LDec(list, ty, id);
   }
-  /* Basic */
-  public E num(String num) {return new Num(num);}
-  public E true(String b) {return new True(b);}
-  public E false(String b) {return new False(b);}
-  /* Instructions */
-  public LIns ins(String id, E exp) {return new LIns(id, exp)};
-  public LIns lins(LIns list, String id, E exp) {return new LIns(list, id, exp)};
-  /* Declarations */
-  public LDec ins(String ty, String id) {return new LDec(ty, id)};
-  public LDec lins(LIns list, String ty, String id) {return new LDec(list, ty, id)};
-  /* Program */
-  public Prog prog(LDec ldec, LIns lins) {return new Prog(ldec, lins)};
+  public LDs dec(String ty, String id) {
+    return new Dec(ty, id);
+  }
+  public Prog prog(LDs listd,LIs listi) {return new Prog(listd, listi);}
 }

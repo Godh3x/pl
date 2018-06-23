@@ -3,8 +3,8 @@ package ast;
 public class True extends E {
   private String v;
 
-  public True(String v) {
-    this.v = v;
+  public True() {
+    this.v = "true";
   }
 
   public String num() { return this.v; }
