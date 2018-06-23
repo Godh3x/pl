@@ -669,7 +669,7 @@ public class TinyLexer {
    * Instantiates the input to read from some file, creates the lexer and loops until EOF token.
    */
   public static void main(String[] arg) throws IOException {
-    Reader input = new InputStreamReader(new FileInputStream("input.txt"));
+    Reader input = new InputStreamReader(new FileInputStream("../input.txt"));
     TinyLexer lexer = new TinyLexer(input);
     LexicalItem token;
 

@@ -14,7 +14,7 @@ import java.io.Reader;
  */
 public class Main {
   public static void main(String[] arg) throws IOException {
-    Reader input = new InputStreamReader(new FileInputStream("input.txt"));
+    Reader input = new InputStreamReader(new FileInputStream("../input.txt"));
     TinyLexer lexer = new TinyLexer(input);
     LexicalItem token;
     do {
